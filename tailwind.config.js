@@ -8,4 +8,9 @@ export default {
   corePlugins: {
     preflight: false,
   },
+  theme: {
+    colors: {
+      primary: "#E67843",
+    },
+  },
 };
