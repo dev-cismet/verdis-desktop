@@ -9,37 +9,37 @@ const mockExtractor = (input) => {
         key: "1",
         name: "A",
         type: "sealed surface",
-        area: "125 m²",
+        area: 125,
       },
       {
         key: "2",
         name: "B",
         type: "sealed surface",
-        area: "1254 m²",
+        area: 1254,
       },
       {
         key: "3",
         name: "3",
         type: "sealed surface",
-        area: "12 m²",
+        area: 12,
       },
       {
         key: "4",
         name: "C",
         type: "roof area",
-        area: "129 m²",
+        area: 129,
       },
       {
         key: "5",
         name: "AAABB",
         type: "sealed surface",
-        area: "125 m²",
+        area: 125,
       },
       {
         key: "6",
         name: "D",
         type: "roof area",
-        area: "9 m²",
+        area: 9,
       },
     ],
     columns: [
@@ -57,6 +57,7 @@ const mockExtractor = (input) => {
         title: "Fläche",
         dataIndex: "area",
         key: "area",
+        render: (area) => <div>{area} m²</div>,
       },
     ],
   };
@@ -74,6 +75,7 @@ const Areas = ({
   return (
     <Card
       style={{ ...style, width, height }}
+      bodyStyle={{ maxHeight: "calc(100% - 37px)" }}
       title={
         <span>
           <FontAwesomeIcon icon={faBars} /> Flächen
@@ -87,7 +89,7 @@ const Areas = ({
         dataSource={data.dataSource}
         columns={data.columns}
         pagination={{ position: ["none"] }}
-        scroll={{ y: height }}
+        scroll={{ y: height - 120 }}
       />
     </Card>
   );
