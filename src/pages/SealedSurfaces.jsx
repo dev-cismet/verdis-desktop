@@ -1,8 +1,9 @@
 import React from "react";
 import Map from "../components/commons/Map";
 import { Col, Row } from "antd";
-import MockCard from "../components/mock/MockCard";
 import ChangeRequests from "../components/sealedSurfaces/ChangeRequests";
+import Sums from "../components/sealedSurfaces/Sums";
+import Areas from "../components/sealedSurfaces/Areas";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -24,21 +25,25 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
       <Row gutter={[12, 0]} style={{ height: "100%" }}>
         <Col span={6}>
           <Row gutter={[0, 12]}>
-            <MockCard style={cardStyleArea} title="Flächen" />
-          </Row>
-          <Row gutter={[0, 12]}>
-            <MockCard
-              style={{ ...cardStyleSum, marginTop: 12, marginBottom: 12 }}
-              title="Summen"
+            <Areas
+              width={cardStyleArea.width}
+              height={cardStyleArea.height}
+              style={cardStyleArea}
             />
           </Row>
           <Row gutter={[0, 12]}>
-            <MockCard style={cardStyleChangeReq} title="Änderungsanfragen" />
-            {/* <ChangeRequests
+            <Sums
+              width={cardStyleSum.width}
+              height={cardStyleSum.height}
+              style={{ ...cardStyleSum, marginTop: 12, marginBottom: 12 }}
+            />
+          </Row>
+          <Row gutter={[0, 12]}>
+            <ChangeRequests
               width={cardStyleChangeReq.width}
               height={cardStyleChangeReq.height}
               style={cardStyleChangeReq}
-            /> */}
+            />
           </Row>
         </Col>
         <Col span={18}>
