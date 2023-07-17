@@ -1,4 +1,5 @@
 /** @type { import('@storybook/react').Preview } */
+import { ConfigProvider } from "antd";
 import "tailwindcss/tailwind.css";
 const preview = {
   parameters: {
@@ -32,6 +33,19 @@ const preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#E67843",
+          },
+        }}
+      >
+        <Story />
+      </ConfigProvider>
+    ),
+  ],
 };
 
 export default preview;
