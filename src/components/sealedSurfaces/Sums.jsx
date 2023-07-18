@@ -73,7 +73,7 @@ const Sums = ({
           <FontAwesomeIcon icon={faBars} /> Summen
         </span>
       }
-      size="default"
+      size="small"
       hoverable={false}
       shadow={true}
     >
