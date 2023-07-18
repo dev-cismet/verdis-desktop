@@ -1,4 +1,4 @@
-import { Avatar, Button, Input, Layout } from "antd";
+import { Avatar, Button, Dropdown, Input, Layout } from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,7 +9,11 @@ import {
 import {
   CommentOutlined,
   ExclamationCircleOutlined,
-  LogoutOutlined,
+  GatewayOutlined,
+  GlobalOutlined,
+  HomeOutlined,
+  LinkOutlined,
+  PullRequestOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
 
@@ -18,22 +22,27 @@ const mockExtractor = (input) => {
     {
       title: "Übersicht",
       href: "/",
+      icon: <HomeOutlined className="text-2xl" />,
     },
     {
       title: "Versiegelte Flächen",
       href: "/",
+      icon: <GatewayOutlined className="text-2xl" />,
     },
     {
       title: "Straßenreinigung",
       href: "/",
+      icon: <PullRequestOutlined className="text-2xl" />,
     },
     {
-      title: "Allgemein",
+      title: "Info",
       href: "/",
+      icon: <GlobalOutlined className="text-2xl" />,
     },
     {
       title: "Versickerungsgenehmigungen",
       href: "/",
+      icon: <LinkOutlined className="text-2xl" />,
     },
   ];
 };
@@ -46,6 +55,16 @@ const NavBar = ({
   style,
 }) => {
   const data = extractor(dataIn);
+  const items = [
+    {
+      label: <a href="/settings">Einstellungen</a>,
+      key: "0",
+    },
+    {
+      label: <a href="/">Log out</a>,
+      key: "1",
+    },
+  ];
 
   return (
     <Layout.Header
@@ -68,11 +87,11 @@ const NavBar = ({
             className={`${i === 0 ? "text-primary" : ""} font-semibold`}
             href={link.href}
           >
-            {link.title}
+            {width >= 1440 ? link.title : link.icon}
           </Button>
         ))}
       </div>
-      <div className="flex items-center gap-3 w-1/4">
+      <div className="flex items-center gap-3 w-full px-16">
         <Input
           placeholder="Suche..."
           addonBefore={
@@ -85,12 +104,13 @@ const NavBar = ({
         <ExclamationCircleOutlined className="text-2xl cursor-pointer" />
         <QuestionCircleOutlined className="text-2xl cursor-pointer" />
         <CommentOutlined className="text-2xl cursor-pointer" />
-        <LogoutOutlined className="text-2xl cursor-pointer" />
-        <Avatar
-          size="large"
-          icon={<FontAwesomeIcon icon={faUser} />}
-          className="cursor-pointer"
-        />
+        <Dropdown trigger={["click"]} menu={{ items }} placement="bottomRight">
+          <Avatar
+            size="large"
+            icon={<FontAwesomeIcon icon={faUser} />}
+            className="cursor-pointer"
+          />
+        </Dropdown>
       </div>
     </Layout.Header>
   );

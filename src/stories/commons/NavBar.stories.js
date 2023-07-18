@@ -21,8 +21,31 @@ export const M = {
     },
   },
 };
+
 export const L = {
+  args: { width: 1600, height: 73 },
+  parameters: {
+    design: {
+      type: "image",
+      url: design,
+      scale: 0.5,
+    },
+  },
+};
+
+export const XL = {
   args: { width: 1920, height: 73 },
+  parameters: {
+    design: {
+      type: "image",
+      url: design,
+      scale: 0.5,
+    },
+  },
+};
+
+export const S = {
+  args: { width: 1024, height: 73 },
   parameters: {
     design: {
       type: "image",
