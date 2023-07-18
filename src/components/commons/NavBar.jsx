@@ -1,11 +1,7 @@
 import { Avatar, Button, Dropdown, Input, Layout } from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faUser,
-  faGripVertical,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUser, faGripVertical } from "@fortawesome/free-solid-svg-icons";
 import {
   CommentOutlined,
   ExclamationCircleOutlined,
@@ -16,6 +12,7 @@ import {
   PullRequestOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
+import { useState } from "react";
 
 const mockExtractor = (input) => {
   return [
@@ -66,6 +63,10 @@ const NavBar = ({
     },
   ];
 
+  const [prevSearches, setPrevSearches] = useState([]);
+  const [search, setSearch] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <Layout.Header
       style={{
@@ -75,6 +76,7 @@ const NavBar = ({
         backgroundColor: "#FFFFFF",
         width,
         height,
+        style,
       }}
     >
       <div className="flex items-center gap-3">
@@ -91,14 +93,25 @@ const NavBar = ({
           </Button>
         ))}
       </div>
-      <div className="flex items-center gap-3 w-full px-16">
-        <Input
+      <div className="flex relative items-center gap-3 w-full px-16">
+        <Input.Search
           placeholder="Suche..."
-          addonBefore={
-            <FontAwesomeIcon icon={faSearch} className="cursor-pointer" />
-          }
           allowClear
+          onSearch={() => setPrevSearches([...prevSearches, search])}
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
+        <div
+          className={`bg-white border border-solid rounded-md shadow-md border-gray-300 absolute top-10 ${
+            isFocused && prevSearches.length > 0 ? "flex" : "hidden"
+          } flex-col w-[calc(100%-114px)]`}
+        >
+          {prevSearches.map((search, i) => (
+            <span key={`prevSearches_${i}`}>{search}</span>
+          ))}
+        </div>
       </div>
       <div className="flex items-center gap-3">
         <ExclamationCircleOutlined className="text-2xl cursor-pointer" />
