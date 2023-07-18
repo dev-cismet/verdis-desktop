@@ -3,14 +3,15 @@ import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
-  faCirclePlus,
-  faCircleExclamation,
-  faCircleQuestion,
-  faComment,
-  faArrowRightFromBracket,
   faUser,
   faGripVertical,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  CommentOutlined,
+  ExclamationCircleOutlined,
+  LogoutOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 
 const mockExtractor = (input) => {
   return [
@@ -81,19 +82,10 @@ const NavBar = ({
         />
       </div>
       <div className="flex items-center gap-3">
-        <FontAwesomeIcon
-          icon={faCircleExclamation}
-          className="w-6 h-6 cursor-pointer"
-        />
-        <FontAwesomeIcon
-          icon={faCircleQuestion}
-          className="w-6 h-6 cursor-pointer"
-        />
-        <FontAwesomeIcon icon={faComment} className="w-6 h-6 cursor-pointer" />
-        <FontAwesomeIcon
-          icon={faArrowRightFromBracket}
-          className="w-6 h-6 cursor-pointer"
-        />
+        <ExclamationCircleOutlined className="text-2xl cursor-pointer" />
+        <QuestionCircleOutlined className="text-2xl cursor-pointer" />
+        <CommentOutlined className="text-2xl cursor-pointer" />
+        <LogoutOutlined className="text-2xl cursor-pointer" />
         <Avatar
           size="large"
           icon={<FontAwesomeIcon icon={faUser} />}

@@ -56,7 +56,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ant-design/icons@npm:^5.1.0":
+"@ant-design/icons@npm:^5.1.0, @ant-design/icons@npm:^5.1.4":
   version: 5.1.4
   resolution: "@ant-design/icons@npm:5.1.4"
   dependencies:
@@ -15876,6 +15876,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "verdis-desktop@workspace:."
   dependencies:
+    "@ant-design/icons": ^5.1.4
     "@fortawesome/fontawesome-free": ^6.4.0
     "@fortawesome/fontawesome-svg-core": ^6.4.0
     "@fortawesome/free-brands-svg-icons": ^6.4.0
