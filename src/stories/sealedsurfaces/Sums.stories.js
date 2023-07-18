@@ -20,9 +20,9 @@ Mockup.parameters = {
   },
 };
 
-export const M = generateStory([332, 131]);
-export const L = generateStory([471, 193]);
-export const XL = generateStory([631, 265]);
-export const S = generateStory([311, 121]);
-export const TabletLandscape = generateStory([247, 131]);
-export const TabletPortrait = generateStory([183, 182]);
+export const M = generateStory([332, 184]);
+export const L = generateStory([471, 278]);
+export const XL = generateStory([631, 386]);
+export const S = generateStory([311, 170]);
+export const TabletLandscape = generateStory([247, 184]);
+export const TabletPortrait = generateStory([183, 261]);
