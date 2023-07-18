@@ -4,35 +4,52 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const mockExtractor = (input) => {
   return {
-    title: "Bewertung",
-    assessments: [
+    dataSource: [
       {
-        name: "710_DF",
-        area: 1234,
+        title: "Bewertung",
+        items: [
+          {
+            name: "710_DF",
+            area: 1234,
+          },
+          {
+            name: "720_DF",
+            area: 1,
+          },
+          {
+            name: "730_DF",
+            area: 12,
+          },
+          {
+            name: "740_DF",
+            area: 123,
+          },
+          {
+            name: "750_DF",
+            area: 456,
+          },
+          {
+            name: "760_DF",
+            area: 1734,
+          },
+          {
+            name: "770_DF",
+            area: 7567,
+          },
+        ],
       },
       {
-        name: "720_DF",
-        area: 1,
-      },
-      {
-        name: "730_DF",
-        area: 12,
-      },
-      {
-        name: "740_DF",
-        area: 123,
-      },
-      {
-        name: "750_DF",
-        area: 456,
-      },
-      {
-        name: "760_DF",
-        area: 1734,
-      },
-      {
-        name: "770_DF",
-        area: 7567,
+        title: "Grad der Korrektur",
+        items: [
+          {
+            name: "Connected",
+            area: 123,
+          },
+          {
+            name: "Sleeping",
+            area: 12345,
+          },
+        ],
       },
     ],
   };
@@ -53,7 +70,7 @@ const Sums = ({
       bodyStyle={{ overflowY: "auto", maxHeight: "calc(100% - 55px)" }}
       title={
         <span>
-          <FontAwesomeIcon icon={faBars} /> Flächen
+          <FontAwesomeIcon icon={faBars} /> Summen
         </span>
       }
       size="default"
@@ -62,13 +79,19 @@ const Sums = ({
     >
       <List
         itemLayout="horizontal"
-        dataSource={data.assessments}
-        header={data.title}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta description={item.name} />
-            <div>{item.area}</div>
-          </List.Item>
+        dataSource={data.dataSource}
+        renderItem={(data) => (
+          <>
+            <List.Item>
+              <List.Item.Meta title={data.title} />
+            </List.Item>
+            {data.items.map((item) => (
+              <List.Item>
+                <div>{item.name}</div>
+                <div>{item.area} m²</div>
+              </List.Item>
+            ))}
+          </>
         )}
       />
     </Card>
