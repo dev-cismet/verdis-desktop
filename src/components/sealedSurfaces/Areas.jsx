@@ -89,7 +89,7 @@ const Areas = ({
         dataSource={data.dataSource}
         columns={data.columns}
         pagination={{ position: ["none"] }}
-        scroll={{ y: height - 120 }}
+        scroll={{ y: height - 120, x: "max-content" }}
       />
     </Card>
   );
