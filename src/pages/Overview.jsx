@@ -2,6 +2,10 @@ import React from "react";
 import Map from "../components/commons/Map";
 import { Col, Row } from "antd";
 import MockCard from "../components/mock/MockCard";
+import General from "../components/overview/General";
+import Statistics from "../components/overview/Statistics";
+import CrossReferences from "../components/overview/CrossReferences";
+import Sums from "../components/sealedSurfaces/Sums";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -28,12 +32,17 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
       <Row gutter={[12, 0]} style={{ height: "100%" }}>
         <Col span={6}>
           <Row gutter={[0, 12]}>
-            <MockCard style={firstColCardStyle} title="Allgemein" />
+            <General
+              width={firstColCardStyle.width}
+              height={firstColCardStyle.height}
+              style={firstColCardStyle}
+            />
           </Row>
           <Row gutter={[0, 12]}>
-            <MockCard
-              style={{ ...firstColCardStyle, marginTop: 12, marginBottom: 12 }}
-              title="Summen"
+            <Sums
+              width={firstColCardStyle.width}
+              height={firstColCardStyle.height}
+              style={firstColCardStyle}
             />
           </Row>
           <Row gutter={[0, 12]}>
@@ -43,10 +52,18 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
         <Col span={18}>
           <Row gutter={[12, 12]} style={{ height: "30%" }}>
             <Col span={12}>
-              <MockCard style={firstRowCardStyle} title="Statistik" />
+              <Statistics
+                width={firstRowCardStyle.width}
+                height={firstRowCardStyle.height}
+                style={firstRowCardStyle}
+              />
             </Col>
             <Col span={12}>
-              <MockCard style={firstRowCardStyle} title="Querverweise" />
+              <CrossReferences
+                width={firstRowCardStyle.width}
+                height={firstRowCardStyle.height}
+                style={firstRowCardStyle}
+              />
             </Col>
           </Row>
           <Row style={{ height: "70%" }}>
