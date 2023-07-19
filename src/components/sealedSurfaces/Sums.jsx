@@ -1,6 +1,5 @@
-import { Card, List } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { List } from "antd";
+import CustomCard from "../ui/Card";
 
 const mockExtractor = (input) => {
   return {
@@ -65,18 +64,7 @@ const Sums = ({
   const data = extractor(dataIn);
 
   return (
-    <Card
-      style={{ ...style, width, height }}
-      bodyStyle={{ overflowY: "auto", maxHeight: "calc(100% - 55px)" }}
-      title={
-        <span>
-          <FontAwesomeIcon icon={faBars} /> Summen
-        </span>
-      }
-      size="small"
-      hoverable={false}
-      shadow={true}
-    >
+    <CustomCard style={{ ...style, width, height }} title="Summen">
       <List
         itemLayout="horizontal"
         dataSource={data.dataSource}
@@ -94,7 +82,7 @@ const Sums = ({
           </>
         )}
       />
-    </Card>
+    </CustomCard>
   );
 };
 

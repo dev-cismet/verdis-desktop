@@ -1,6 +1,5 @@
-import { Card, Table } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { Table } from "antd";
+import CustomCard from "../ui/Card";
 
 const mockExtractor = (input) => {
   return {
@@ -73,25 +72,13 @@ const Areas = ({
   const data = extractor(dataIn);
 
   return (
-    <Card
-      style={{ ...style, width, height }}
-      bodyStyle={{ maxHeight: "calc(100% - 37px)" }}
-      title={
-        <span>
-          <FontAwesomeIcon icon={faBars} /> Flächen
-        </span>
-      }
-      size="small"
-      hoverable={false}
-      shadow={true}
-    >
+    <CustomCard style={{ ...style, width, height }} title="Flächen">
       <Table
         dataSource={data.dataSource}
         columns={data.columns}
         pagination={{ position: ["none"] }}
-        scroll={{ y: height - 120, x: "max-content" }}
       />
-    </Card>
+    </CustomCard>
   );
 };
 

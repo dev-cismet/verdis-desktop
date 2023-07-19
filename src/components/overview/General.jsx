@@ -1,6 +1,5 @@
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Card, Checkbox, DatePicker, Input, Select } from "antd";
+import { Checkbox, DatePicker, Input, Select } from "antd";
+import CustomCard from "../ui/Card";
 
 const GeneralRow = ({ title, placeholder, width, customInput }) => {
   return (
@@ -32,17 +31,7 @@ const General = ({
   const data = extractor(dataIn);
 
   return (
-    <Card
-      style={{ ...style, width, height }}
-      bodyStyle={{ overflowY: "auto", maxHeight: "calc(100% - 55px)" }}
-      title={
-        <span>
-          <FontAwesomeIcon icon={faBars} /> Allgemein
-        </span>
-      }
-      size="small"
-      hoverable={false}
-    >
+    <CustomCard style={{ ...style, width, height }} title="Allgemein">
       <div className="flex flex-col gap-2">
         <GeneralRow
           title="Kassenzeichen"
@@ -86,7 +75,7 @@ const General = ({
           width={width}
         />
       </div>
-    </Card>
+    </CustomCard>
   );
 };
 
