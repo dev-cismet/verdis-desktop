@@ -7,7 +7,7 @@ const CustomCard = ({ style, title, children, fullHeight, ...props }) => {
       style={style}
       bodyStyle={{
         overflowY: "auto",
-        maxHeight: fullHeight ? "100%" : "calc(100% - 55px)",
+        maxHeight: fullHeight ? "100%" : "calc(100% - 45px)",
       }}
       title={
         <span>
