@@ -1,8 +1,9 @@
 import { Avatar, Button, Dropdown, Input, Layout } from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faGripVertical } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faGripVertical, faX } from "@fortawesome/free-solid-svg-icons";
 import {
+  ClockCircleOutlined,
   CommentOutlined,
   ExclamationCircleOutlined,
   GatewayOutlined,
@@ -47,8 +48,8 @@ const mockExtractor = (input) => {
 const NavBar = ({
   dataIn,
   extractor = mockExtractor,
-  width = 300,
-  height = 200,
+  width = 1024,
+  height = 73,
   style,
 }) => {
   const data = extractor(dataIn);
@@ -58,7 +59,7 @@ const NavBar = ({
       key: "0",
     },
     {
-      label: <a href="/">Log out</a>,
+      label: <a href="/">Ausloggen</a>,
       key: "1",
     },
   ];
@@ -108,8 +109,24 @@ const NavBar = ({
             isFocused && prevSearches.length > 0 ? "flex" : "hidden"
           } flex-col w-[calc(100%-114px)]`}
         >
-          {prevSearches.map((search, i) => (
-            <span key={`prevSearches_${i}`}>{search}</span>
+          {prevSearches.map((prevSearch, i) => (
+            <div
+              className="hover:bg-zinc-100 cursor-pointer"
+              key={`prevSearches_${i}`}
+              onClick={() => setSearch(prevSearch)}
+            >
+              <div className="flex gap-2 items-center group px-2 z-50">
+                <ClockCircleOutlined className="text-xl" />
+                <span className="w-full">{prevSearch}</span>
+                <FontAwesomeIcon
+                  className="group-hover:visible invisible hover:bg-zinc-200 p-2"
+                  icon={faX}
+                  onClick={() => {
+                    setPrevSearches((prevSearch) => prevSearch.splice(i, 1));
+                  }}
+                />
+              </div>
+            </div>
           ))}
         </div>
       </div>
