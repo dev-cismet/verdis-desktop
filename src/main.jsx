@@ -6,6 +6,7 @@ import "antd/dist/reset.css";
 import { Provider } from "react-redux";
 import store from "./store";
 import { ConfigProvider } from "antd";
+import locale from "antd/locale/de_DE";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           colorPrimary: "#E67843",
         },
       }}
+      locale={locale}
     >
       <Provider store={store}>
         <App />

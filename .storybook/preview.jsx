@@ -1,5 +1,6 @@
 /** @type { import('@storybook/react').Preview } */
 import { ConfigProvider } from "antd";
+import locale from "antd/locale/de_DE";
 import "tailwindcss/tailwind.css";
 const preview = {
   parameters: {
@@ -41,6 +42,7 @@ const preview = {
             colorPrimary: "#E67843",
           },
         }}
+        locale={locale}
       >
         <Story />
       </ConfigProvider>
