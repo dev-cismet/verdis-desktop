@@ -1,10 +1,10 @@
 import { withDesign } from "storybook-addon-designs";
-import Comp from "../../components/commons/RecentChats";
+import Comp from "../../components/commons/Chat";
 import design from "../assets/overview/Map.png";
 import { generateStory } from "../_tools/StoryFactory";
 
 export default {
-  title: "CommonComponents/RecentChats",
+  title: "CommonComponents/Chat",
   component: Comp,
   decorators: [withDesign],
 };
