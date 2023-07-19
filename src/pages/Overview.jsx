@@ -6,6 +6,7 @@ import General from "../components/overview/General";
 import Statistics from "../components/overview/Statistics";
 import CrossReferences from "../components/overview/CrossReferences";
 import Sums from "../components/sealedSurfaces/Sums";
+import Summary from "../components/overview/Summary";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -42,11 +43,15 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
             <Sums
               width={firstColCardStyle.width}
               height={firstColCardStyle.height}
-              style={firstColCardStyle}
+              style={{ ...firstColCardStyle, marginTop: 12, marginBottom: 12 }}
             />
           </Row>
           <Row gutter={[0, 12]}>
-            <MockCard style={firstColCardStyle} title="ESW Zusammenfassung" />
+            <Summary
+              width={firstColCardStyle.width}
+              height={firstColCardStyle.height}
+              style={firstColCardStyle}
+            />
           </Row>
         </Col>
         <Col span={18}>
