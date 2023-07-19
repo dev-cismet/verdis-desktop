@@ -37,11 +37,11 @@ const Statistics = ({
   const data = extractor(dataIn);
   return (
     <CustomCard style={{ ...style, width, height }} title="Statistik">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 text-sm">
         {data.map((row) => (
           <div className="flex gap-2 items-center">
-            <span className="font-medium">{row.value}</span>
-            <span className="w-full font-medium">{row.title}</span>
+            <span>{row.value}</span>
+            <span className="w-full">{row.title}</span>
             <FontAwesomeIcon icon={faHandPointer} className="cursor-pointer" />
             <FontAwesomeIcon icon={faMap} className="cursor-pointer" />
           </div>
