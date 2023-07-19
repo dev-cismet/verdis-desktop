@@ -73,7 +73,7 @@ const RecentChats = ({
           </div>
         ))}
       </div>
-      <div className="rounded-full absolute bottom-2 right-3 cursor-pointer bg-primary h-12 w-16 flex items-center justify-center">
+      <div className="rounded-full absolute bottom-2 right-3 cursor-pointer bg-primary h-14 w-14 flex items-center justify-center">
         <FontAwesomeIcon
           icon={faComment}
           className="h-6 w-6"
