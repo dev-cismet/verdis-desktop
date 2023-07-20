@@ -51,6 +51,7 @@ const NavBar = ({
   width = 1024,
   height = 73,
   style,
+  inStory,
 }) => {
   const data = extractor(dataIn);
   const items = [
@@ -63,6 +64,15 @@ const NavBar = ({
       key: "1",
     },
   ];
+
+  let storyStyle = {};
+  if (inStory) {
+    storyStyle = {
+      borderStyle: "dotted",
+      borderWidth: "1px solid",
+      padding: "10px",
+    };
+  }
 
   const [prevSearches, setPrevSearches] = useState([]);
   const [search, setSearch] = useState("");
@@ -77,7 +87,8 @@ const NavBar = ({
         backgroundColor: "#FFFFFF",
         width,
         height,
-        style,
+        ...style,
+        ...storyStyle,
       }}
     >
       <div className="flex items-center gap-3">
