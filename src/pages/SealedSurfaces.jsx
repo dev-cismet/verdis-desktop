@@ -1,11 +1,18 @@
 import React from "react";
 import Map from "../components/commons/Map";
-import { Col, Row } from "antd";
+import { Button } from "antd";
 import ChangeRequests from "../components/sealedSurfaces/ChangeRequests";
 import Sums from "../components/sealedSurfaces/Sums";
 import Areas from "../components/sealedSurfaces/Areas";
+import NavBar from "../components/commons/NavBar";
+import Chat from "../components/commons/Chat";
 
-const Page = ({ width = "100%", height = "100%", inStory = false }) => {
+const Page = ({
+  width = "100%",
+  height = "100%",
+  inStory = false,
+  showChat = false,
+}) => {
   let storyStyle = {};
   if (inStory) {
     storyStyle = {
@@ -15,41 +22,59 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
     };
   }
 
-  const cardStyleArea = { width: "100%", height: height * 0.5 - 12 };
-  const cardStyleSum = { width: "100%", height: height * 0.3 - 12 };
-  const cardStyleChangeReq = { width: "100%", height: height * 0.2 };
-  const mapHeight = height;
+  const cardStyleArea = { width: "100%", height: "100%" };
+  const cardStyleSum = { width: "100%" };
+  const cardStyleChangeReq = {
+    width: "100%",
+    maxHeight: 140,
+  };
+  const mapHeight = height - 100;
 
   return (
-    <div style={{ ...storyStyle, width, height }}>
-      <Row gutter={[12, 0]} style={{ height: "100%" }}>
-        <Col span={6}>
-          <Row gutter={[0, 12]}>
-            <Areas
-              width={cardStyleArea.width}
-              height={cardStyleArea.height}
-              style={cardStyleArea}
-            />
-          </Row>
-          <Row gutter={[0, 12]}>
-            <Sums
-              width={cardStyleSum.width}
-              height={cardStyleSum.height}
-              style={{ ...cardStyleSum, marginTop: 12, marginBottom: 12 }}
-            />
-          </Row>
-          <Row gutter={[0, 12]}>
+    <div
+      style={{ ...storyStyle, width, height }}
+      className="flex flex-col items-center relative"
+    >
+      <NavBar width={width} />
+
+      <div className="flex flex-col w-full bg-zinc-100 h-[calc(100%-46px)] p-2">
+        <div className="flex items-center justify-between w-full">
+          <h4>Versiegelte Flächen</h4>
+          <div className="flex items-center gap-2">
+            <Button type="primary">Übersicht</Button>
+            <Button>Flächen</Button>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          <div
+            className="flex flex-col gap-2 h-full"
+            style={{ maxHeight: mapHeight }}
+          >
+            <div className="flex flex-col gap-2 flex-1 h-full">
+              <Areas width={cardStyleArea.width} style={cardStyleArea} />
+              <Sums width={cardStyleSum.width} style={{ ...cardStyleSum }} />
+            </div>
+
             <ChangeRequests
               width={cardStyleChangeReq.width}
-              height={cardStyleChangeReq.height}
               style={cardStyleChangeReq}
             />
-          </Row>
-        </Col>
-        <Col span={18}>
-          <Map width={"100%"} height={mapHeight} />
-        </Col>
-      </Row>
+          </div>
+          <Map width={"90%"} height={mapHeight} />
+        </div>
+      </div>
+      {showChat && (
+        <Chat
+          style={{
+            position: "absolute",
+            bottom: "10px",
+            right: "10px",
+            zIndex: 99999,
+          }}
+          height={height * 0.45}
+          width={width * 0.2}
+        />
+      )}
     </div>
   );
 };
