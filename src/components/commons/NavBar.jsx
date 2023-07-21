@@ -85,6 +85,7 @@ const NavBar = ({
         justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: "#FFFFFF",
+        paddingInline: "0px",
         width,
         height,
         ...style,
@@ -116,7 +117,7 @@ const NavBar = ({
           onBlur={() => setIsFocused(false)}
         />
         <div
-          className={`bg-white border border-solid rounded-md shadow-md border-gray-300 absolute top-10 ${
+          className={`bg-white border border-solid rounded-md shadow-md border-gray-300 absolute top-10 z-[99999] ${
             isFocused && prevSearches.length > 0 ? "flex" : "hidden"
           } flex-col w-[calc(100%-114px)]`}
         >
