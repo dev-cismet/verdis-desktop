@@ -2,6 +2,7 @@
 import { ConfigProvider } from "antd";
 import locale from "antd/locale/de_DE";
 import "tailwindcss/tailwind.css";
+import "../src/index.css";
 const preview = {
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
