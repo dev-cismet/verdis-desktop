@@ -22,11 +22,12 @@ const Page = ({
     };
   }
 
-  const cardStyleFronts = { width: "100%", height: height * 0.3 - 12 };
-  const cardStyleLegal = { width: "100%", height: height * 0.3 - 12 };
+  const cardStyleFronts = { width: "100%", height: "100%", minHeight: 0 };
+  const cardStyleLegal = { width: "100%", height: "100%", minHeight: 0 };
   const cardStyleSummary = {
     width: "100%",
-    height: height * 0.3 - 12,
+    height: "100%",
+    minHeight: 0,
   };
   const mapHeight = height - 100;
 
@@ -45,11 +46,8 @@ const Page = ({
             <Button>Flächen</Button>
           </div>
         </div>
-        <div className="flex gap-2">
-          <div
-            className="flex flex-col gap-2 h-full"
-            style={{ maxHeight: mapHeight }}
-          >
+        <div className="flex gap-2" style={{ maxHeight: mapHeight }}>
+          <div className="flex flex-col gap-2 h-full w-[30%]">
             <Fronts
               width={cardStyleFronts.width}
               height={cardStyleFronts.height}
@@ -67,7 +65,7 @@ const Page = ({
               style={cardStyleSummary}
             />
           </div>
-          <Map width={"90%"} height={mapHeight} />
+          <Map width={"80%"} height={mapHeight} />
         </div>
       </div>
       {showChat && (
