@@ -52,6 +52,7 @@ const NavBar = ({
   height = 73,
   style,
   inStory,
+  highlightedItem = 0,
 }) => {
   const data = extractor(dataIn);
   const items = [
@@ -99,7 +100,9 @@ const NavBar = ({
           <Button
             type="text"
             key={`navLink_${i}`}
-            className={`${i === 0 ? "text-primary" : ""} font-semibold`}
+            className={`${
+              i === highlightedItem ? "text-primary" : ""
+            } font-semibold`}
             href={link.href}
           >
             {width >= 1440 ? link.title : link.icon}
