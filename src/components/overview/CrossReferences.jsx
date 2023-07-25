@@ -39,7 +39,7 @@ const CrossReferences = ({
   const data = extractor(dataIn);
   return (
     <CustomCard style={{ ...style, width, height }} title="Querverweise">
-      <div className="flex flex-col gap-4 items-center justify-center text-sm">
+      <div className="flex flex-col gap-1 items-center justify-center text-sm">
         {data.map((row) => (
           <span>{row.value}</span>
         ))}

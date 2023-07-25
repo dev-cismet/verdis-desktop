@@ -65,7 +65,7 @@ const Sums = ({
       {data.map((categories, i) => (
         <div
           key={`sum_categories_${i}`}
-          className="flex flex-col gap-2 text-sm"
+          className="flex flex-col gap-1 text-sm"
         >
           <div className={`font-semibold ${i > 0 && "pt-4"}`}>
             {categories.title}
