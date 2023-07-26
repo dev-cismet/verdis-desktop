@@ -1,9 +1,9 @@
 import React from "react";
 import Map from "../components/commons/Map";
-import { Button } from "antd";
 import InfoTable from "../components/info/InfoTable";
 import NavBar from "../components/commons/NavBar";
 import Chat from "../components/commons/Chat";
+import InfoBar from "../components/commons/InfoBar";
 
 const Page = ({
   width = "100%",
@@ -32,9 +32,7 @@ const Page = ({
       <NavBar width={width} highlightedItem={3} />
 
       <div className="flex flex-col w-full bg-zinc-100 h-[calc(100%-46px)] p-2">
-        <div className="flex items-center justify-between w-full">
-          <h4>Info</h4>
-        </div>
+        <InfoBar title="Info" />
         <div className="flex flex-col gap-2" style={{ height: height - 100 }}>
           <div className="flex gap-2" style={{ height: (height - 100) * 0.3 }}>
             <InfoTable

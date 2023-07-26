@@ -6,6 +6,7 @@ import Chat from "../components/commons/Chat";
 import LegalNotice from "../components/streetCleaning/LegalNotice";
 import Fronts from "../components/streetCleaning/Fronts";
 import Summary from "../components/overview/Summary";
+import InfoBar from "../components/commons/InfoBar";
 
 const Page = ({
   width = "100%",
@@ -39,13 +40,10 @@ const Page = ({
       <NavBar width={width} highlightedItem={2} />
 
       <div className="flex flex-col w-full bg-zinc-100 h-[calc(100%-46px)] p-2">
-        <div className="flex items-center justify-between w-full">
-          <h4>Versiegelte Flächen</h4>
-          <div className="flex items-center gap-2">
-            <Button type="primary">Übersicht</Button>
-            <Button>Flächen</Button>
-          </div>
-        </div>
+        <InfoBar title="Straßenreinigung">
+          <Button type="primary">Übersicht</Button>
+          <Button>Flächen</Button>
+        </InfoBar>
         <div className="flex gap-2" style={{ maxHeight: mapHeight }}>
           <div className="flex flex-col gap-2 h-full w-[30%]">
             <Fronts

@@ -5,6 +5,7 @@ import SewerConnection from "../components/seepagePermits/SewerConnection";
 import FileNumber from "../components/seepagePermits/FileNumber";
 import NavBar from "../components/commons/NavBar";
 import Chat from "../components/commons/Chat";
+import InfoBar from "../components/commons/InfoBar";
 
 const Page = ({
   width = "100%",
@@ -33,13 +34,10 @@ const Page = ({
       <NavBar width={width} highlightedItem={4} />
 
       <div className="flex flex-col w-full bg-zinc-100 h-[calc(100%-46px)] p-2">
-        <div className="flex items-center justify-between w-full">
-          <h4>Versickerungsgenehmigungen</h4>
-          <div className="flex items-center gap-2">
-            <Button type="primary">Übersicht</Button>
-            <Button>Flächen</Button>
-          </div>
-        </div>
+        <InfoBar title="Versickerungsgenehmigungen">
+          <Button type="primary">Übersicht</Button>
+          <Button>Details</Button>
+        </InfoBar>
         <div className="flex gap-2" style={{ maxHeight: mapHeight }}>
           <div className="flex flex-col gap-2 h-full w-[30%]">
             <SewerConnection
