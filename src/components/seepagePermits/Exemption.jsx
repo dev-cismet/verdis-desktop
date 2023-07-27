@@ -118,7 +118,7 @@ const Exemption = ({
   const data = extractor(dataIn);
 
   return (
-    <CustomCard style={{ ...style, width, height }} title="Flächen">
+    <CustomCard style={{ ...style, width, height }} title="Befreiung/Erlaubnis">
       <Table
         dataSource={data.dataSource}
         columns={data.columns}

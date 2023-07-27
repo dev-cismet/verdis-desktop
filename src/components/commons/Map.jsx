@@ -29,7 +29,7 @@ const Map = ({
       hoverable={false}
       title={
         <span>
-          <FontAwesomeIcon icon={faBars} /> Map
+          <FontAwesomeIcon icon={faBars} /> Karte
         </span>
       }
       style={{

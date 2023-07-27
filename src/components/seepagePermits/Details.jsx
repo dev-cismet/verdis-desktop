@@ -64,7 +64,7 @@ const Details = ({
 }) => {
   const data = extractor(dataIn);
   return (
-    <CustomCard style={{ ...style, width, height }} title="Summen">
+    <CustomCard style={{ ...style, width, height }} title="Details">
       <div className="flex flex-col gap-2">
         {data.map((row, i) => (
           <>
