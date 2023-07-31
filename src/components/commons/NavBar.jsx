@@ -74,28 +74,15 @@ const NavBar = ({
       padding: "10px",
     };
   }
-  const navRef = useRef(null);
 
   const [prevSearches, setPrevSearches] = useState([]);
   const [search, setSearch] = useState("");
   const [isFocused, setIsFocused] = useState(false);
-  const [navWidth, setNavWidth] = useState(width);
-
-  useEffect(() => {
-    const setWidth = () => {
-      setNavWidth(navRef?.current?.offsetWidth);
-    };
-
-    window.addEventListener("resize", setWidth);
-
-    return () => window.removeEventListener("resize", setWidth);
-  }, []);
 
   return (
     <header
       className="flex items-center justify-between bg-white p-2"
       style={{ ...style, ...storyStyle, width, height }}
-      ref={navRef}
     >
       <div className="md:flex hidden items-center gap-3">
         <FontAwesomeIcon icon={faGripVertical} className="w-6 h-6" />
@@ -106,10 +93,11 @@ const NavBar = ({
             key={`navLink_${i}`}
             className={`${
               i === highlightedItem ? "text-primary" : ""
-            } font-semibold`}
+            } font-semibold no-underline`}
             href={link.href}
           >
-            {navWidth >= 1440 ? link.title : link.icon}
+            <div className="lg:hidden block">{link.icon}</div>
+            <div className="hidden lg:block">{link.title}</div>
           </Button>
         ))}
       </div>
@@ -122,6 +110,7 @@ const NavBar = ({
           value={search}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          className="lg:w-1/2 w-full mx-auto"
         />
         <div
           className={`bg-white border border-solid rounded-md shadow-md border-gray-300 absolute top-10 z-[99999] ${
