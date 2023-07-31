@@ -7,6 +7,7 @@ import { Card } from "antd";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useRef, useState } from "react";
 const mockExtractor = (input) => {
   return {
     homeCenter: [51.27225612927373, 7.199918031692506],
@@ -23,6 +24,24 @@ const Map = ({
   const data = extractor(dataIn);
   const padding = 5;
   const headHeight = 37;
+  const cardRef = useRef(null);
+  const [mapWidth, setMapWidth] = useState(0);
+  const [mapHeight, setMapHeight] = useState(0);
+
+  useEffect(() => {
+    setMapWidth(cardRef?.current?.offsetWidth);
+    setMapHeight(cardRef?.current?.offsetHeight);
+
+    const setSize = () => {
+      setMapWidth(cardRef?.current?.offsetWidth);
+      setMapHeight(cardRef?.current?.offsetHeight);
+    };
+
+    window.addEventListener("resize", setSize);
+
+    return () => window.removeEventListener("resize", setSize);
+  }, []);
+
   return (
     <Card
       size="small"
@@ -39,12 +58,13 @@ const Map = ({
       bodyStyle={{ padding }}
       headStyle={{ backgroundColor: "white" }}
       type="inner"
+      ref={cardRef}
     >
       <TopicMapContextProvider appKey="verdis-desktop.map">
         <TopicMapComponent
           mapStyle={{
-            width: width - 2 * padding,
-            height: height - 2 * padding - headHeight,
+            width: mapWidth - 2 * padding,
+            height: mapHeight - 2 * padding - headHeight,
           }}
           homeZoom={data.homeZoom}
           homeCenter={data.homeCenter}
