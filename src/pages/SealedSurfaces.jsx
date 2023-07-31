@@ -10,7 +10,7 @@ import InfoBar from "../components/commons/InfoBar";
 
 const Page = ({
   width = "100%",
-  height = "100vh",
+  height = "100%",
   inStory = false,
   showChat = false,
 }) => {
@@ -51,10 +51,8 @@ const Page = ({
   return (
     <div
       style={{ ...storyStyle, width, height }}
-      className="flex flex-col items-center relative h-screen max-h-screen"
+      className="flex flex-col items-center relative h-full max-h-[calc(100vh-73px)]"
     >
-      <NavBar width={width} highlightedItem={1} />
-
       <div className="flex flex-col gap-2 w-full bg-zinc-100 h-full overflow-clip p-2">
         <InfoBar title="Versiegelte Flächen">
           <Button type="primary" href="/versiegelteFlaechen">

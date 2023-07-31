@@ -29,8 +29,6 @@ const Page = ({
       style={{ ...storyStyle, width, height }}
       className="flex flex-col items-center relative"
     >
-      <NavBar width={width} highlightedItem={3} />
-
       <div className="flex flex-col w-full bg-zinc-100 h-[calc(100%-46px)] p-2">
         <InfoBar title="Info" />
         <div className="flex flex-col gap-2" style={{ height: height - 100 }}>
