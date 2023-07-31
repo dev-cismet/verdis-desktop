@@ -13,7 +13,7 @@ import {
   PullRequestOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const mockExtractor = (input) => {
   return [
@@ -74,26 +74,30 @@ const NavBar = ({
       padding: "10px",
     };
   }
+  const navRef = useRef(null);
 
   const [prevSearches, setPrevSearches] = useState([]);
   const [search, setSearch] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const [navWidth, setNavWidth] = useState(width);
+
+  useEffect(() => {
+    const setWidth = () => {
+      setNavWidth(navRef?.current?.offsetWidth);
+    };
+
+    window.addEventListener("resize", setWidth);
+
+    return () => window.removeEventListener("resize", setWidth);
+  }, []);
 
   return (
-    <Layout.Header
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: "#FFFFFF",
-        paddingInline: "0px",
-        width,
-        height,
-        ...style,
-        ...storyStyle,
-      }}
+    <header
+      className="flex items-center justify-between bg-white p-2"
+      style={{ ...style, ...storyStyle, width, height }}
+      ref={navRef}
     >
-      <div className="flex items-center gap-3">
+      <div className="md:flex hidden items-center gap-3">
         <FontAwesomeIcon icon={faGripVertical} className="w-6 h-6" />
         <img src={Logo} alt="Logo" className="h-10" />
         {data.map((link, i) => (
@@ -105,7 +109,7 @@ const NavBar = ({
             } font-semibold`}
             href={link.href}
           >
-            {width >= 1440 ? link.title : link.icon}
+            {navWidth >= 1440 ? link.title : link.icon}
           </Button>
         ))}
       </div>
@@ -157,7 +161,7 @@ const NavBar = ({
           />
         </Dropdown>
       </div>
-    </Layout.Header>
+    </header>
   );
 };
 
