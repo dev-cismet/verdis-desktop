@@ -3067,6 +3067,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remix-run/router@npm:1.7.2":
+  version: 1.7.2
+  resolution: "@remix-run/router@npm:1.7.2"
+  checksum: ea43bb662f1f5c93965989b1667fb6e8a301cb69c44341ee92c81cb15ea685b494168e5905593b5777d59058f1455b4b58083d5b895f04382e49362e420d7af4
+  languageName: node
+  linkType: hard
+
 "@restart/context@npm:^2.1.4":
   version: 2.1.4
   resolution: "@restart/context@npm:2.1.4"
@@ -10698,7 +10705,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"localforage@npm:^1.9.0":
+"localforage@npm:^1.10.0, localforage@npm:^1.9.0":
   version: 1.10.0
   resolution: "localforage@npm:1.10.0"
   dependencies:
@@ -10968,6 +10975,16 @@ __metadata:
   peerDependencies:
     react: ">= 0.14.0"
   checksum: 0c8c715229044401ea48c2fc26c2554464100074959dafacdd9e4a0e849f0a190b02f39edb373bbdd95e38b8f910074b83b63d08752b8ae6be6ddcfb40ea50a0
+  languageName: node
+  linkType: hard
+
+"match-sorter@npm:^6.3.1":
+  version: 6.3.1
+  resolution: "match-sorter@npm:6.3.1"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+    remove-accents: 0.4.2
+  checksum: a4b02b676ac4ce64a89a091539ee4a70a802684713bcf06f2b70787927f510fe8a2adc849f9288857a90906083ad303467e530e8723b4a9756df9994fc164550
   languageName: node
   linkType: hard
 
@@ -11663,6 +11680,13 @@ __metadata:
   version: 1.1.1
   resolution: "object-keys@npm:1.1.1"
   checksum: b363c5e7644b1e1b04aa507e88dcb8e3a2f52b6ffd0ea801e4c7a62d5aa559affe21c55a07fd4b1fd55fc03a33c610d73426664b20032405d7b92a1414c34d6a
+  languageName: node
+  linkType: hard
+
+"object-path@npm:0.6.0":
+  version: 0.6.0
+  resolution: "object-path@npm:0.6.0"
+  checksum: e9d7a901bcfcfe39b195cdac5bb2b8c1f030abdf86f45ed6d0385c5d0c38a8c5e4b4a30c88bf483d6b3b37b5a8d620d004dbfc6db6be8565f88e9cf0b078e945
   languageName: node
   linkType: hard
 
@@ -13709,6 +13733,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router-dom@npm:^6.14.2":
+  version: 6.14.2
+  resolution: "react-router-dom@npm:6.14.2"
+  dependencies:
+    "@remix-run/router": 1.7.2
+    react-router: 6.14.2
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: a53dbc566ecab7890b829d42d38553684f704803c1f615db1bd6aa2d71542c369a1a79e4385be31ae71a14b72ddbcd0d8b51188248c2bccd44e015050d1927df
+  languageName: node
+  linkType: hard
+
+"react-router@npm:6.14.2":
+  version: 6.14.2
+  resolution: "react-router@npm:6.14.2"
+  dependencies:
+    "@remix-run/router": 1.7.2
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 7507bf5732b3a8ddbd901c2061216eebca73e194449bff58acc1445171e22bdda36b455b8af066e467748ebfb5875b3c0a565941c46af65c6f653a6ed0dc4fe4
+  languageName: node
+  linkType: hard
+
 "react-scroll@npm:^1.8.1":
   version: 1.8.9
   resolution: "react-scroll@npm:1.8.9"
@@ -14063,6 +14111,13 @@ __metadata:
     mdast-util-to-string: ^1.0.0
     unist-util-visit: ^2.0.0
   checksum: 81fff0dcfaf6d6117ef1293bb1d26c3e25483d99c65c22434298eed93583a89ea5d7b94063d9a7f47c0647a708ce84f00ff62d274503f248feec03c344cabb20
+  languageName: node
+  linkType: hard
+
+"remove-accents@npm:0.4.2":
+  version: 0.4.2
+  resolution: "remove-accents@npm:0.4.2"
+  checksum: 84a6988555dea24115e2d1954db99509588d43fe55a1590f0b5894802776f7b488b3151c37ceb9e4f4b646f26b80b7325dcea2fae58bc3865df146e1fa606711
   languageName: node
   linkType: hard
 
@@ -14663,6 +14718,15 @@ __metadata:
     ip: ^2.0.0
     smart-buffer: ^4.2.0
   checksum: 259d9e3e8e1c9809a7f5c32238c3d4d2a36b39b83851d0f573bfde5f21c4b1288417ce1af06af1452569cd1eb0841169afd4998f0e04ba04656f6b7f0e46d748
+  languageName: node
+  linkType: hard
+
+"sort-by@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "sort-by@npm:1.2.0"
+  dependencies:
+    object-path: 0.6.0
+  checksum: 82c9812aa318eff68669fe25cc0168d172ccbff9d34d52449c345631118b5e29608e3524e9028b23dc4959c8a7601b19a40ddbe3eb05234c0a54792912c5ad2f
   languageName: node
   linkType: hard
 
@@ -15897,13 +15961,17 @@ __metadata:
     antd: ^5.5.2
     autoprefixer: ^10.4.14
     graphviz-react: ^1.2.5
+    localforage: ^1.10.0
+    match-sorter: ^6.3.1
     postcss: ^8.4.26
     prop-types: ^15.8.1
     react: ^18.2.0
     react-cismap: ^1.14.4
     react-dom: ^18.2.0
     react-redux: ^8.0.7
+    react-router-dom: ^6.14.2
     redux: ^4.2.1
+    sort-by: ^1.2.0
     storybook: ^7.0.18
     storybook-addon-designs: ^7.0.0-beta.2
     tailwindcss: ^3.3.3

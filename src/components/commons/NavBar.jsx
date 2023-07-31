@@ -13,7 +13,8 @@ import {
   PullRequestOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const mockExtractor = (input) => {
   return [
@@ -24,22 +25,22 @@ const mockExtractor = (input) => {
     },
     {
       title: "Versiegelte Flächen",
-      href: "/",
+      href: "/versiegelteFlaechen",
       icon: <GatewayOutlined className="text-2xl" />,
     },
     {
       title: "Straßenreinigung",
-      href: "/",
+      href: "/strassenreinigung",
       icon: <PullRequestOutlined className="text-2xl" />,
     },
     {
       title: "Info",
-      href: "/",
+      href: "/info",
       icon: <GlobalOutlined className="text-2xl" />,
     },
     {
       title: "Versickerungsgenehmigungen",
-      href: "/",
+      href: "/versickerungsgenehmigungen",
       icon: <LinkOutlined className="text-2xl" />,
     },
   ];
@@ -55,6 +56,7 @@ const NavBar = ({
   highlightedItem = 0,
 }) => {
   const data = extractor(dataIn);
+  const location = useLocation();
   const items = [
     {
       label: <a href="/settings">Einstellungen</a>,
@@ -92,12 +94,16 @@ const NavBar = ({
             type="text"
             key={`navLink_${i}`}
             className={`${
-              i === highlightedItem ? "text-primary" : ""
+              (location.pathname.includes(link.href) && i > 0) ||
+              (link.href === "/" && location.pathname === "/")
+                ? "text-primary"
+                : ""
             } font-semibold no-underline`}
-            href={link.href}
           >
-            <div className="lg:hidden block">{link.icon}</div>
-            <div className="hidden lg:block">{link.title}</div>
+            <Link to={link.href}>
+              <div className="lg:hidden block">{link.icon}</div>
+              <div className="hidden lg:block">{link.title}</div>
+            </Link>
           </Button>
         ))}
       </div>

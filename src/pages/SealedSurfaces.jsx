@@ -10,7 +10,7 @@ import InfoBar from "../components/commons/InfoBar";
 
 const Page = ({
   width = "100%",
-  height = "100%",
+  height = "100vh",
   inStory = false,
   showChat = false,
 }) => {
@@ -57,8 +57,10 @@ const Page = ({
 
       <div className="flex flex-col gap-2 w-full bg-zinc-100 h-full overflow-clip p-2">
         <InfoBar title="Versiegelte Flächen">
-          <Button type="primary">Übersicht</Button>
-          <Button>Flächen</Button>
+          <Button type="primary" href="/versiegelteFlaechen">
+            Übersicht
+          </Button>
+          <Button href="/versiegelteFlaechen/details">Flächen</Button>
         </InfoBar>
         <div className="flex gap-2 h-full max-h-[calc(100%-40px)]">
           <div className="flex flex-col gap-2 h-full w-[30%]">
