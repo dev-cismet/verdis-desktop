@@ -4,7 +4,7 @@ import "./index.css";
 import "antd/dist/reset.css";
 import { Provider } from "react-redux";
 import store from "./store";
-import { ConfigProvider } from "antd";
+import { Button, ConfigProvider, Result } from "antd";
 import locale from "antd/locale/de_DE";
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import OverviewPage from "./pages/Overview";
@@ -28,6 +28,18 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <NavBarWrapper />,
+    errorElement: (
+      <Result
+        status="404"
+        title="404"
+        subTitle="Die Seite wurde nicht gefunden"
+        extra={
+          <Button type="primary" href="/">
+            Zurück
+          </Button>
+        }
+      />
+    ),
     children: [
       {
         path: "/",
