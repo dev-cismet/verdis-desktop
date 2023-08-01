@@ -64,6 +64,7 @@ const Fronts = ({
         dataSource={data.dataSource}
         columns={data.columns}
         pagination={{ position: ["none"] }}
+        size="small"
       />
     </CustomCard>
   );
