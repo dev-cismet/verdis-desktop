@@ -11,6 +11,7 @@ import OverviewPage from "./pages/Overview";
 import SealedSurfaceOverviewPage from "./pages/SealedSurfaces";
 import SealedSurfaceDetailsPage from "./pages/SealedSurfacesDetails";
 import StreetCleaningPage from "./pages/StreetCleaning";
+import StreetCleaningDetailsPage from "./pages/StreetCleaningDetails";
 import InfoPage from "./pages/Info";
 import SeepagePermitsPage from "./pages/SeepagePermits";
 import NavBar from "./components/commons/NavBar";
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "/strassenreinigung",
         element: <StreetCleaningPage />,
+      },
+      {
+        path: "/strassenreinigung/details",
+        element: <StreetCleaningDetailsPage />,
       },
       {
         path: "/info",

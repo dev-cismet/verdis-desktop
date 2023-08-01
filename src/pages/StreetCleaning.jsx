@@ -1,12 +1,12 @@
 import React from "react";
 import Map from "../components/commons/Map";
 import { Button } from "antd";
-import NavBar from "../components/commons/NavBar";
 import Chat from "../components/commons/Chat";
 import LegalNotice from "../components/streetCleaning/LegalNotice";
 import Fronts from "../components/streetCleaning/Fronts";
 import Summary from "../components/overview/Summary";
 import InfoBar from "../components/commons/InfoBar";
+import { useNavigate } from "react-router-dom";
 
 const Page = ({
   width = "100%",
@@ -22,6 +22,7 @@ const Page = ({
       padding: "10px",
     };
   }
+  const navigate = useNavigate();
 
   const cardStyleFronts = { width: "100%", height: "100%", minHeight: 0 };
   const cardStyleLegal = { width: "100%", height: "100%", minHeight: 0 };
@@ -39,8 +40,12 @@ const Page = ({
     >
       <div className="flex flex-col gap-2 w-full bg-zinc-100 h-full overflow-clip p-2">
         <InfoBar title="Straßenreinigung">
-          <Button type="primary">Übersicht</Button>
-          <Button>Flächen</Button>
+          <Button type="primary" onClick={() => navigate("/strassenreinigung")}>
+            Übersicht
+          </Button>
+          <Button onClick={() => navigate("/strassenreinigung/details")}>
+            Flächen
+          </Button>
         </InfoBar>
         <div
           className="flex gap-2 h-full max-h-[calc(100%-40px)]"
