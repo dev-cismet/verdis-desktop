@@ -14,6 +14,7 @@ import StreetCleaningPage from "./pages/StreetCleaning";
 import StreetCleaningDetailsPage from "./pages/StreetCleaningDetails";
 import InfoPage from "./pages/Info";
 import SeepagePermitsPage from "./pages/SeepagePermits";
+import SeepagePermitsDetailsPage from "./pages/SeepagePermitsDetails";
 import NavBar from "./components/commons/NavBar";
 
 const NavBarWrapper = () => {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "/versickerungsgenehmigungen",
         element: <SeepagePermitsPage />,
+      },
+      {
+        path: "/versickerungsgenehmigungen/details",
+        element: <SeepagePermitsDetailsPage />,
       },
     ],
   },
