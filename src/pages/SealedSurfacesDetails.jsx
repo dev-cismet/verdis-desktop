@@ -31,8 +31,6 @@ const Page = ({
       style={{ ...storyStyle, width, height }}
       className="flex flex-col items-center relative"
     >
-      <NavBar width={width} highlightedItem={1} />
-
       <div className="flex flex-col w-full bg-zinc-100 h-[calc(100%-46px)] p-2">
         <InfoBar title="Versiegelte Flächen">
           <Button href="/versiegelteFlaechen">Übersicht</Button>

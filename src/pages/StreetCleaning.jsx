@@ -35,14 +35,17 @@ const Page = ({
   return (
     <div
       style={{ ...storyStyle, width, height }}
-      className="flex flex-col items-center relative"
+      className="flex flex-col items-center relative h-full max-h-[calc(100vh-73px)]"
     >
-      <div className="flex flex-col w-full bg-zinc-100 h-[calc(100%-46px)] p-2">
+      <div className="flex flex-col gap-2 w-full bg-zinc-100 h-full overflow-clip p-2">
         <InfoBar title="Straßenreinigung">
           <Button type="primary">Übersicht</Button>
           <Button>Flächen</Button>
         </InfoBar>
-        <div className="flex gap-2" style={{ maxHeight: mapHeight }}>
+        <div
+          className="flex gap-2 h-full max-h-[calc(100%-40px)]"
+          style={{ maxHeight: mapHeight }}
+        >
           <div className="flex flex-col gap-2 h-full w-[30%]">
             <Fronts
               width={cardStyleFronts.width}
@@ -61,7 +64,7 @@ const Page = ({
               style={cardStyleSummary}
             />
           </div>
-          <Map width={"80%"} height={mapHeight} />
+          <Map width={"80%"} height={"100%"} />
         </div>
       </div>
       {showChat && (
