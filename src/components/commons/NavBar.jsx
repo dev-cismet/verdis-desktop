@@ -49,7 +49,7 @@ const mockExtractor = (input) => {
 const NavBar = ({
   dataIn,
   extractor = mockExtractor,
-  width = 1024,
+  width = "100%",
   height = 73,
   style,
   inStory,
@@ -90,21 +90,20 @@ const NavBar = ({
         <FontAwesomeIcon icon={faGripVertical} className="w-6 h-6" />
         <img src={Logo} alt="Logo" className="h-10" />
         {data.map((link, i) => (
-          <Button
-            type="text"
-            key={`navLink_${i}`}
-            className={`${
-              (location.pathname.includes(link.href) && i > 0) ||
-              (link.href === "/" && location.pathname === "/")
-                ? "text-primary"
-                : ""
-            } font-semibold no-underline`}
-          >
-            <Link to={link.href}>
+          <Link to={link.href} key={`navLink_${i}`}>
+            <Button
+              type="text"
+              className={`${
+                (location.pathname.includes(link.href) && i > 0) ||
+                (link.href === "/" && location.pathname === "/")
+                  ? "text-primary"
+                  : ""
+              } font-semibold no-underline`}
+            >
               <div className="lg:hidden block">{link.icon}</div>
               <div className="hidden lg:block">{link.title}</div>
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         ))}
       </div>
       <div className="flex relative items-center gap-3 w-full px-16">
