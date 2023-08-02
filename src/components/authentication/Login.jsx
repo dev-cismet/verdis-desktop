@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input, Space } from "antd";
+import { Button, Checkbox, Input } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import Logo from "/logo.svg";
