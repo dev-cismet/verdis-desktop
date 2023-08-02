@@ -15,6 +15,7 @@ import StreetCleaningDetailsPage from "./pages/StreetCleaningDetails";
 import InfoPage from "./pages/Info";
 import SeepagePermitsPage from "./pages/SeepagePermits";
 import SeepagePermitsDetailsPage from "./pages/SeepagePermitsDetails";
+import LoginPage from "./pages/Login";
 import NavBar from "./components/commons/NavBar";
 
 const NavBarWrapper = () => {
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
         element: <SeepagePermitsDetailsPage />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
 ]);
 

@@ -22,25 +22,25 @@ const Login = ({
 
       <div className="flex flex-col gap-6 w-full">
         <h3 className="text-primary border-b-2 border-0 w-fit border-solid">
-          Login
+          Anmeldung
         </h3>
         <Input
-          placeholder="username"
+          placeholder="Nutzername"
           prefix={<FontAwesomeIcon icon={faUser} color="#E67843" />}
         />
         <Input.Password
-          placeholder="password"
+          placeholder="Passwort"
           prefix={<FontAwesomeIcon icon={faLock} color="#E67843" />}
         />
         <div className="flex justify-between items-center">
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox>Angemeldet bleiben</Checkbox>
           <a href="/forgot-password" className="text-primary no-underline">
-            Forgot your password?
+            Passwort vergessen?
           </a>
         </div>
       </div>
       <Button type="primary" size="large">
-        Sign In
+        Anmelden
       </Button>
     </div>
   );
