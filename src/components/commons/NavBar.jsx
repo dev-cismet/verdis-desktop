@@ -15,6 +15,8 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { storeJWT, storeLogin } from "../../store/slices/auth";
 
 const mockExtractor = (input) => {
   return [
@@ -55,15 +57,21 @@ const NavBar = ({
   inStory,
   highlightedItem = 0,
 }) => {
+  const dispatch = useDispatch();
   const data = extractor(dataIn);
   const location = useLocation();
+
+  const logout = () => {
+    dispatch(storeJWT(undefined));
+    dispatch(storeLogin(undefined));
+  };
   const items = [
     {
       label: <a href="/settings">Einstellungen</a>,
       key: "0",
     },
     {
-      label: <a href="/">Ausloggen</a>,
+      label: <Button onClick={() => logout()}>Ausloggen</Button>,
       key: "1",
     },
   ];
