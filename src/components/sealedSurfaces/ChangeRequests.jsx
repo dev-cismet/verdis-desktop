@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import CustomCard from "../ui/Card";
 const mockExtractor = (input) => {
   return {
@@ -20,22 +20,10 @@ const ChangeRequests = ({
 }) => {
   const data = extractor(dataIn);
 
-  const cardRef = useRef();
-  const [dimensions, setDimensions] = useState({});
   const title = "Änderungsanfragen";
-  useEffect(() => {
-    if (cardRef.current) {
-      setDimensions(cardRef.current.getBoundingClientRect());
-    }
-  }, []);
 
   return (
-    <CustomCard
-      style={{ ...style, width, height }}
-      ref={cardRef}
-      title={title}
-      fullHeight
-    >
+    <CustomCard style={{ ...style, width, height }} title={title} fullHeight>
       <p>
         Status: <b>{data.status}</b>
       </p>
