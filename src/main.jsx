@@ -2,11 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "antd/dist/reset.css";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import store from "./store";
 import { Button, ConfigProvider, Result } from "antd";
 import locale from "antd/locale/de_DE";
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import OverviewPage from "./pages/Overview";
 import SealedSurfaceOverviewPage from "./pages/SealedSurfaces";
 import SealedSurfaceDetailsPage from "./pages/SealedSurfacesDetails";
@@ -17,8 +22,15 @@ import SeepagePermitsPage from "./pages/SeepagePermits";
 import SeepagePermitsDetailsPage from "./pages/SeepagePermitsDetails";
 import LoginPage from "./pages/Login";
 import NavBar from "./components/commons/NavBar";
+import { getJWT } from "./store/slices/auth";
 
 const NavBarWrapper = () => {
+  const jwt = useSelector(getJWT);
+
+  if (!jwt) {
+    return <Navigate to="/login" />;
+  }
+
   return (
     <div className="h-screen w-full">
       <NavBar />
