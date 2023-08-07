@@ -24,9 +24,11 @@ import LoginPage from "./pages/Login";
 import NavBar from "./components/commons/NavBar";
 import { getJWT } from "./store/slices/auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { getReadOnly } from "./store/slices/settings";
 
 const NavBarWrapper = () => {
   const jwt = useSelector(getJWT);
+  const readOnly = useSelector(getReadOnly);
 
   if (!jwt) {
     return <Navigate to="/login" />;
@@ -35,7 +37,9 @@ const NavBarWrapper = () => {
   return (
     <div className="h-screen w-full">
       <NavBar />
-      <Outlet />
+      <ConfigProvider componentDisabled={readOnly}>
+        <Outlet />
+      </ConfigProvider>
     </div>
   );
 };

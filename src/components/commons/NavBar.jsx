@@ -1,4 +1,4 @@
-import { Avatar, Button, Dropdown, Input, Layout } from "antd";
+import { Avatar, Button, Dropdown, Input, Switch } from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faGripVertical, faX } from "@fortawesome/free-solid-svg-icons";
@@ -15,8 +15,10 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { storeJWT, storeLogin } from "../../store/slices/auth";
+import { storeKassenzeichen } from "../../store/slices/search";
+import { getReadOnly, setReadOnly } from "../../store/slices/settings";
 
 const mockExtractor = (input) => {
   return [
@@ -55,24 +57,34 @@ const NavBar = ({
   height = 73,
   style,
   inStory,
-  highlightedItem = 0,
 }) => {
   const dispatch = useDispatch();
   const data = extractor(dataIn);
   const location = useLocation();
+  const readOnly = useSelector(getReadOnly);
 
   const logout = () => {
     dispatch(storeJWT(undefined));
     dispatch(storeLogin(undefined));
   };
+
   const items = [
     {
       label: <a href="/settings">Einstellungen</a>,
       key: "0",
     },
     {
-      label: <Button onClick={() => logout()}>Ausloggen</Button>,
+      label: (
+        <Switch
+          onClick={() => dispatch(setReadOnly(!readOnly))}
+          checked={!readOnly}
+        />
+      ),
       key: "1",
+    },
+    {
+      label: <Button onClick={() => logout()}>Ausloggen</Button>,
+      key: "2",
     },
   ];
 
@@ -88,6 +100,11 @@ const NavBar = ({
   const [prevSearches, setPrevSearches] = useState([]);
   const [search, setSearch] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+
+  const onSearch = (value) => {
+    if (value) setPrevSearches([...prevSearches, value]);
+    dispatch(storeKassenzeichen(value));
+  };
 
   return (
     <header
@@ -114,11 +131,11 @@ const NavBar = ({
           </Link>
         ))}
       </div>
-      <div className="flex relative items-center gap-3 w-full px-16">
+      <div className="flex relative items-center gap-3 w-full">
         <Input.Search
           placeholder="Suche..."
           allowClear
-          onSearch={() => setPrevSearches([...prevSearches, search])}
+          onSearch={(value) => onSearch(value)}
           onChange={(e) => setSearch(e.target.value)}
           value={search}
           onFocus={() => setIsFocused(true)}
@@ -126,18 +143,18 @@ const NavBar = ({
           className="lg:w-1/2 w-full mx-auto"
         />
         <div
-          className={`bg-white border border-solid rounded-md shadow-md border-gray-300 absolute top-10 z-[99999] ${
+          className={`bg-white border border-solid rounded-md shadow-md border-gray-300 absolute left-1/4 top-10 z-[99999] ${
             isFocused && prevSearches.length > 0 ? "flex" : "hidden"
-          } flex-col w-[calc(100%-114px)]`}
+          } flex-col gap-1 lg:w-1/2 w-full`}
         >
           {prevSearches.map((prevSearch, i) => (
             <div
-              className="hover:bg-zinc-100 cursor-pointer"
+              className="hover:bg-zinc-100 cursor-pointer p-1"
               key={`prevSearches_${i}`}
               onClick={() => setSearch(prevSearch)}
             >
               <div className="flex gap-2 items-center group px-2 z-50">
-                <ClockCircleOutlined className="text-xl" />
+                <ClockCircleOutlined className="text-lg" />
                 <span className="w-full">{prevSearch}</span>
                 <FontAwesomeIcon
                   className="group-hover:visible invisible hover:bg-zinc-200 p-2"
