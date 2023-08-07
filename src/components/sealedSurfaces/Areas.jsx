@@ -1,66 +1,59 @@
 import { Table } from "antd";
 import CustomCard from "../ui/Card";
+import { DOMAIN, REST_SERVICE } from "../../constants/verdis";
+import { useSelector } from "react-redux";
+import { getJWT } from "../../store/slices/auth";
+import { getKassenzeichen } from "../../store/slices/search";
+import { useQuery } from "@tanstack/react-query";
+import request, { gql } from "graphql-request";
+
+const query = gql`
+  query Table($kassenzeichen: Int) {
+    kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {
+      flaechenArray(
+        order_by: {
+          flaecheObject: {
+            flaecheninfoObject: { flaechenbeschreibung: { beschreibung: asc } }
+          }
+        }
+      ) {
+        flaecheObject {
+          flaechenbezeichnung
+          flaecheninfoObject {
+            groesse_aus_grafik
+            flaechenbeschreibung {
+              beschreibung
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+const endpoint = REST_SERVICE + `/graphql/` + DOMAIN + "/execute";
 
 const mockExtractor = (input) => {
-  return {
-    dataSource: [
-      {
-        key: "1",
-        name: "A",
-        type: "sealed surface",
-        area: 125,
-      },
-      {
-        key: "2",
-        name: "B",
-        type: "sealed surface",
-        area: 1254,
-      },
-      {
-        key: "3",
-        name: "3",
-        type: "sealed surface",
-        area: 12,
-      },
-      {
-        key: "4",
-        name: "C",
-        type: "roof area",
-        area: 129,
-      },
-      {
-        key: "5",
-        name: "AAABB",
-        type: "sealed surface",
-        area: 125,
-      },
-      {
-        key: "6",
-        name: "D",
-        type: "roof area",
-        area: 9,
-      },
-    ],
-    columns: [
-      {
-        title: "Bez.",
-        dataIndex: "name",
-        key: "name",
-      },
-      {
-        title: "Typ",
-        dataIndex: "type",
-        key: "type",
-      },
-      {
-        title: "Fläche",
-        dataIndex: "area",
-        key: "area",
-        render: (area) => <div>{area} m²</div>,
-      },
-    ],
-  };
+  return [];
 };
+
+const columns = [
+  {
+    title: "Bez.",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "Typ",
+    dataIndex: "type",
+    key: "type",
+  },
+  {
+    title: "Größe",
+    dataIndex: "size",
+    key: "size",
+    render: (area) => <div>{area} m²</div>,
+  },
+];
 
 const Areas = ({
   dataIn,
@@ -69,14 +62,37 @@ const Areas = ({
   height = 200,
   style,
 }) => {
-  const data = extractor(dataIn);
+  const mockData = extractor(dataIn);
+  const jwt = useSelector(getJWT);
+  const kassenzeichen = useSelector(getKassenzeichen);
+
+  const { data } = useQuery({
+    queryKey: ["detailsTable", kassenzeichen],
+    queryFn: async () =>
+      request(
+        endpoint,
+        query,
+        { kassenzeichen: kassenzeichen },
+        {
+          Authorization: `Bearer ${jwt}`,
+        }
+      ),
+    enabled: !!kassenzeichen,
+  });
+
+  const dataSource = data?.kassenzeichen[0]?.flaechenArray?.map((row) => ({
+    name: row?.flaecheObject?.flaechenbezeichnung,
+    size: row?.flaecheObject?.flaecheninfoObject?.groesse_aus_grafik,
+    type: row?.flaecheObject?.flaecheninfoObject?.flaechenbeschreibung
+      ?.beschreibung,
+  }));
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Flächen">
       <Table
-        dataSource={data.dataSource}
-        columns={data.columns}
-        pagination={{ position: ["none"] }}
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
         size="small"
       />
     </CustomCard>
