@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const useDevSecrets = () => {
   const [user, setUser] = useState(null);
-  const [pw, setPw] = useState(null);
+  const [password, setPassword] = useState(null);
   const productionMode = process.env.NODE_ENV === "production";
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const useDevSecrets = () => {
             setUser(cheats.cheatingUser);
           }
           if (cheats.cheatingPassword) {
-            setPw(cheats.cheatingPassword);
+            setPassword(cheats.cheatingPassword);
           }
         }
       } catch (e) {
@@ -25,7 +25,7 @@ const useDevSecrets = () => {
     })();
   }, [productionMode]);
 
-  return { user, pw };
+  return { user, password };
 };
 
 export default useDevSecrets;
