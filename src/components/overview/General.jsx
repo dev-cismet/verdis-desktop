@@ -7,6 +7,7 @@ import { request, gql } from "graphql-request";
 import { useQuery } from "@tanstack/react-query";
 import { DOMAIN, REST_SERVICE } from "../../constants/verdis";
 import { getKassenzeichen } from "../../store/slices/search";
+import TextArea from "antd/es/input/TextArea";
 
 const query = gql`
   query Allgemein($kassenzeichen: Int) {
@@ -104,8 +105,10 @@ const General = ({
         />
         <GeneralRow
           title="Bemerkung"
-          placeholder="eine Reaktion auf die Anforderung von Nachweisen"
           width={width}
+          customInput={
+            <TextArea className={`${width > 365 ? "w-full" : "w-1/2"}`} />
+          }
         />
         <GeneralRow
           title="Veranlagung gesperrt"
@@ -118,9 +121,12 @@ const General = ({
             <Select
               placeholder="In Bearbeitung"
               options={[
-                { value: "bearbeitung", label: "In Bearbeitung" },
+                { value: "in Bearbeitung", label: "In Bearbeitung" },
                 { value: "erledigt", label: "Erledigt" },
-                { value: "prüfung", label: "Wird geprüft" },
+                { value: "geschlossen", label: "Geschlossen" },
+                { value: "ausstehend", label: "Ausstehend" },
+                { value: "archiviert", label: "Archiviert" },
+                { value: "_neue Nachricht", label: "Neue Nachricht" },
               ]}
               showArrow={false}
               value={data?.aenderungsanfrage[0]?.aenderungsanfrage_status?.name}
