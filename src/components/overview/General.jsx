@@ -1,24 +1,31 @@
 import { Checkbox, DatePicker, Input, Select } from "antd";
 import CustomCard from "../ui/Card";
-import { fetchGraphQL } from "../../tools/graphql";
 import { useSelector } from "react-redux";
 import { getJWT } from "../../store/slices/auth";
-import { useState } from "react";
-import { useEffect } from "react";
 import dayjs from "dayjs";
+import { request, gql } from "graphql-request";
+import { useQuery } from "@tanstack/react-query";
+import { DOMAIN, REST_SERVICE } from "../../constants/verdis";
+import { getKassenzeichen } from "../../store/slices/search";
 
-const query = `query Allgemein($kassenzeichen: Int) {
-  kassenzeichen(where: {kassenzeichennummer8: {_eq: $kassenzeichen}}) {
-    datum_erfassung
-    bemerkung
-    sperre
-  }
-  aenderungsanfrage(where: {kassenzeichen_nummer: {_eq: $kassenzeichen}}) {
-    aenderungsanfrage_status {
-      name
+const query = gql`
+  query Allgemein($kassenzeichen: Int) {
+    kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {
+      datum_erfassung
+      bemerkung
+      sperre
+    }
+    aenderungsanfrage(
+      where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
+    ) {
+      aenderungsanfrage_status {
+        name
+      }
     }
   }
-}`;
+`;
+
+const endpoint = REST_SERVICE + `/graphql/` + DOMAIN + "/execute";
 
 const GeneralRow = ({ title, placeholder, width, customInput, value }) => {
   return (
@@ -50,21 +57,29 @@ const General = ({
 }) => {
   // const data = extractor(dataIn);
   const jwt = useSelector(getJWT);
-  const kassenzeichen = 60432515;
+  const kassenzeichen = useSelector(getKassenzeichen);
   const dateFormat = "DD.MM.YYYY";
-  const [data, setData] = useState();
-  const getData = async () => {
-    const result = await fetchGraphQL(
-      query,
-      { kassenzeichen: kassenzeichen },
-      jwt
-    );
-    setData(result.data);
-  };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  const { data } = useQuery({
+    queryKey: ["data", kassenzeichen],
+    queryFn: async () =>
+      request(
+        endpoint,
+        query,
+        { kassenzeichen: kassenzeichen },
+        {
+          Authorization: `Bearer ${jwt}`,
+        }
+      ),
+    enabled: !!kassenzeichen,
+  });
+
+  const date = data?.kassenzeichen[0]?.datum_erfassung
+    ? dayjs(
+        dayjs(data?.kassenzeichen[0]?.datum_erfassung).format(dateFormat),
+        dateFormat
+      )
+    : null;
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Allgemein">
@@ -82,12 +97,7 @@ const General = ({
               className={`${width > 365 ? "w-full" : "w-1/2"}`}
               placeholder="02.03.2023"
               format={dateFormat}
-              value={dayjs(
-                dayjs(data?.kassenzeichen[0]?.datum_erfassung).format(
-                  dateFormat
-                ),
-                dateFormat
-              )}
+              value={date}
             />
           }
           width={width}
