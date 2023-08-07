@@ -1,93 +1,45 @@
 import { DatePicker, Input, Select } from "antd";
 import CustomCard from "../ui/Card";
+import request, { gql } from "graphql-request";
+import { DOMAIN, REST_SERVICE } from "../../constants/verdis";
+import { useSelector } from "react-redux";
+import { getJWT } from "../../store/slices/auth";
+import { getFlaechenId } from "../../store/slices/search";
+import { useQuery } from "@tanstack/react-query";
 
-const DetailsRow = ({ title, placeholder, width, customInput }) => {
+const query = gql`
+  query FlaechenDetails($id: Int!) {
+    flaeche_by_pk(id: $id) {
+      flaecheninfoObject {
+        groesse_aus_grafik
+        groesse_korrektur
+        flaechenart
+        anschlussgrad
+        beschreibung
+      }
+      flaechenbezeichnung
+      anteil
+      bemerkung
+      datum_erfassung
+      datum_veranlagung
+    }
+  }
+`;
+const endpoint = REST_SERVICE + `/graphql/` + DOMAIN + "/execute";
+
+const DetailsRow = ({ title, value, width, customInput }) => {
   return (
     <div className="flex justify-between items-center gap-2">
       <div className="text-sm w-1/2">{title}:</div>
       <div className={`${width > 365 ? "w-full" : "w-1/2"}`}>
-        {customInput ? customInput : <Input placeholder={placeholder} />}
+        {customInput ? customInput : <Input value={value} />}
       </div>
     </div>
   );
 };
 
 const mockExtractor = (input) => {
-  return [
-    {
-      title: "Flächenbezeichnung",
-      placeholder: "schön",
-    },
-    {
-      title: "Größe (Grafik)",
-      placeholder: "25",
-    },
-    {
-      title: "Größe (Korrektur)",
-      placeholder: "20",
-    },
-    {
-      title: "Flächenart",
-      customInput: (
-        <Select
-          placeholder="Dachfläche"
-          options={[
-            { value: "df", label: "Dachfläche" },
-            { value: "rf", label: "Rasenfläche" },
-          ]}
-          className="w-full"
-        />
-      ),
-    },
-    {
-      title: "Anschlussgrad",
-      customInput: (
-        <Select
-          placeholder="angeschlossen"
-          options={[
-            { value: "a", label: "angeschlossen" },
-            { value: "na", label: "nicht angeschlossen" },
-          ]}
-          className="w-full"
-        />
-      ),
-    },
-    {
-      title: "Beschreibung",
-      customInput: (
-        <Select
-          placeholder="schön"
-          options={[
-            { value: "schön", label: "schön" },
-            { value: "nicht_schön", label: "nicht schön" },
-          ]}
-          className="w-full"
-        />
-      ),
-    },
-    {
-      title: "Anteil",
-      placeholder: "3/4",
-    },
-    {
-      title: "Änderungsdatum",
-      placeholder: "23.05.2022",
-      customInput: <DatePicker className="w-full" placeholder="02.03.2023" />,
-    },
-    {
-      title: "Veranlagungsdatum",
-      placeholder: "23.05.2022",
-      customInput: <DatePicker className="w-full" placeholder="02.03.2023" />,
-    },
-    {
-      title: "Bemerkung",
-      placeholder: "schön",
-    },
-    {
-      title: "Querverweise",
-      placeholder: "ABC123",
-    },
-  ];
+  return [];
 };
 
 const Details = ({
@@ -97,19 +49,61 @@ const Details = ({
   height = 200,
   style,
 }) => {
-  const data = extractor(dataIn);
+  const mockData = extractor(dataIn);
+  const jwt = useSelector(getJWT);
+  const flaechenId = useSelector(getFlaechenId);
+
+  const { data } = useQuery({
+    queryKey: ["flaechenDetails", flaechenId],
+    queryFn: async () =>
+      request(
+        endpoint,
+        query,
+        { id: flaechenId },
+        {
+          Authorization: `Bearer ${jwt}`,
+        }
+      ),
+    enabled: !!flaechenId,
+  });
+
   return (
     <CustomCard style={{ ...style, width, height }} title="Allgemein">
       <div className="flex flex-col gap-2">
-        {data.map((row, i) => (
-          <DetailsRow
-            title={row.title}
-            placeholder={row.placeholder}
-            customInput={row.customInput}
-            width={width}
-            key={`tableRow_${i}`}
-          />
-        ))}
+        <DetailsRow
+          title="Bezeichnung"
+          value={data?.flaeche_by_pk?.flaechenbezeichnung}
+        />
+        <DetailsRow
+          title="Größe (Grafik)"
+          value={data?.flaeche_by_pk?.flaecheninfoObject?.groesse_aus_grafik}
+        />
+        <DetailsRow
+          title="Größe (Korrektur)"
+          value={data?.flaeche_by_pk?.flaecheninfoObject?.groesse_korrektur}
+        />
+        <DetailsRow
+          title="Flächenart"
+          value={data?.flaeche_by_pk?.flaecheninfoObject?.flaechenart}
+        />
+        <DetailsRow
+          title="Anschlussgrad"
+          value={data?.flaeche_by_pk?.flaecheninfoObject?.anschlussgrad}
+        />
+        <DetailsRow
+          title="Beschreibung"
+          value={data?.flaeche_by_pk?.flaecheninfoObject?.beschreibung}
+        />
+        <DetailsRow title="Anteil" value={data?.flaeche_by_pk?.anteil} />
+        <DetailsRow
+          title="Änderungsdatum"
+          value={data?.flaeche_by_pk?.datum_erfassung}
+        />
+        <DetailsRow
+          title="Veranlagungsdatum"
+          value={data?.flaeche_by_pk?.datum_veranlagung}
+        />
+        <DetailsRow title="Bemerkung" value={data?.flaeche_by_pk?.bemerkung} />
       </div>
     </CustomCard>
   );
