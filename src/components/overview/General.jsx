@@ -24,7 +24,7 @@ const GeneralRow = ({ title, placeholder, width, customInput, value }) => {
 
 const mockExtractor = (input) => {
   const dateFormat = "DD.MM.YYYY";
-  const bemerkungsObject = input?.kassenzeichen[0]?.bemerkung;
+  const bemerkungsObject = input?.bemerkung;
   let formattedBemerkungen;
   if (bemerkungsObject) {
     const bemerkungen = JSON.parse(bemerkungsObject).bemerkungen.map(
@@ -33,17 +33,13 @@ const mockExtractor = (input) => {
     formattedBemerkungen = bemerkungen.join("\n");
   }
   return {
-    date: input?.kassenzeichen[0]?.datum_erfassung
-      ? dayjs(
-          dayjs(input?.kassenzeichen[0]?.datum_erfassung).format(dateFormat),
-          dateFormat
-        )
+    date: input?.datum_erfassung
+      ? dayjs(dayjs(input?.datum_erfassung).format(dateFormat), dateFormat)
       : null,
     bemerkung: formattedBemerkungen,
-    sperre: input?.kassenzeichen[0]?.sperre,
-    aenderungsAnfrage:
-      input?.aenderungsanfrage[0]?.aenderungsanfrage_status?.name,
-    kassenzeichenNummer: input?.kassenzeichen[0]?.kassenzeichennummer8,
+    sperre: input?.sperre,
+    aenderungsAnfrage: input?.aenderungsanfrage_status?.name,
+    kassenzeichenNummer: input?.kassenzeichennummer8,
   };
 };
 

@@ -124,7 +124,7 @@ const NavBar = ({
       ),
     enabled: !!searchTerm,
   });
-  dispatch(storeKassenzeichen(data));
+  dispatch(storeKassenzeichen(data?.kassenzeichen[0]));
 
   return (
     <header
