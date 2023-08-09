@@ -1,32 +1,9 @@
 import { Checkbox, DatePicker, Input, Select } from "antd";
 import CustomCard from "../ui/Card";
 import { useSelector } from "react-redux";
-import { getJWT } from "../../store/slices/auth";
 import dayjs from "dayjs";
-import { request, gql } from "graphql-request";
-import { useQuery } from "@tanstack/react-query";
-import { DOMAIN, REST_SERVICE } from "../../constants/verdis";
 import { getKassenzeichen } from "../../store/slices/search";
 import TextArea from "antd/es/input/TextArea";
-
-const query = gql`
-  query Allgemein($kassenzeichen: Int) {
-    kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {
-      datum_erfassung
-      bemerkung
-      sperre
-    }
-    aenderungsanfrage(
-      where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
-    ) {
-      aenderungsanfrage_status {
-        name
-      }
-    }
-  }
-`;
-
-const endpoint = REST_SERVICE + `/graphql/` + DOMAIN + "/execute";
 
 const GeneralRow = ({ title, placeholder, width, customInput, value }) => {
   return (
@@ -46,7 +23,28 @@ const GeneralRow = ({ title, placeholder, width, customInput, value }) => {
 };
 
 const mockExtractor = (input) => {
-  return [];
+  const dateFormat = "DD.MM.YYYY";
+  const bemerkungsObject = input?.kassenzeichen[0]?.bemerkung;
+  let formattedBemerkungen;
+  if (bemerkungsObject) {
+    const bemerkungen = JSON.parse(bemerkungsObject).bemerkungen.map(
+      (bemerkung) => bemerkung.bemerkung
+    );
+    formattedBemerkungen = bemerkungen.join("\n");
+  }
+  return {
+    date: input?.kassenzeichen[0]?.datum_erfassung
+      ? dayjs(
+          dayjs(input?.kassenzeichen[0]?.datum_erfassung).format(dateFormat),
+          dateFormat
+        )
+      : null,
+    bemerkung: formattedBemerkungen,
+    sperre: input?.kassenzeichen[0]?.sperre,
+    aenderungsAnfrage:
+      input?.aenderungsanfrage[0]?.aenderungsanfrage_status?.name,
+    kassenzeichenNummer: input?.kassenzeichen[0]?.kassenzeichennummer8,
+  };
 };
 
 const General = ({
@@ -56,31 +54,9 @@ const General = ({
   height = 200,
   style,
 }) => {
-  // const data = extractor(dataIn);
-  const jwt = useSelector(getJWT);
   const kassenzeichen = useSelector(getKassenzeichen);
+  const data = extractor(kassenzeichen);
   const dateFormat = "DD.MM.YYYY";
-
-  const { data } = useQuery({
-    queryKey: ["data", kassenzeichen],
-    queryFn: async () =>
-      request(
-        endpoint,
-        query,
-        { kassenzeichen: kassenzeichen },
-        {
-          Authorization: `Bearer ${jwt}`,
-        }
-      ),
-    enabled: !!kassenzeichen,
-  });
-
-  const date = data?.kassenzeichen[0]?.datum_erfassung
-    ? dayjs(
-        dayjs(data?.kassenzeichen[0]?.datum_erfassung).format(dateFormat),
-        dateFormat
-      )
-    : null;
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Allgemein">
@@ -89,7 +65,7 @@ const General = ({
           title="Kassenzeichen"
           placeholder="123456790"
           width={width}
-          value={kassenzeichen}
+          value={data.kassenzeichenNummer}
         />
         <GeneralRow
           title="Datum der Erfassung"
@@ -98,7 +74,7 @@ const General = ({
               className={`${width > 365 ? "w-full" : "w-1/2"}`}
               placeholder="02.03.2023"
               format={dateFormat}
-              value={date}
+              value={data.date}
             />
           }
           width={width}
@@ -107,12 +83,15 @@ const General = ({
           title="Bemerkung"
           width={width}
           customInput={
-            <TextArea className={`${width > 365 ? "w-full" : "w-1/2"}`} />
+            <TextArea
+              className={`${width > 365 ? "w-full" : "w-1/2"}`}
+              value={data.bemerkung}
+            />
           }
         />
         <GeneralRow
           title="Veranlagung gesperrt"
-          customInput={<Checkbox value={data?.kassenzeichen[0]?.sperre} />}
+          customInput={<Checkbox value={data.sperre} />}
           width={width}
         />
         <GeneralRow
@@ -129,7 +108,7 @@ const General = ({
                 { value: "_neue Nachricht", label: "Neue Nachricht" },
               ]}
               showArrow={false}
-              value={data?.aenderungsanfrage[0]?.aenderungsanfrage_status?.name}
+              value={data.aenderungsAnfrage}
               className={`${width > 365 ? "w-full" : "w-1/2"}`}
             />
           }

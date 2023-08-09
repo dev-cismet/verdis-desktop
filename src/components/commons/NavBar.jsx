@@ -16,9 +16,12 @@ import {
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { storeJWT, storeLogin } from "../../store/slices/auth";
-import { storeKassenzeichen } from "../../store/slices/search";
+import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
+import { storeKassenzeichen, storeSearchTerm } from "../../store/slices/search";
 import { getReadOnly, setReadOnly } from "../../store/slices/settings";
+import { ENDPOINT, query } from "../../constants/verdis";
+import { useQuery } from "@tanstack/react-query";
+import request from "graphql-request";
 
 const mockExtractor = (input) => {
   return [
@@ -59,14 +62,14 @@ const NavBar = ({
   inStory,
 }) => {
   const dispatch = useDispatch();
-  const data = extractor(dataIn);
+  const mockData = extractor(dataIn);
   const location = useLocation();
   const readOnly = useSelector(getReadOnly);
-
-  const logout = () => {
-    dispatch(storeJWT(undefined));
-    dispatch(storeLogin(undefined));
-  };
+  const jwt = useSelector(getJWT);
+  const [prevSearches, setPrevSearches] = useState([]);
+  const [search, setSearch] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const items = [
     {
@@ -97,14 +100,31 @@ const NavBar = ({
     };
   }
 
-  const [prevSearches, setPrevSearches] = useState([]);
-  const [search, setSearch] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
-
   const onSearch = (value) => {
     if (value) setPrevSearches([...prevSearches, value]);
-    dispatch(storeKassenzeichen(value));
+    dispatch(storeSearchTerm(value));
+    setSearchTerm(value);
   };
+
+  const logout = () => {
+    dispatch(storeJWT(undefined));
+    dispatch(storeLogin(undefined));
+  };
+
+  const { data } = useQuery({
+    queryKey: ["kassenzeichen", searchTerm],
+    queryFn: async () =>
+      request(
+        ENDPOINT,
+        query,
+        { kassenzeichen: searchTerm },
+        {
+          Authorization: `Bearer ${jwt}`,
+        }
+      ),
+    enabled: !!searchTerm,
+  });
+  dispatch(storeKassenzeichen(data));
 
   return (
     <header
@@ -114,7 +134,7 @@ const NavBar = ({
       <div className="md:flex hidden items-center gap-3">
         <FontAwesomeIcon icon={faGripVertical} className="w-6 h-6" />
         <img src={Logo} alt="Logo" className="h-10" />
-        {data.map((link, i) => (
+        {mockData.map((link, i) => (
           <Link to={link.href} key={`navLink_${i}`}>
             <Button
               type="text"
