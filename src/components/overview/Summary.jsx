@@ -1,96 +1,41 @@
+import { useSelector } from "react-redux";
+import { getKassenzeichen } from "../../store/slices/search";
 import CustomCard from "../ui/Card";
 
-const mockExtractor = (input) => {
-  return [
-    {
-      title: "Reinigung",
-      items: [
-        {
-          name: "A4-323",
-          fileNumber: 2807,
-          streetName: "Rathenaustr.",
-          area: 1234,
-        },
-        {
-          name: "A5-456",
-          fileNumber: 2807,
-          streetName: "Rathenaustr.",
-          area: 1,
-        },
-        {
-          name: "A6-789",
-          fileNumber: 2807,
-          streetName: "Rathenaustr.",
-          area: 12,
-        },
-        {
-          name: "A7-112",
-          fileNumber: 2807,
-          streetName: "Rathenaustr.",
-          area: 123,
-        },
-      ],
-    },
-    {
-      title: "Winterdienst",
-      items: [
-        {
-          name: "W4-323",
-          fileNumber: 2807,
-          streetName: "Rathenaustr.",
-          area: 1234,
-        },
-        {
-          name: "W5-456",
-          fileNumber: 2807,
-          streetName: "Rathenaustr.",
-          area: 1,
-        },
-        {
-          name: "W6-789",
-          fileNumber: 2807,
-          streetName: "Rathenaustr.",
-          area: 12,
-        },
-        {
-          name: "W7-112",
-          fileNumber: 2807,
-          streetName: "Rathenaustr.",
-          area: 123,
-        },
-      ],
-    },
-  ];
+const extractor = (input) => {
+  const data = input?.frontenArray?.map((front) => ({
+    key:
+      front.frontObject.frontinfoObject.lage_sr_satzung.strassenreinigung.key +
+      "-" +
+      front.frontObject.frontinfoObject.lage_sr_satzung.strassenreinigung
+        .schluessel,
+    streetNumber: front.frontObject.frontinfoObject.strasseObject.schluessel,
+    streetName: front.frontObject.frontinfoObject.strasseObject.name,
+    length: front.frontObject.frontinfoObject.laenge_grafik,
+  }));
+
+  return data;
 };
 
-const Summary = ({
-  dataIn,
-  extractor = mockExtractor,
-  width = 300,
-  height = 200,
-  style,
-}) => {
-  const data = extractor(dataIn);
+const Summary = ({ width = 300, height = 200, style }) => {
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const data = extractor(kassenzeichen);
+
   return (
     <CustomCard style={{ ...style, width, height }} title="ESW Zusammenfassung">
-      {data.map((categories, i) => (
-        <div
-          key={`sum_categories_${i}`}
-          className="flex flex-col gap-2 text-sm"
-        >
-          <div className={`font-semibold ${i > 0 && "pt-4"}`}>
-            {categories.title}
+      <div className="flex flex-col gap-2 text-sm">
+        {kassenzeichen?.frontenArray?.length > 0 && (
+          <div className={`font-semibold`}>Reinigung</div>
+        )}
+        {data?.map((front, i) => (
+          <div key={`sum_items_${i}`} className="flex w-full items-center">
+            <div className="w-full">{front.key}</div>
+            <div className="w-full">#{front.streetNumber}</div>
+            <div className="w-full">{front.streetName}</div>
+            <div className="w-1/2 text-right">{front.length}m</div>
           </div>
-          {categories.items.map((item, i) => (
-            <div key={`sum_items_${i}`} className="flex w-full items-center">
-              <div className="w-full">{item.name}</div>
-              <div className="w-full">#{item.fileNumber}</div>
-              <div className="w-full">{item.streetName}</div>
-              <div className="w-1/2">{item.area}m</div>
-            </div>
-          ))}
-        </div>
-      ))}
+        ))}
+      </div>
     </CustomCard>
   );
 };
