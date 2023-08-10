@@ -102,7 +102,7 @@ const General = ({
         />
         <GeneralRow
           title="Veranlagung gesperrt"
-          customInput={<Checkbox value={data.sperre} />}
+          customInput={<Checkbox checked={data.sperre} />}
           width={width}
         />
         <GeneralRow
