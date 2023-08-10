@@ -1,8 +1,40 @@
 import { Checkbox, Select } from "antd";
 import CustomCard from "../ui/Card";
+import { getKassenzeichen } from "../../store/slices/search";
+import { useSelector } from "react-redux";
 
-const mockExtractor = (input) => {
-  return [];
+const extractor = (kassenzeichen) => {
+  const sewegeConnection = kassenzeichen?.kanalanschlussObject;
+
+  return {
+    rk: {
+      vorhanden: sewegeConnection?.rkvorhanden,
+      angeschlossen: sewegeConnection?.rkangeschlossen,
+    },
+    mkr: {
+      vorhanden: sewegeConnection?.mkrvorhanden,
+      angeschlossen: sewegeConnection?.mkrangeschlossen,
+    },
+    mks: {
+      vorhanden: sewegeConnection?.mksvorhanden,
+      angeschlossen: sewegeConnection?.mksangeschlossen,
+    },
+    sk: {
+      vorhanden: sewegeConnection?.skvorhanden,
+      angeschlossen: sewegeConnection?.skangeschlossen,
+    },
+    sg: {
+      vorhanden: sewegeConnection?.sgvorhanden,
+      entleerung: sewegeConnection?.sgentleerung,
+    },
+    kka: {
+      vorhanden: sewegeConnection?.kkavorhanden,
+      entleerung: sewegeConnection?.kkaentleerung,
+    },
+    evg: {
+      vorhanden: sewegeConnection?.evg,
+    },
+  };
 };
 
 const Row = ({ title, data, useCheckbox }) => {
@@ -19,11 +51,18 @@ const Row = ({ title, data, useCheckbox }) => {
           key={`${item.title}_${i}`}
         >
           <span className="w-3/5 font-semibold">{item.title}:</span>
-          <Checkbox />
+          <Checkbox checked={item.vorhanden} />
           {useCheckbox ? (
-            <Checkbox className="w-full flex justify-center" />
+            item.title !== "EVG" ? (
+              <Checkbox
+                className="w-full flex justify-center"
+                checked={item.entleerung}
+              />
+            ) : (
+              <span className="w-full"></span>
+            )
           ) : (
-            <Select className="w-full" />
+            <Select className="w-full" value={item.angeschlossen} />
           )}
         </div>
       ))}
@@ -31,29 +70,29 @@ const Row = ({ title, data, useCheckbox }) => {
   );
 };
 
-const SewerConnection = ({
-  dataIn,
-  extractor = mockExtractor,
-  width = 300,
-  height = 200,
-  style,
-}) => {
-  const data = extractor(dataIn);
+const SewerConnection = ({ width = 300, height = 200, style }) => {
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const data = extractor(kassenzeichen);
+
   return (
     <CustomCard style={{ ...style, width, height }} title="Kanalanschluss">
       <div className="flex flex-col gap-6">
         <Row
           title="angeschlossen"
           data={[
-            { title: "RK" },
-            { title: "MRK" },
-            { title: "MKS" },
-            { title: "SK" },
+            { title: "RK", ...data.rk },
+            { title: "MKR", ...data.mkr },
+            { title: "MKS", ...data.mks },
+            { title: "SK", ...data.sk },
           ]}
         />
         <Row
           title="Entleerung"
-          data={[{ title: "SK" }, { title: "KKA" }, { title: "EVG" }]}
+          data={[
+            { title: "SG", ...data.sg },
+            { title: "KKA", ...data.kka },
+            { title: "EVG", ...data.evg },
+          ]}
           useCheckbox
         />
       </div>

@@ -61,6 +61,21 @@ export const query = gql`
           id
         }
       }
+      kanalanschlussObject {
+        rkangeschlossen
+        rkvorhanden
+        mkrangeschlossen
+        mkrvorhanden
+        mksangeschlossen
+        mksvorhanden
+        skvorhanden
+        skangeschlossen
+        sgvorhanden
+        sgentleerung
+        evg
+        kkaentleerung
+        kkavorhanden
+      }
     }
     aenderungsanfrage(
       where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
