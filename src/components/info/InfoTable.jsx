@@ -1,24 +1,12 @@
+import { useSelector } from "react-redux";
 import CustomCard from "../ui/Card";
+import { getKassenzeichen } from "../../store/slices/search";
 
-const mockExtractor = (input) => {
-  if (input) {
-    return input;
-  }
-
-  return [
-    {
-      title: "217362-28332/0(PRl)",
-      status: "online",
-    },
-    {
-      title: "317362-28332/0(PRl)",
-      status: "pending",
-    },
-    {
-      title: "417362-28332/0(PRl)",
-      status: "offline",
-    },
-  ];
+const extractor = (kassenzeichen) => {
+  return kassenzeichen?.kassenzeichen_geometrienArray?.map((geometry) => ({
+    title: geometry.kassenzeichen_geometrieObject.name,
+    status: "online",
+  }));
 };
 
 const Row = ({ title, status }) => {
@@ -48,17 +36,16 @@ const Row = ({ title, status }) => {
 };
 
 const Geometrics = ({
-  dataIn,
-  extractor = mockExtractor,
   width = 300,
   height = 200,
   style,
   title = "Geometrien",
 }) => {
-  const data = extractor(dataIn);
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const data = extractor(kassenzeichen);
   return (
     <CustomCard style={{ ...style, width, height }} title={title}>
-      {data.map((row, i) => (
+      {data?.map((row, i) => (
         <Row key={`geometrics_${i}`} status={row.status} title={row.title} />
       ))}
     </CustomCard>

@@ -76,6 +76,11 @@ export const query = gql`
         kkaentleerung
         kkavorhanden
       }
+      kassenzeichen_geometrienArray {
+        kassenzeichen_geometrieObject {
+          name
+        }
+      }
     }
     aenderungsanfrage(
       where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
