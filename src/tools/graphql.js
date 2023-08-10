@@ -17,7 +17,6 @@ export async function fetchGraphQL(
     logGQLFromSearch !== null && logGQLFromSearch !== "false";
   const nonce = getNonce();
 
-  //	const result = await fetch('http:// localhost:8890/actions/WUNDA_BLAU.graphQl/tasks?resultingInstanceType=result', {
   let myHeaders = new Headers();
 
   myHeaders.append("Authorization", "Bearer " + (jwt || "unset.jwt.token"));
@@ -46,7 +45,6 @@ export async function fetchGraphQL(
       if (logGQLEnabled && forceSkipLogging === false) {
         console.log(`logGQL:: Result (${nonce}):`, resultjson);
       }
-      // return { ok: true, status: response.status, data: { tdta_leuchten: [] } };
       //check if resultsjson is an array or an object
       if (Array.isArray(resultjson)) {
         return { ok: true, status: response.status, data: resultjson };

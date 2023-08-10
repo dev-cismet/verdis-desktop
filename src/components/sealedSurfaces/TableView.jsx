@@ -23,8 +23,6 @@ const extractor = (input) => {
     id: flaeche?.flaecheObject?.id,
   }));
 
-  console.log(data);
-
   return data;
 };
 
