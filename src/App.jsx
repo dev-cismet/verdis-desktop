@@ -15,7 +15,7 @@ import {
 import queries from "./constants/queries";
 import { fetchGraphQL } from "./tools/graphql";
 import TextArea from "antd/es/input/TextArea";
-import useDevSecrets from "./hooks/useDevSecrets";
+import useDevSecrets from "@/hooks/useDevSecrets";
 const { Title } = Typography;
 function App() {
   const [count, setCount] = useState(0);
