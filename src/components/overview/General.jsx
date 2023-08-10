@@ -8,9 +8,16 @@ import {
 } from "../../store/slices/search";
 import TextArea from "antd/es/input/TextArea";
 
-const GeneralRow = ({ title, placeholder, width, customInput, value }) => {
+const GeneralRow = ({
+  title,
+  placeholder,
+  width,
+  customInput,
+  value,
+  className = "",
+}) => {
   return (
-    <div className="flex justify-between items-center gap-2">
+    <div className={"flex justify-between gap-2 " + className}>
       <div className="text-sm w-1/2">{title}:</div>
       {customInput ? (
         customInput
@@ -63,7 +70,7 @@ const General = ({
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Allgemein">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 h-full">
         <GeneralRow
           title="Kassenzeichen"
           placeholder="123456790"
@@ -91,6 +98,7 @@ const General = ({
               value={data.bemerkung}
             />
           }
+          className="h-full"
         />
         <GeneralRow
           title="Veranlagung gesperrt"
