@@ -2,7 +2,10 @@ import { Checkbox, DatePicker, Input, Select } from "antd";
 import CustomCard from "../ui/Card";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
-import { getKassenzeichen } from "../../store/slices/search";
+import {
+  getAenderungsAnfrage,
+  getKassenzeichen,
+} from "../../store/slices/search";
 import TextArea from "antd/es/input/TextArea";
 
 const GeneralRow = ({ title, placeholder, width, customInput, value }) => {
@@ -22,9 +25,9 @@ const GeneralRow = ({ title, placeholder, width, customInput, value }) => {
   );
 };
 
-const mockExtractor = (input) => {
+const mockExtractor = (kassenzeichen, aenderungsAnfrage) => {
   const dateFormat = "DD.MM.YYYY";
-  const bemerkungsObject = input?.bemerkung;
+  const bemerkungsObject = kassenzeichen?.bemerkung;
   let formattedBemerkungen;
   if (bemerkungsObject) {
     const bemerkungen = JSON.parse(bemerkungsObject).bemerkungen.map(
@@ -33,13 +36,16 @@ const mockExtractor = (input) => {
     formattedBemerkungen = bemerkungen.join("\n");
   }
   return {
-    date: input?.datum_erfassung
-      ? dayjs(dayjs(input?.datum_erfassung).format(dateFormat), dateFormat)
+    date: kassenzeichen?.datum_erfassung
+      ? dayjs(
+          dayjs(kassenzeichen?.datum_erfassung).format(dateFormat),
+          dateFormat
+        )
       : null,
     bemerkung: formattedBemerkungen,
-    sperre: input?.sperre,
-    aenderungsAnfrage: input?.aenderungsanfrage_status?.name,
-    kassenzeichenNummer: input?.kassenzeichennummer8,
+    sperre: kassenzeichen?.sperre,
+    aenderungsAnfrage: aenderungsAnfrage?.aenderungsanfrage_status?.name,
+    kassenzeichenNummer: kassenzeichen?.kassenzeichennummer8,
   };
 };
 
@@ -51,7 +57,8 @@ const General = ({
   style,
 }) => {
   const kassenzeichen = useSelector(getKassenzeichen);
-  const data = extractor(kassenzeichen);
+  const aenderungsAnfrage = useSelector(getAenderungsAnfrage);
+  const data = extractor(kassenzeichen, aenderungsAnfrage);
   const dateFormat = "DD.MM.YYYY";
 
   return (

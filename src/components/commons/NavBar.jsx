@@ -17,7 +17,11 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
-import { storeKassenzeichen, storeSearchTerm } from "../../store/slices/search";
+import {
+  storeAenderungsAnfrage,
+  storeKassenzeichen,
+  storeSearchTerm,
+} from "../../store/slices/search";
 import { getReadOnly, setReadOnly } from "../../store/slices/settings";
 import { ENDPOINT, query } from "../../constants/verdis";
 import { useQuery } from "@tanstack/react-query";
@@ -125,6 +129,7 @@ const NavBar = ({
     enabled: !!searchTerm,
   });
   dispatch(storeKassenzeichen(data?.kassenzeichen[0]));
+  dispatch(storeAenderungsAnfrage(data?.aenderungsanfrage[0]));
 
   return (
     <header
