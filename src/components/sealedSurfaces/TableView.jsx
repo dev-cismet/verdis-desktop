@@ -78,7 +78,7 @@ const TableView = ({ width = 300, height = 200, style }) => {
           };
         }}
         rowClassName={(record) =>
-          `${record.id === flaechenId && "bg-zinc-100"} cursor-pointer`
+          `${record.id === flaechenId && "bg-primary/20"} cursor-pointer`
         }
       />
     </CustomCard>
