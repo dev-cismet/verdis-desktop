@@ -115,7 +115,7 @@ const NavBar = ({
     dispatch(storeLogin(undefined));
   };
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ["kassenzeichen", searchTerm],
     queryFn: async () =>
       request(
@@ -166,6 +166,7 @@ const NavBar = ({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           className="lg:w-1/2 w-full mx-auto"
+          loading={isFetching}
         />
         <div
           className={`bg-white border border-solid rounded-md shadow-md border-gray-300 absolute left-1/4 top-10 z-[99999] ${
