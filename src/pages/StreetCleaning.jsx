@@ -47,10 +47,7 @@ const Page = ({
             Flächen
           </Button>
         </InfoBar>
-        <div
-          className="flex gap-2 h-full max-h-[calc(100%-40px)]"
-          style={{ maxHeight: mapHeight }}
-        >
+        <div className="flex gap-2 h-full max-h-[calc(100%-40px)]">
           <div className="flex flex-col gap-2 h-full w-[30%]">
             <Fronts
               width={cardStyleFronts.width}
