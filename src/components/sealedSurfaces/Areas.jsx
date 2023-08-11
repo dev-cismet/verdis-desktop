@@ -42,6 +42,7 @@ const Areas = ({ width = 300, height = 200, style }) => {
         dataSource={data}
         columns={columns}
         pagination={false}
+        rowKey={(record) => record.name + record.type + record.size}
         size="small"
       />
     </CustomCard>
