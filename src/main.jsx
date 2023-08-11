@@ -25,6 +25,10 @@ import NavBar from "./components/commons/NavBar";
 import { getJWT } from "./store/slices/auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getReadOnly } from "./store/slices/settings";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+
+const persistor = persistStore(store);
 
 const NavBarWrapper = () => {
   const jwt = useSelector(getJWT);
@@ -113,11 +117,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       }}
       locale={locale}
     >
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store}>
-          <RouterProvider router={router} />
-        </Provider>
-      </QueryClientProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store}>
+            <RouterProvider router={router} />
+          </Provider>
+        </QueryClientProvider>
+      </PersistGate>
     </ConfigProvider>
   </React.StrictMode>
 );
