@@ -13,7 +13,7 @@ import {
   PullRequestOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
@@ -104,17 +104,6 @@ const NavBar = ({
     };
   }
 
-  const onSearch = (value) => {
-    if (value) setPrevSearches([...prevSearches, value]);
-    dispatch(storeSearchTerm(value));
-    setSearchTerm(value);
-  };
-
-  const logout = () => {
-    dispatch(storeJWT(undefined));
-    dispatch(storeLogin(undefined));
-  };
-
   const { data, isFetching } = useQuery({
     queryKey: ["kassenzeichen", searchTerm],
     queryFn: async () =>
@@ -128,8 +117,24 @@ const NavBar = ({
       ),
     enabled: !!searchTerm,
   });
-  dispatch(storeKassenzeichen(data?.kassenzeichen[0]));
-  dispatch(storeAenderungsAnfrage(data?.aenderungsanfrage[0]));
+
+  const onSearch = (value) => {
+    if (value) setPrevSearches([...prevSearches, value]);
+    dispatch(storeSearchTerm(value));
+    setSearchTerm(value);
+  };
+
+  const logout = () => {
+    dispatch(storeJWT(undefined));
+    dispatch(storeLogin(undefined));
+  };
+
+  useEffect(() => {
+    if (data) {
+      dispatch(storeKassenzeichen(data.kassenzeichen[0]));
+      dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
+    }
+  }, [data]);
 
   return (
     <header
