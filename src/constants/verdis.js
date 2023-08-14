@@ -11,31 +11,6 @@ export const query = gql`
       bemerkung
       sperre
       kassenzeichennummer8
-      frontenArray(
-        order_by: {
-          frontObject: {
-            frontinfoObject: {
-              lage_sr_satzung: { strassenreinigung: { key: asc } }
-            }
-          }
-        }
-      ) {
-        frontObject {
-          frontinfoObject {
-            laenge_grafik
-            strasseObject {
-              name
-              schluessel
-            }
-            lage_sr_satzung {
-              strassenreinigung {
-                key
-                schluessel
-              }
-            }
-          }
-        }
-      }
       flaechenArray(
         order_by: {
           flaecheObject: {
@@ -56,6 +31,25 @@ export const query = gql`
             }
             flaechenbeschreibung {
               beschreibung
+            }
+          }
+          id
+        }
+      }
+      frontenArray(order_by: { frontObject: { nummer: asc } }) {
+        frontObject {
+          nummer
+          frontinfoObject {
+            laenge_grafik
+            strasseObject {
+              name
+              schluessel
+            }
+            lage_sr_satzung {
+              strassenreinigung {
+                key
+                schluessel
+              }
             }
           }
           id
