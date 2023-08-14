@@ -74,7 +74,12 @@ const TableView = ({ width = 300, height = 200, style }) => {
         size="small"
         onRow={(record) => {
           return {
-            onClick: () => dispatch(storeFlaechenId(record.id)),
+            onClick: () =>
+              dispatch(
+                record.id === flaechenId
+                  ? storeFlaechenId(-1)
+                  : storeFlaechenId(record.id)
+              ),
           };
         }}
         rowClassName={(record) =>
