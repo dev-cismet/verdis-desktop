@@ -32,7 +32,7 @@ const GeneralRow = ({
   );
 };
 
-const mockExtractor = (kassenzeichen, aenderungsAnfrage) => {
+const extractor = (kassenzeichen, aenderungsAnfrage) => {
   const dateFormat = "DD.MM.YYYY";
   const bemerkungsObject = kassenzeichen?.bemerkung;
   let formattedBemerkungen;
@@ -51,18 +51,13 @@ const mockExtractor = (kassenzeichen, aenderungsAnfrage) => {
       : null,
     bemerkung: formattedBemerkungen,
     sperre: kassenzeichen?.sperre,
-    aenderungsAnfrage: aenderungsAnfrage?.aenderungsanfrage_status?.name,
+    aenderungsAnfrage:
+      aenderungsAnfrage && aenderungsAnfrage[0]?.aenderungsanfrage_status?.name,
     kassenzeichenNummer: kassenzeichen?.kassenzeichennummer8,
   };
 };
 
-const General = ({
-  dataIn,
-  extractor = mockExtractor,
-  width = 300,
-  height = 200,
-  style,
-}) => {
+const General = ({ width = 300, height = 200, style }) => {
   const kassenzeichen = useSelector(getKassenzeichen);
   const aenderungsAnfrage = useSelector(getAenderungsAnfrage);
   const data = extractor(kassenzeichen, aenderungsAnfrage);
