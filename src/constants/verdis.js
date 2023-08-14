@@ -11,6 +11,10 @@ export const query = gql`
       bemerkung
       sperre
       kassenzeichennummer8
+      grunddienstbarkeit
+      baulasten
+      quadratwurzel
+      keine_gesicherte_erschliessung
       flaechenArray(
         order_by: {
           flaecheObject: {

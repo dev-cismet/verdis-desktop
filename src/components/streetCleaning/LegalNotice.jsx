@@ -1,26 +1,15 @@
 import { Checkbox } from "antd";
 import CustomCard from "../ui/Card";
 import { useState } from "react";
+import { getKassenzeichen } from "../../store/slices/search";
+import { useSelector } from "react-redux";
 
-const mockExtractor = (input) => {
-  return [
-    {
-      title: "Grunddienstbarkeit",
-    },
-    {
-      title: "Baulasten",
-    },
-    {
-      title: "Quadratwurzel",
-    },
-    {
-      title: "keine gesicherte Erschließung",
-    },
-  ];
+const extractor = (kassenzeichen) => {
+  return [];
 };
 
-const Row = ({ title }) => {
-  const [isChecked, setIsChecked] = useState(false);
+const Row = ({ title, checked }) => {
+  const [isChecked, setIsChecked] = useState(checked);
 
   return (
     <div
@@ -33,21 +22,25 @@ const Row = ({ title }) => {
   );
 };
 
-const LegalNotice = ({
-  dataIn,
-  extractor = mockExtractor,
-  width = 300,
-  height = 200,
-  style,
-}) => {
-  const data = extractor(dataIn);
+const LegalNotice = ({ width = 300, height = 200, style }) => {
+  const kassenzeichen = useSelector(getKassenzeichen);
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Rechtliche Hinweise">
       <div className="flex flex-col gap-1 p-2">
-        {data.map((row, i) => (
-          <Row title={row.title} key={`legalNotice_${i}`} />
-        ))}
+        <Row
+          title="Grunddienstbarkeit"
+          checked={kassenzeichen?.grunddienstbarkeit}
+        />
+
+        <Row title="Baulasten" checked={kassenzeichen?.baulasten} />
+
+        <Row title="Quadratwurzel" checked={kassenzeichen?.quadratwurzel} />
+
+        <Row
+          title="keine gesicherte Erschließung"
+          checked={kassenzeichen?.keine_gesicherte_erschliessung}
+        />
       </div>
     </CustomCard>
   );
