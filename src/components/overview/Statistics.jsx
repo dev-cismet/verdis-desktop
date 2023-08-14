@@ -1,46 +1,50 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CustomCard from "../ui/Card";
 import { faHandPointer, faMap } from "@fortawesome/free-regular-svg-icons";
+import { useSelector } from "react-redux";
+import {
+  getAenderungsAnfrage,
+  getKassenzeichen,
+} from "../../store/slices/search";
 
-const mockExtractor = (input) => {
+const extractor = (kassenzeichen, aenderungsAnfrage) => {
   return [
     {
-      value: 8,
+      value: kassenzeichen?.flaechenArray?.length,
       title: "Flächen",
     },
     {
-      value: 2,
+      value: kassenzeichen?.frontenArray?.length,
       title: "Fronten",
     },
     {
-      value: 1,
+      value:
+        kassenzeichen?.kanalanschlussObject?.befreiungenunderlaubnisseArray
+          ?.length,
       title: "Versickerungsgenehmigungen",
     },
     {
-      value: 2,
+      value: kassenzeichen?.kassenzeichen_geometrienArray?.length,
       title: "Geometrien",
     },
     {
-      value: 4,
+      value: aenderungsAnfrage?.length,
       title: "Änderungsanfragen",
     },
   ];
 };
 
-const Statistics = ({
-  dataIn,
-  extractor = mockExtractor,
-  width = 300,
-  height = 200,
-  style,
-}) => {
-  const data = extractor(dataIn);
+const Statistics = ({ width = 300, height = 200, style }) => {
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const aenderungsAnfrage = useSelector(getAenderungsAnfrage);
+  const data = extractor(kassenzeichen, aenderungsAnfrage);
+
   return (
     <CustomCard style={{ ...style, width, height }} title="Statistik">
       <div className="flex flex-col gap-4 text-sm">
         {data.map((row, i) => (
           <div key={`statistics_row_${i}`} className="flex gap-2 items-center">
-            <span>{row.value}</span>
+            <span>{row.value || 0}</span>
             <span className="w-full">{row.title}</span>
             <FontAwesomeIcon icon={faHandPointer} className="cursor-pointer" />
             <FontAwesomeIcon icon={faMap} className="cursor-pointer" />
