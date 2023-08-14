@@ -81,6 +81,23 @@ export const query = gql`
           name
         }
       }
+      kanalanschlussObject {
+        befreiungenunderlaubnisseArray {
+          befreiungerlaubnisObject {
+            aktenzeichen
+            befreiungerlaubnis_nutzung {
+              name
+            }
+            befreiungerlaubnis_geometrieArrayRelationShip {
+              durchfluss
+              befreiungerlaubnis_geometrie_typ_versickerung {
+                name
+              }
+            }
+          }
+        }
+        befreiungenunderlaubnisse
+      }
     }
     aenderungsanfrage(
       where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }

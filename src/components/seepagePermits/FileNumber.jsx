@@ -1,39 +1,28 @@
+import { useSelector } from "react-redux";
+import { getKassenzeichen } from "../../store/slices/search";
 import CustomCard from "../ui/Card";
 
-const mockExtractor = (input) => {
-  return [
-    {
-      title: "3824-872364725443/O(PRl)",
-      data: [
-        {
-          title: "Versickerung",
-          value: "1.2344 l/s",
-        },
-        {
-          title: "Versickerung",
-          value: "1.2344 l/s",
-        },
-      ],
-    },
-    {
-      title: "4824-872364725443/O(PRl)",
-      data: [
-        {
-          title: "Versickerung",
-          value: "1.2344 l/s",
-        },
-      ],
-    },
-    {
-      title: "5824-872364725443/O(PRl)",
-      data: [
-        {
-          title: "Versickerung",
-          value: "1.2344 l/s",
-        },
-      ],
-    },
-  ];
+const extractor = (kassenzeichen) => {
+  const data =
+    kassenzeichen?.kanalanschlussObject?.befreiungenunderlaubnisseArray?.map(
+      (befreiungErlaubnis) => ({
+        title:
+          befreiungErlaubnis?.befreiungerlaubnisObject?.aktenzeichen +
+          " (" +
+          befreiungErlaubnis?.befreiungerlaubnisObject
+            ?.befreiungerlaubnis_nutzung?.name +
+          ")",
+        data: befreiungErlaubnis?.befreiungerlaubnisObject?.befreiungerlaubnis_geometrieArrayRelationShip?.map(
+          (relationship) => ({
+            title:
+              relationship?.befreiungerlaubnis_geometrie_typ_versickerung?.name,
+            value: relationship?.durchfluss + " l/s",
+          })
+        ),
+      })
+    );
+
+  return data;
 };
 
 const Row = ({ title, value }) => {
@@ -47,14 +36,10 @@ const Row = ({ title, value }) => {
   );
 };
 
-const FileNumber = ({
-  dataIn,
-  extractor = mockExtractor,
-  width = 300,
-  height = 200,
-  style,
-}) => {
-  const data = extractor(dataIn);
+const FileNumber = ({ width = 300, height = 200, style }) => {
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const data = extractor(kassenzeichen);
+
   return (
     <CustomCard
       style={{ ...style, width, height }}
