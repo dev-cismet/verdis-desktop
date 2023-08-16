@@ -23,12 +23,15 @@ const Summary = ({ width = 300, height = 200, style }) => {
 
   return (
     <CustomCard style={{ ...style, width, height }} title="ESW Zusammenfassung">
-      <div className="flex flex-col gap-2 text-sm">
+      <div className="flex flex-col gap-2">
         {kassenzeichen?.frontenArray?.length > 0 && (
-          <div className={`font-semibold`}>Reinigung</div>
+          <div className={`font-medium`}>Reinigung</div>
         )}
         {data?.map((front, i) => (
-          <div key={`sum_items_${i}`} className="flex w-full items-center">
+          <div
+            key={`sum_items_${i}`}
+            className="flex w-full items-center text-sm"
+          >
             <div className="w-full">{front.key}</div>
             <div className="w-full">#{front.streetNumber}</div>
             <div className="w-full">{front.streetName}</div>

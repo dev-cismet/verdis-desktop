@@ -78,7 +78,7 @@ const mockExtractor = (input) => {
 const DetailsRow = ({ title, value }) => {
   return (
     <div className="w-full flex items-center justify-between">
-      <span className="w-full">{title}:</span>
+      <span className="w-full font-medium">{title}:</span>
       <Input value={value} />
     </div>
   );

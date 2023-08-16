@@ -11,11 +11,7 @@ const CustomCard = ({ style, title, children, fullHeight, ...props }) => {
         overflowX: "clip",
         height: "100%",
       }}
-      title={
-        <span>
-          <FontAwesomeIcon icon={faBars} /> {title}
-        </span>
-      }
+      title={<span className="text-lg">{title}</span>}
       size="small"
       hoverable={false}
       {...props}

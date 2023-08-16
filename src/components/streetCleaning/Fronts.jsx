@@ -49,7 +49,8 @@ const Fronts = ({ width = 300, height = 200, style }) => {
       <Table
         dataSource={data}
         columns={columns}
-        pagination={{ position: ["none"] }}
+        pagination={false}
+        rowKey={(record) => record.number + record.length + record.class}
         size="small"
         onRow={(record) => {
           return {
@@ -57,7 +58,7 @@ const Fronts = ({ width = 300, height = 200, style }) => {
           };
         }}
         rowClassName={(record) =>
-          `${record.id === frontenId && "bg-zinc-100"} cursor-pointer`
+          `${record.id === frontenId && "bg-primary/20"} cursor-pointer`
         }
       />
     </CustomCard>

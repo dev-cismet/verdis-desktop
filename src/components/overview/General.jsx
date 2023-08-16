@@ -18,7 +18,7 @@ const GeneralRow = ({
 }) => {
   return (
     <div className={"flex justify-between gap-2 " + className}>
-      <div className="text-sm w-1/2">{title}:</div>
+      <div className="text-sm font-medium w-1/2">{title}:</div>
       {customInput ? (
         customInput
       ) : (

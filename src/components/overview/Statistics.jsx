@@ -41,7 +41,7 @@ const Statistics = ({ width = 300, height = 200, style }) => {
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Statistik">
-      <div className="flex flex-col gap-4 text-sm">
+      <div className="flex flex-col gap-4 text-sm font-medium">
         {data.map((row, i) => (
           <div key={`statistics_row_${i}`} className="flex gap-2 items-center">
             <span>{row.value || 0}</span>

@@ -50,7 +50,7 @@ const Row = ({ title, data, useCheckbox }) => {
           className="flex w-full items-center gap-2"
           key={`${item.title}_${i}`}
         >
-          <span className="w-3/5 font-semibold">{item.title}:</span>
+          <span className="w-3/5 font-medium text-sm">{item.title}:</span>
           <Checkbox checked={item.vorhanden} />
           {useCheckbox ? (
             item.title !== "EVG" ? (
@@ -62,7 +62,11 @@ const Row = ({ title, data, useCheckbox }) => {
               <span className="w-full"></span>
             )
           ) : (
-            <Select className="w-full" value={item.angeschlossen} />
+            <Select
+              className="w-full"
+              value={item.angeschlossen}
+              size="small"
+            />
           )}
         </div>
       ))}

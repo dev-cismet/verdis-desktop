@@ -30,7 +30,7 @@ const endpoint = REST_SERVICE + `/graphql/` + DOMAIN + "/execute";
 const DetailsRow = ({ title, value, width, customInput }) => {
   return (
     <div className="flex justify-between items-center gap-2">
-      <div className="text-sm w-1/2">{title}:</div>
+      <div className="text-sm font-medium w-1/2">{title}:</div>
       <div className={`${width > 365 ? "w-full" : "w-1/2"}`}>
         {customInput ? customInput : <Input value={value} />}
       </div>
