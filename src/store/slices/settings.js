@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { readOnly: true };
+const initialState = { readOnly: false };
 
 const slice = createSlice({
   name: "settings",
