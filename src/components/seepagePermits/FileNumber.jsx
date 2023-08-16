@@ -45,7 +45,7 @@ const FileNumber = ({ width = 300, height = 200, style }) => {
       style={{ ...style, width, height }}
       title="Aktenzeichen - Versickerung/Einleitung"
     >
-      {data.map((row, i) => (
+      {data?.map((row, i) => (
         <div
           className="flex flex-col gap-2 w-full"
           key={`fileNumber_title_${i}`}
