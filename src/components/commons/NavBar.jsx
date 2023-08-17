@@ -121,7 +121,6 @@ const NavBar = ({
   });
 
   const onSearch = (value) => {
-    if (value) setPrevSearches([...prevSearches, value]);
     dispatch(storeSearchTerm(value));
     setSearchTerm(value);
   };
@@ -135,6 +134,9 @@ const NavBar = ({
     if (data) {
       dispatch(storeKassenzeichen(data.kassenzeichen[0]));
       dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
+      if (data.kassenzeichen.length > 0) {
+        setPrevSearches([...prevSearches, searchTerm]);
+      }
     }
   }, [data]);
 
