@@ -142,11 +142,10 @@ const NavBar = ({
 
   return (
     <header
-      className="flex items-center justify-between bg-white p-2"
+      className="flex items-center justify-between bg-white p-2 gap-3"
       style={{ ...style, ...storyStyle, width, height }}
     >
       <div className="md:flex hidden items-center gap-3">
-        <FontAwesomeIcon icon={faGripVertical} className="w-6 h-6" />
         <img src={Logo} alt="Logo" className="h-10" />
         {mockData.map((link, i) => (
           <Link to={link.href} key={`navLink_${i}`}>
@@ -159,8 +158,8 @@ const NavBar = ({
                   : ""
               } font-semibold no-underline`}
             >
-              <div className="lg:hidden block">{link.icon}</div>
-              <div className="hidden lg:block">{link.title}</div>
+              <div className="xl:hidden block">{link.icon}</div>
+              <div className="hidden xl:block">{link.title}</div>
             </Button>
           </Link>
         ))}
@@ -180,7 +179,7 @@ const NavBar = ({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           onPressEnter={() => onSearch(search)}
-          className="lg:w-1/2 w-full mx-auto"
+          className="xl:w-1/2 w-full mx-auto"
           status={data?.kassenzeichen?.length === 0 && "error"}
         />
         <div
