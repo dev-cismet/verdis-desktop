@@ -10,8 +10,10 @@ import {
   GlobalOutlined,
   HomeOutlined,
   LinkOutlined,
+  LoadingOutlined,
   PullRequestOutlined,
   QuestionCircleOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -162,16 +164,22 @@ const NavBar = ({
         ))}
       </div>
       <div className="flex relative items-center gap-3 w-full">
-        <Input.Search
+        <Input
           placeholder="Suche..."
-          allowClear
-          onSearch={(value) => onSearch(value)}
-          onChange={(e) => setSearch(e.target.value)}
           value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          addonAfter={
+            isFetching ? (
+              <LoadingOutlined />
+            ) : (
+              <SearchOutlined onClick={() => onSearch(search)} />
+            )
+          }
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          onPressEnter={() => onSearch(search)}
           className="lg:w-1/2 w-full mx-auto"
-          loading={isFetching}
+          status={data?.kassenzeichen?.length === 0 && "error"}
         />
         <div
           className={`bg-white border border-solid rounded-md shadow-md border-gray-300 absolute left-1/4 top-10 z-[99999] ${
