@@ -2,6 +2,7 @@ import { Table } from "antd";
 import CustomCard from "../ui/Card";
 import { useSelector } from "react-redux";
 import { getKassenzeichen } from "../../store/slices/search";
+import { compare } from "../../tools/helper";
 
 const extractor = (input) => {
   const data = input?.flaechenArray?.map((row) => ({
@@ -18,16 +19,19 @@ const columns = [
     title: "Bez.",
     dataIndex: "name",
     key: "name",
+    sorter: (a, b) => compare(a.name, b.name),
   },
   {
     title: "Typ",
     dataIndex: "type",
     key: "type",
+    sorter: (a, b) => compare(a.type, b.type),
   },
   {
     title: "Größe",
     dataIndex: "size",
     key: "size",
+    sorter: (a, b) => compare(a.size, b.size),
     render: (area) => <div>{area} m²</div>,
   },
 ];
@@ -44,6 +48,7 @@ const Areas = ({ width = 300, height = 200, style }) => {
         pagination={false}
         rowKey={(record) => record.name + record.type + record.size}
         size="small"
+        showSorterTooltip={false}
       />
     </CustomCard>
   );

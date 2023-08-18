@@ -7,3 +7,12 @@ export const getNonce = () => {
   const todayInt = parseInt(todayString);
   return todayInt + Math.random();
 };
+
+export const compare = (a, b) => {
+  return (
+    isFinite(b) - isFinite(a) ||
+    a - b ||
+    (a.length === b.length && a.toString().localeCompare(b)) ||
+    a.length - b.length
+  );
+};
