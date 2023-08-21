@@ -2,22 +2,16 @@ import { useSelector } from "react-redux";
 import { getKassenzeichen } from "../../store/slices/search";
 import CustomCard from "../ui/Card";
 
-const extractor = (input) => {
-  const data = input?.frontenArray?.map((front) => ({
-    key:
-      front.frontObject.frontinfoObject.lage_sr_satzung.strassenreinigung.key +
-      "-" +
-      front.frontObject.frontinfoObject.lage_sr_satzung.strassenreinigung
-        .schluessel,
-    streetNumber: front.frontObject.frontinfoObject.strasseObject.schluessel,
-    streetName: front.frontObject.frontinfoObject.strasseObject.name,
-    length: front.frontObject.frontinfoObject.laenge_grafik,
-  }));
-
-  return data;
+const mockExtractor = () => {
+  return null;
 };
 
-const Summary = ({ width = 300, height = 200, style }) => {
+const Summary = ({
+  width = 300,
+  height = 200,
+  style,
+  extractor = mockExtractor,
+}) => {
   const kassenzeichen = useSelector(getKassenzeichen);
   const data = extractor(kassenzeichen);
 

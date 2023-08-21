@@ -32,32 +32,22 @@ const GeneralRow = ({
   );
 };
 
-const extractor = (kassenzeichen, aenderungsAnfrage) => {
-  const dateFormat = "DD.MM.YYYY";
-  const bemerkungsObject = kassenzeichen?.bemerkung;
-  let formattedBemerkungen;
-  if (bemerkungsObject) {
-    const bemerkungen = JSON.parse(bemerkungsObject).bemerkungen.map(
-      (bemerkung) => bemerkung.bemerkung
-    );
-    formattedBemerkungen = bemerkungen.join("\n");
-  }
+const mockExtractor = () => {
   return {
-    date: kassenzeichen?.datum_erfassung
-      ? dayjs(
-          dayjs(kassenzeichen?.datum_erfassung).format(dateFormat),
-          dateFormat
-        )
-      : null,
-    bemerkung: formattedBemerkungen,
-    sperre: kassenzeichen?.sperre,
-    aenderungsAnfrage:
-      aenderungsAnfrage && aenderungsAnfrage[0]?.aenderungsanfrage_status?.name,
-    kassenzeichenNummer: kassenzeichen?.kassenzeichennummer8,
+    date: null,
+    bemerkung: null,
+    sperre: null,
+    aenderungsAnfrage: null,
+    kassenzeichenNummer: null,
   };
 };
 
-const General = ({ width = 300, height = 200, style }) => {
+const General = ({
+  width = 300,
+  height = 200,
+  style,
+  extractor = mockExtractor,
+}) => {
   const kassenzeichen = useSelector(getKassenzeichen);
   const aenderungsAnfrage = useSelector(getAenderungsAnfrage);
   const data = extractor(kassenzeichen, aenderungsAnfrage);
@@ -113,7 +103,7 @@ const General = ({ width = 300, height = 200, style }) => {
                 { value: "archiviert", label: "Archiviert" },
                 { value: "_neue Nachricht", label: "Neue Nachricht" },
               ]}
-              showArrow={false}
+              suffixIcon={null}
               value={data.aenderungsAnfrage}
               className={`${width > 365 ? "w-full" : "w-1/2"}`}
             />

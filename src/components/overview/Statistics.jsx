@@ -7,7 +7,7 @@ import {
   getKassenzeichen,
 } from "../../store/slices/search";
 
-const extractor = (kassenzeichen, aenderungsAnfrage) => {
+const mockExtractor = (kassenzeichen, aenderungsAnfrage) => {
   return [
     {
       value: kassenzeichen?.flaechenArray?.length,
@@ -34,7 +34,12 @@ const extractor = (kassenzeichen, aenderungsAnfrage) => {
   ];
 };
 
-const Statistics = ({ width = 300, height = 200, style }) => {
+const Statistics = ({
+  width = 300,
+  height = 200,
+  style,
+  extractor = mockExtractor,
+}) => {
   const kassenzeichen = useSelector(getKassenzeichen);
   const aenderungsAnfrage = useSelector(getAenderungsAnfrage);
   const data = extractor(kassenzeichen, aenderungsAnfrage);

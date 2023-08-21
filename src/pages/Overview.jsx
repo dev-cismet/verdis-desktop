@@ -6,6 +6,12 @@ import CrossReferences from "../components/overview/CrossReferences";
 import Sums from "../components/sealedSurfaces/Sums";
 import Summary from "../components/overview/Summary";
 import InfoBar from "../components/commons/InfoBar";
+import {
+  generalExtractor,
+  statisticsExtractor,
+  summaryExtractor,
+  sumsExtractor,
+} from "../tools/extractors";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -35,11 +41,13 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
             width={cardStyle.width}
             height={cardStyle.height}
             style={cardStyle}
+            extractor={generalExtractor}
           />
           <Statistics
             width={cardStyle.width}
             height={cardStyle.height}
             style={cardStyle}
+            extractor={statisticsExtractor}
           />
           <CrossReferences
             width={cardStyle.width}
@@ -50,6 +58,7 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
             width={cardStyle.width}
             height={cardStyle.height}
             style={cardStyle}
+            extractor={sumsExtractor}
           />
           <div className="col-span-2 row-span-2">
             <Map width={"100%"} height={"100%"} />
@@ -58,6 +67,7 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
             width={cardStyle.width}
             height={cardStyle.height}
             style={cardStyle}
+            extractor={summaryExtractor}
           />
         </div>
       </div>

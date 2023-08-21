@@ -2,52 +2,25 @@ import { useSelector } from "react-redux";
 import CustomCard from "../ui/Card";
 import { getKassenzeichen } from "../../store/slices/search";
 
-const extractor = (kassenzeichen) => {
-  const data = kassenzeichen?.flaechenArray?.map((flaeche) => ({
-    size: flaeche?.flaecheObject?.flaecheninfoObject?.groesse_aus_grafik,
-    type: flaeche?.flaecheObject?.flaecheninfoObject?.flaechenartObject
-      ?.art_abkuerzung,
-    connection:
-      flaeche?.flaecheObject?.flaecheninfoObject?.anschlussgradObject
-        ?.grad_abkuerzung,
-  }));
-
-  const typeSizeMap = new Map();
-  const connectionSizeMap = new Map();
-
-  data?.forEach((obj) => {
-    const { type, connection, size } = obj;
-
-    if (!typeSizeMap.has(type)) {
-      typeSizeMap.set(type, 0);
-    }
-    typeSizeMap.set(type, typeSizeMap.get(type) + size);
-
-    if (!connectionSizeMap.has(connection)) {
-      connectionSizeMap.set(connection, 0);
-    }
-    connectionSizeMap.set(connection, connectionSizeMap.get(connection) + size);
-  });
-
-  const types = Array.from(typeSizeMap, ([type, size]) => ({ type, size }));
-  const connections = Array.from(connectionSizeMap, ([type, size]) => ({
-    type,
-    size,
-  }));
-
+const mockExtractor = (kassenzeichen) => {
   return [
     {
       title: "Bewertung",
-      items: types,
+      items: [],
     },
     {
       title: "Anschlussgrad",
-      items: connections,
+      items: [],
     },
   ];
 };
 
-const Sums = ({ width = 300, height = 200, style }) => {
+const Sums = ({
+  width = 300,
+  height = 200,
+  style,
+  extractor = mockExtractor,
+}) => {
   const kassenzeichen = useSelector(getKassenzeichen);
   const data = extractor(kassenzeichen);
 
