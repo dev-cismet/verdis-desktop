@@ -97,8 +97,8 @@ export const sumsExtractor = (kassenzeichen) => {
   ];
 };
 
-export const summaryExtractor = (input) => {
-  const data = input?.frontenArray?.map((front) => ({
+export const summaryExtractor = (kassenzeichen) => {
+  const data = kassenzeichen?.frontenArray?.map((front) => ({
     key:
       front.frontObject.frontinfoObject.lage_sr_satzung.strassenreinigung.key +
       "-" +
@@ -107,6 +107,35 @@ export const summaryExtractor = (input) => {
     streetNumber: front.frontObject.frontinfoObject.strasseObject.schluessel,
     streetName: front.frontObject.frontinfoObject.strasseObject.name,
     length: front.frontObject.frontinfoObject.laenge_grafik,
+  }));
+
+  return data;
+};
+
+export const areasExtractor = (kassenzeichen) => {
+  const data = kassenzeichen?.flaechenArray?.map((row) => ({
+    name: row?.flaecheObject?.flaechenbezeichnung,
+    size: row?.flaecheObject?.flaecheninfoObject?.groesse_aus_grafik,
+    type: row?.flaecheObject?.flaecheninfoObject?.flaechenbeschreibung
+      ?.beschreibung,
+  }));
+  return data;
+};
+
+export const areasDetailsExtractor = (kassenzeichen) => {
+  const data = kassenzeichen?.flaechenArray?.map((flaeche) => ({
+    name: flaeche?.flaecheObject?.flaechenbezeichnung,
+    size: flaeche?.flaecheObject?.flaecheninfoObject?.groesse_aus_grafik,
+    type: flaeche?.flaecheObject?.flaecheninfoObject?.flaechenartObject
+      ?.art_abkuerzung,
+    connection:
+      flaeche?.flaecheObject?.flaecheninfoObject?.anschlussgradObject
+        ?.grad_abkuerzung,
+    description:
+      flaeche?.flaecheObject?.flaecheninfoObject?.flaechenbeschreibung
+        ?.beschreibung,
+    date: flaeche?.flaecheObject?.datum_erfassung,
+    id: flaeche?.flaecheObject?.id,
   }));
 
   return data;

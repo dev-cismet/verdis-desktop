@@ -5,6 +5,7 @@ const initialState = {
   aenderungsAnfrage: {},
   flaechenId: null,
   frontenId: null,
+  previousSearches: [],
 };
 
 const slice = createSlice({
@@ -27,6 +28,25 @@ const slice = createSlice({
       state.frontenId = action.payload;
       return state;
     },
+    addSearch(state, action) {
+      if (state.previousSearches.length >= 10) {
+        const updatedSearches = state.previousSearches.slice(1);
+        state.previousSearches = [
+          ...new Set([...updatedSearches, action.payload]),
+        ];
+      } else {
+        state.previousSearches = [
+          ...new Set([...state.previousSearches, action.payload]),
+        ];
+      }
+      return state;
+    },
+    removePreviousSearch(state, action) {
+      const tmp = state.previousSearches.slice();
+      tmp.splice(action.payload, 1);
+      state.previousSearches = tmp;
+      return state;
+    },
   },
 });
 
@@ -37,6 +57,8 @@ export const {
   storeAenderungsAnfrage,
   storeFlaechenId,
   storeFrontenId,
+  addSearch,
+  removePreviousSearch,
 } = slice.actions;
 
 export const getKassenzeichen = (state) => {
@@ -53,4 +75,8 @@ export const getFlaechenId = (state) => {
 
 export const getFrontenId = (state) => {
   return state.search.frontenId;
+};
+
+export const getPreviousSearches = (state) => {
+  return state.search.previousSearches;
 };

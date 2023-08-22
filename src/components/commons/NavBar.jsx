@@ -20,6 +20,9 @@ import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
 import {
+  addSearch,
+  getPreviousSearches,
+  removePreviousSearch,
   storeAenderungsAnfrage,
   storeKassenzeichen,
 } from "../../store/slices/search";
@@ -71,7 +74,7 @@ const NavBar = ({
   const location = useLocation();
   const readOnly = useSelector(getReadOnly);
   const jwt = useSelector(getJWT);
-  const [prevSearches, setPrevSearches] = useState([]);
+  const prevSearches = useSelector(getPreviousSearches);
   const [inputValue, setInpuValue] = useState("");
   const [urlParams, setUrlParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(
@@ -126,24 +129,13 @@ const NavBar = ({
     dispatch(storeLogin(undefined));
   };
 
-  const removeKassenzeichen = (index) => {
-    const tmp = prevSearches.slice();
-    tmp.splice(index, 1);
-    setPrevSearches(tmp);
-  };
-
   useEffect(() => {
     if (data?.kassenzeichen?.length > 0) {
       const trimmedQuery = searchQuery.trim();
       dispatch(storeKassenzeichen(data.kassenzeichen[0]));
       dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
       setUrlParams({ kassenzeichen: trimmedQuery });
-      if (prevSearches.length >= 10) {
-        const updatedSearches = prevSearches.slice(1);
-        setPrevSearches([...new Set([...updatedSearches, trimmedQuery])]);
-      } else {
-        setPrevSearches([...new Set([...prevSearches, trimmedQuery])]);
-      }
+      dispatch(addSearch(trimmedQuery));
     }
   }, [data]);
 
@@ -182,7 +174,7 @@ const NavBar = ({
                 <FontAwesomeIcon
                   className="group-hover:visible invisible hover:bg-zinc-200 p-2"
                   icon={faX}
-                  onClick={() => removeKassenzeichen(i)}
+                  onClick={() => dispatch(removePreviousSearch(i))}
                 />
               </div>
             ),
