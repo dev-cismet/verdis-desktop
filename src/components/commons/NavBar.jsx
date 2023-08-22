@@ -134,10 +134,16 @@ const NavBar = ({
 
   useEffect(() => {
     if (data?.kassenzeichen?.length > 0) {
+      const trimmedQuery = searchQuery.trim();
       dispatch(storeKassenzeichen(data.kassenzeichen[0]));
       dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
-      setUrlParams({ kassenzeichen: searchQuery.trim() });
-      setPrevSearches([...new Set([...prevSearches, searchQuery.trim()])]);
+      setUrlParams({ kassenzeichen: trimmedQuery });
+      if (prevSearches.length >= 10) {
+        const updatedSearches = prevSearches.slice(1);
+        setPrevSearches([...new Set([...updatedSearches, trimmedQuery])]);
+      } else {
+        setPrevSearches([...new Set([...prevSearches, trimmedQuery])]);
+      }
     }
   }, [data]);
 
