@@ -1,7 +1,7 @@
-import { Avatar, Button, Dropdown, Input, Switch } from "antd";
+import { AutoComplete, Avatar, Button, Dropdown, Input, Switch } from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faGripVertical, faX } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faX } from "@fortawesome/free-solid-svg-icons";
 import {
   ClockCircleOutlined,
   CommentOutlined,
@@ -16,7 +16,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
 import {
@@ -74,8 +74,8 @@ const NavBar = ({
   const jwt = useSelector(getJWT);
   const [prevSearches, setPrevSearches] = useState([]);
   const [search, setSearch] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [params, setParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(params.get("kassenzeichen"));
 
   const items = [
     {
@@ -131,12 +131,11 @@ const NavBar = ({
   };
 
   useEffect(() => {
-    if (data) {
+    if (data?.kassenzeichen?.length > 0) {
       dispatch(storeKassenzeichen(data.kassenzeichen[0]));
       dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
-      if (data.kassenzeichen.length > 0) {
-        setPrevSearches([...prevSearches, searchTerm]);
-      }
+      setParams({ kassenzeichen: searchTerm.trim() });
+      setPrevSearches([...new Set([...prevSearches, searchTerm.trim()])]);
     }
   }, [data]);
 
@@ -148,7 +147,7 @@ const NavBar = ({
       <div className="md:flex hidden items-center gap-3">
         <img src={Logo} alt="Logo" className="h-10" />
         {mockData.map((link, i) => (
-          <Link to={link.href} key={`navLink_${i}`}>
+          <Link to={link.href + `?${params}`} key={`navLink_${i}`}>
             <Button
               type="text"
               className={`${
@@ -165,48 +164,41 @@ const NavBar = ({
         ))}
       </div>
       <div className="flex relative items-center gap-3 w-full">
-        <Input
-          placeholder="Suche..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          addonAfter={
-            isFetching ? (
-              <LoadingOutlined />
-            ) : (
-              <SearchOutlined onClick={() => onSearch(search)} />
-            )
-          }
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          onPressEnter={() => onSearch(search)}
-          className="xl:w-1/2 w-full mx-auto"
-          status={data?.kassenzeichen?.length === 0 && "error"}
-        />
-        <div
-          className={`bg-white border border-solid rounded-md shadow-md border-gray-300 absolute left-1/4 top-10 z-[99999] ${
-            isFocused && prevSearches.length > 0 ? "flex" : "hidden"
-          } flex-col gap-1 lg:w-1/2 w-full`}
-        >
-          {prevSearches.map((prevSearch, i) => (
-            <div
-              className="hover:bg-zinc-100 cursor-pointer p-1"
-              key={`prevSearches_${i}`}
-              onClick={() => setSearch(prevSearch)}
-            >
-              <div className="flex gap-2 items-center group px-2 z-50">
+        <AutoComplete
+          options={prevSearches.map((prev) => ({
+            value: prev,
+            label: (
+              <div className="flex gap-2 items-center group">
                 <ClockCircleOutlined className="text-lg" />
-                <span className="w-full">{prevSearch}</span>
+                <span className="w-full">{prev}</span>
                 <FontAwesomeIcon
                   className="group-hover:visible invisible hover:bg-zinc-200 p-2"
                   icon={faX}
-                  onClick={() => {
-                    setPrevSearches((prevSearch) => prevSearch.splice(i, 1));
-                  }}
                 />
               </div>
-            </div>
-          ))}
-        </div>
+            ),
+          }))}
+          className="xl:w-1/2 w-full mx-auto"
+          defaultValue={params.get("kassenzeichen")}
+          onSelect={(value) => setSearchTerm(value)}
+          onChange={(value) => setSearch(value)}
+        >
+          <Input
+            placeholder="Suche..."
+            defaultValue={params.get("kassenzeichen")}
+            value={params.get("kassenzeichen")}
+            addonAfter={
+              isFetching ? (
+                <LoadingOutlined />
+              ) : (
+                <SearchOutlined onClick={() => onSearch(search)} />
+              )
+            }
+            onPressEnter={() => onSearch(search)}
+            status={data?.kassenzeichen?.length === 0 && "error"}
+            name="kassenzeichen"
+          />
+        </AutoComplete>
       </div>
       <div className="flex items-center gap-3">
         <ExclamationCircleOutlined className="text-2xl cursor-pointer" />
