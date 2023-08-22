@@ -22,7 +22,6 @@ import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
 import {
   storeAenderungsAnfrage,
   storeKassenzeichen,
-  storeSearchTerm,
 } from "../../store/slices/search";
 import { getReadOnly, setReadOnly } from "../../store/slices/settings";
 import { ENDPOINT, query } from "../../constants/verdis";
@@ -121,7 +120,6 @@ const NavBar = ({
   });
 
   const onSearch = (value) => {
-    dispatch(storeSearchTerm(value));
     setSearchTerm(value);
   };
 

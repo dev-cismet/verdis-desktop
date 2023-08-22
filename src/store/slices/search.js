@@ -5,7 +5,6 @@ const initialState = {
   aenderungsAnfrage: {},
   flaechenId: null,
   frontenId: null,
-  searchTerm: "",
 };
 
 const slice = createSlice({
@@ -28,10 +27,6 @@ const slice = createSlice({
       state.frontenId = action.payload;
       return state;
     },
-    storeSearchTerm(state, action) {
-      state.searchTerm = action.payload;
-      return state;
-    },
   },
 });
 
@@ -42,7 +37,6 @@ export const {
   storeAenderungsAnfrage,
   storeFlaechenId,
   storeFrontenId,
-  storeSearchTerm,
 } = slice.actions;
 
 export const getKassenzeichen = (state) => {
@@ -59,8 +53,4 @@ export const getFlaechenId = (state) => {
 
 export const getFrontenId = (state) => {
   return state.search.frontenId;
-};
-
-export const getSearchTerm = (state) => {
-  return state.search.searchTerm;
 };
