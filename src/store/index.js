@@ -67,10 +67,16 @@ const authConfig = {
   whitelist: ["jwt", "login"],
 };
 
+const searchConfig = {
+  key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.search",
+  storage: localForage,
+  whitelist: ["previousSearches"],
+};
+
 export default configureStore({
   reducer: {
     auth: persistReducer(authConfig, authSlice.reducer),
-    search: searchSlice.reducer,
+    search: persistReducer(searchConfig, searchSlice.reducer),
     settings: settingsSlice.reducer,
   },
   devTools: devToolsEnabled === true && inProduction === false,
