@@ -72,9 +72,11 @@ const NavBar = ({
   const readOnly = useSelector(getReadOnly);
   const jwt = useSelector(getJWT);
   const [prevSearches, setPrevSearches] = useState([]);
-  const [search, setSearch] = useState("");
-  const [params, setParams] = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState(params.get("kassenzeichen"));
+  const [inputValue, setInpuValue] = useState("");
+  const [urlParams, setUrlParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(
+    urlParams.get("kassenzeichen")
+  );
 
   const items = [
     {
@@ -106,22 +108,18 @@ const NavBar = ({
   }
 
   const { data, isFetching } = useQuery({
-    queryKey: ["kassenzeichen", searchTerm],
+    queryKey: ["kassenzeichen", searchQuery],
     queryFn: async () =>
       request(
         ENDPOINT,
         query,
-        { kassenzeichen: searchTerm },
+        { kassenzeichen: searchQuery },
         {
           Authorization: `Bearer ${jwt}`,
         }
       ),
-    enabled: !!searchTerm,
+    enabled: !!searchQuery,
   });
-
-  const onSearch = (value) => {
-    setSearchTerm(value);
-  };
 
   const logout = () => {
     dispatch(storeJWT(undefined));
@@ -138,8 +136,8 @@ const NavBar = ({
     if (data?.kassenzeichen?.length > 0) {
       dispatch(storeKassenzeichen(data.kassenzeichen[0]));
       dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
-      setParams({ kassenzeichen: searchTerm.trim() });
-      setPrevSearches([...new Set([...prevSearches, searchTerm.trim()])]);
+      setUrlParams({ kassenzeichen: searchQuery.trim() });
+      setPrevSearches([...new Set([...prevSearches, searchQuery.trim()])]);
     }
   }, [data]);
 
@@ -151,7 +149,7 @@ const NavBar = ({
       <div className="md:flex hidden items-center gap-3">
         <img src={Logo} alt="Logo" className="h-10" />
         {mockData.map((link, i) => (
-          <Link to={link.href + `?${params}`} key={`navLink_${i}`}>
+          <Link to={link.href + `?${urlParams}`} key={`navLink_${i}`}>
             <Button
               type="text"
               className={`${
@@ -184,9 +182,9 @@ const NavBar = ({
             ),
           }))}
           className="xl:w-1/2 w-full mx-auto"
-          defaultValue={params.get("kassenzeichen")}
-          onSelect={(value) => setSearchTerm(value)}
-          onChange={(value) => setSearch(value)}
+          defaultValue={urlParams.get("kassenzeichen")}
+          onSelect={(value) => setSearchQuery(value)}
+          onChange={(value) => setInpuValue(value)}
         >
           <Input
             placeholder="Suche..."
@@ -194,10 +192,10 @@ const NavBar = ({
               isFetching ? (
                 <LoadingOutlined />
               ) : (
-                <SearchOutlined onClick={() => onSearch(search)} />
+                <SearchOutlined onClick={() => setSearchQuery(inputValue)} />
               )
             }
-            onPressEnter={() => onSearch(search)}
+            onPressEnter={(e) => setSearchQuery(inputValue)}
             status={data?.kassenzeichen?.length === 0 && "error"}
             name="kassenzeichen"
           />
