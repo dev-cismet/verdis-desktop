@@ -130,6 +130,12 @@ const NavBar = ({
     dispatch(storeLogin(undefined));
   };
 
+  const removeKassenzeichen = (index) => {
+    const tmp = prevSearches.slice();
+    tmp.splice(index, 1);
+    setPrevSearches(tmp);
+  };
+
   useEffect(() => {
     if (data?.kassenzeichen?.length > 0) {
       dispatch(storeKassenzeichen(data.kassenzeichen[0]));
@@ -165,15 +171,16 @@ const NavBar = ({
       </div>
       <div className="flex relative items-center gap-3 w-full">
         <AutoComplete
-          options={prevSearches.map((prev) => ({
-            value: prev,
+          options={prevSearches.map((kassenzeichen, i) => ({
+            value: kassenzeichen,
             label: (
               <div className="flex gap-2 items-center group">
                 <ClockCircleOutlined className="text-lg" />
-                <span className="w-full">{prev}</span>
+                <span className="w-full">{kassenzeichen}</span>
                 <FontAwesomeIcon
                   className="group-hover:visible invisible hover:bg-zinc-200 p-2"
                   icon={faX}
+                  onClick={() => removeKassenzeichen(i)}
                 />
               </div>
             ),
@@ -185,8 +192,6 @@ const NavBar = ({
         >
           <Input
             placeholder="Suche..."
-            defaultValue={params.get("kassenzeichen")}
-            value={params.get("kassenzeichen")}
             addonAfter={
               isFetching ? (
                 <LoadingOutlined />
