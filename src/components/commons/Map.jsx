@@ -3,10 +3,7 @@ import TopicMapComponent from "react-cismap/topicmaps/TopicMapComponent.js";
 import "react-cismap/topicMaps.css";
 import "leaflet/dist/leaflet.css";
 import { Card } from "antd";
-
 import PropTypes from "prop-types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef, useState } from "react";
 const mockExtractor = (input) => {
   return {
@@ -46,11 +43,7 @@ const Map = ({
     <Card
       size="small"
       hoverable={false}
-      title={
-        <span>
-          <FontAwesomeIcon icon={faBars} /> Karte
-        </span>
-      }
+      title={<span>Karte</span>}
       style={{
         width: width,
         height: height,
