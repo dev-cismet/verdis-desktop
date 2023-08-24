@@ -110,7 +110,7 @@ const NavBar = ({
     };
   }
 
-  const { data, isFetching } = useQuery({
+  const { data, isFetching, error } = useQuery({
     queryKey: ["kassenzeichen", searchQuery],
     queryFn: async () =>
       request(
@@ -122,12 +122,21 @@ const NavBar = ({
         }
       ),
     enabled: !!searchQuery,
+    refetchOnWindowFocus: false,
+    retry: false,
   });
 
   const logout = () => {
     dispatch(storeJWT(undefined));
     dispatch(storeLogin(undefined));
   };
+
+  useEffect(() => {
+    if (error) {
+      dispatch(storeJWT(""));
+      dispatch(storeKassenzeichen({}));
+    }
+  }, [error]);
 
   useEffect(() => {
     if (data?.kassenzeichen?.length > 0) {
