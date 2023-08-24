@@ -41,12 +41,6 @@ const slice = createSlice({
       }
       return state;
     },
-    removePreviousSearch(state, action) {
-      const tmp = state.previousSearches.slice();
-      tmp.splice(action.payload, 1);
-      state.previousSearches = tmp;
-      return state;
-    },
   },
 });
 
@@ -58,7 +52,6 @@ export const {
   storeFlaechenId,
   storeFrontenId,
   addSearch,
-  removePreviousSearch,
 } = slice.actions;
 
 export const getKassenzeichen = (state) => {

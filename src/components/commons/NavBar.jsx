@@ -176,14 +176,9 @@ const NavBar = ({
           options={prevSearches.map((kassenzeichen, i) => ({
             value: kassenzeichen,
             label: (
-              <div className="flex gap-2 items-center group">
+              <div className="flex gap-2 items-center">
                 <ClockCircleOutlined className="text-lg" />
                 <span className="w-full">{kassenzeichen}</span>
-                <FontAwesomeIcon
-                  className="group-hover:visible invisible hover:bg-zinc-200 p-2"
-                  icon={faX}
-                  onClick={() => dispatch(removePreviousSearch(i))}
-                />
               </div>
             ),
           }))}
