@@ -10,7 +10,7 @@ import {
   Navigate,
   Outlet,
   RouterProvider,
-  createBrowserRouter,
+  createHashRouter,
 } from "react-router-dom";
 import OverviewPage from "./pages/Overview";
 import SealedSurfaceOverviewPage from "./pages/SealedSurfaces";
@@ -48,7 +48,7 @@ const NavBarWrapper = () => {
   );
 };
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <NavBarWrapper />,
