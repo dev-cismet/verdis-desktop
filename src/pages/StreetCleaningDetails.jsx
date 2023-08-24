@@ -6,6 +6,7 @@ import Details from "../components/streetCleaning/Details";
 import Fronts from "../components/streetCleaning/Fronts";
 import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
+import { frontsExtractor } from "../tools/extractors";
 
 const Page = ({
   width = "100%",
@@ -48,6 +49,7 @@ const Page = ({
             width={cardStyleFronts.width}
             height={cardStyleFronts.height}
             style={cardStyleFronts}
+            extractor={frontsExtractor}
           />
           <div className="flex flex-col gap-2 h-full w-[60%]">
             <Details

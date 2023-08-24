@@ -140,3 +140,180 @@ export const areasDetailsExtractor = (kassenzeichen) => {
 
   return data;
 };
+
+export const sewerConnectionExtractor = (kassenzeichen) => {
+  const sewegeConnection = kassenzeichen?.kanalanschlussObject;
+
+  return {
+    rk: {
+      vorhanden: sewegeConnection?.rkvorhanden,
+      angeschlossen: sewegeConnection?.rkangeschlossen,
+    },
+    mkr: {
+      vorhanden: sewegeConnection?.mkrvorhanden,
+      angeschlossen: sewegeConnection?.mkrangeschlossen,
+    },
+    mks: {
+      vorhanden: sewegeConnection?.mksvorhanden,
+      angeschlossen: sewegeConnection?.mksangeschlossen,
+    },
+    sk: {
+      vorhanden: sewegeConnection?.skvorhanden,
+      angeschlossen: sewegeConnection?.skangeschlossen,
+    },
+    sg: {
+      vorhanden: sewegeConnection?.sgvorhanden,
+      entleerung: sewegeConnection?.sgentleerung,
+    },
+    kka: {
+      vorhanden: sewegeConnection?.kkavorhanden,
+      entleerung: sewegeConnection?.kkaentleerung,
+    },
+    evg: {
+      vorhanden: sewegeConnection?.evg,
+    },
+  };
+};
+
+export const fileNumberExtractor = (kassenzeichen) => {
+  const data =
+    kassenzeichen?.kanalanschlussObject?.befreiungenunderlaubnisseArray?.map(
+      (befreiungErlaubnis) => ({
+        title:
+          befreiungErlaubnis?.befreiungerlaubnisObject?.aktenzeichen +
+          " (" +
+          befreiungErlaubnis?.befreiungerlaubnisObject
+            ?.befreiungerlaubnis_nutzung?.name +
+          ")",
+        data: befreiungErlaubnis?.befreiungerlaubnisObject?.befreiungerlaubnis_geometrieArrayRelationShip?.map(
+          (relationship) => ({
+            title:
+              relationship?.befreiungerlaubnis_geometrie_typ_versickerung?.name,
+            value: relationship?.durchfluss + " l/s",
+          })
+        ),
+      })
+    );
+
+  return data;
+};
+
+export const exemptionExtractor = (input) => {
+  return [
+    {
+      key: "1",
+      name: "2173862/0(PRl)",
+      seepageFrom: "21.07.2018",
+      seepageUntil: "23.08.2020",
+      useCase: "Wohnen",
+      type: "Seepage",
+      seepage: "1.234",
+      gVerth: true,
+    },
+    {
+      key: "2",
+      name: "2173862/0(PRl)",
+      seepageFrom: "21.07.2018",
+      seepageUntil: "23.08.2020",
+      useCase: "Wohnen",
+      type: "Seepage",
+      seepage: "1.234",
+      gVerth: true,
+    },
+    {
+      key: "3",
+      name: "2173862/0(PRl)",
+      seepageFrom: "21.07.2018",
+      seepageUntil: "23.08.2020",
+      useCase: "Wohnen",
+      type: "Seepage",
+      seepage: "1.234",
+      gVerth: false,
+    },
+    {
+      key: "4",
+      name: "2173862/0(PRl)",
+      seepageFrom: "21.07.2018",
+      seepageUntil: "23.08.2020",
+      useCase: "Wohnen",
+      type: "Seepage",
+      seepage: "1.234",
+      gVerth: false,
+    },
+    {
+      key: "5",
+      name: "2173862/0(PRl)",
+      seepageFrom: "21.07.2018",
+      seepageUntil: "23.08.2020",
+      useCase: "Wohnen",
+      type: "Seepage",
+      seepage: "1.234",
+      gVerth: false,
+    },
+    {
+      key: "6",
+      name: "2173862/0(PRl)",
+      seepageFrom: "21.07.2018",
+      seepageUntil: "23.08.2020",
+      useCase: "Wohnen",
+      type: "Seepage",
+      seepage: "1.234",
+      gVerth: true,
+    },
+  ];
+};
+
+export const seepageDetailsExtractor = (input) => {
+  return [
+    {
+      title: "Aktenzeichen",
+    },
+    {
+      title: "Antrag vom",
+    },
+    {
+      title: "Gültig bis",
+    },
+    {
+      title: "Nutzung",
+      select: true,
+    },
+    {
+      title: "Typ",
+      select: true,
+      seperator: true,
+    },
+    {
+      title: "Q[l/s]",
+      select: true,
+    },
+    {
+      title: "G-Verh",
+      checkbox: true,
+    },
+    {
+      title: "Bemerkung",
+      textArea: true,
+    },
+    {
+      title: "Reinigung",
+      seperator: true,
+    },
+    {
+      title: "Kf[m/s]",
+    },
+  ];
+};
+
+export const frontsExtractor = (kassenzeichen) => {
+  const data = kassenzeichen?.frontenArray?.map((row) => ({
+    number: row?.frontObject?.nummer,
+    length: row?.frontObject?.frontinfoObject?.laenge_grafik,
+    class:
+      row?.frontObject?.frontinfoObject?.lage_sr_satzung?.strassenreinigung
+        ?.key,
+    id: row?.frontObject?.id,
+  }));
+
+  return data;
+};

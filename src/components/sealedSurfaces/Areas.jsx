@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { getKassenzeichen } from "../../store/slices/search";
 import { compare } from "../../tools/helper";
 
-const extractor = (input) => {
+const mockExtractor = (input) => {
   const data = input?.flaechenArray?.map((row) => ({
     name: row?.flaecheObject?.flaechenbezeichnung,
     size: row?.flaecheObject?.flaecheninfoObject?.groesse_aus_grafik,
@@ -36,7 +36,12 @@ const columns = [
   },
 ];
 
-const Areas = ({ width = 300, height = 200, style }) => {
+const Areas = ({
+  width = 300,
+  height = 200,
+  style,
+  extractor = mockExtractor,
+}) => {
   const kassenzeichen = useSelector(getKassenzeichen);
   const data = extractor(kassenzeichen);
 

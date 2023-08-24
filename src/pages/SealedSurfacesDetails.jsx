@@ -6,6 +6,7 @@ import Details from "../components/sealedSurfaces/Details";
 import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
+import { areasDetailsExtractor } from "../tools/extractors";
 
 const Page = ({
   width = "100%",
@@ -48,6 +49,7 @@ const Page = ({
             width={cardStyleTable.width}
             height={cardStyleTable.height}
             style={cardStyleTable}
+            extractor={areasDetailsExtractor}
           />
           <div className="flex flex-col gap-2 h-full w-[50%]">
             <Details

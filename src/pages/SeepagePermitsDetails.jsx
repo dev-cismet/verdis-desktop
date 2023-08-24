@@ -6,6 +6,10 @@ import Exemption from "../components/seepagePermits/Exemption";
 import Details from "../components/seepagePermits/Details";
 import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
+import {
+  exemptionExtractor,
+  seepageDetailsExtractor,
+} from "../tools/extractors";
 
 const Page = ({
   width = "100%",
@@ -48,6 +52,7 @@ const Page = ({
             width={cardStyleFronts.width}
             height={cardStyleFronts.height}
             style={cardStyleFronts}
+            extractor={exemptionExtractor}
           />
           <div className="flex gap-2 h-[50%]">
             <Map width={"100%"} height={"100%"} />
@@ -55,6 +60,7 @@ const Page = ({
               width={cardStyleDetails.width}
               height={cardStyleDetails.height}
               style={cardStyleDetails}
+              extractor={seepageDetailsExtractor}
             />
           </div>
         </div>

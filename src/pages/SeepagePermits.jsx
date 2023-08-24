@@ -6,6 +6,10 @@ import FileNumber from "../components/seepagePermits/FileNumber";
 import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
+import {
+  fileNumberExtractor,
+  sewerConnectionExtractor,
+} from "../tools/extractors";
 
 const Page = ({
   width = "100%",
@@ -51,11 +55,13 @@ const Page = ({
               width={cardStyleConnection.width}
               height={cardStyleConnection.height}
               style={cardStyleConnection}
+              extractor={sewerConnectionExtractor}
             />
             <FileNumber
               width={cardStyleFileNumber.width}
               height={cardStyleFileNumber.height}
               style={cardStyleFileNumber}
+              extractor={fileNumberExtractor}
             />
           </div>
           <Map width={"80%"} height={"100%"} />

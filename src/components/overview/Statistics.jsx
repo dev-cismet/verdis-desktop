@@ -8,30 +8,7 @@ import {
 } from "../../store/slices/search";
 
 const mockExtractor = (kassenzeichen, aenderungsAnfrage) => {
-  return [
-    {
-      value: kassenzeichen?.flaechenArray?.length,
-      title: "Flächen",
-    },
-    {
-      value: kassenzeichen?.frontenArray?.length,
-      title: "Fronten",
-    },
-    {
-      value:
-        kassenzeichen?.kanalanschlussObject?.befreiungenunderlaubnisseArray
-          ?.length,
-      title: "Versickerungsgenehmigungen",
-    },
-    {
-      value: kassenzeichen?.kassenzeichen_geometrienArray?.length,
-      title: "Geometrien",
-    },
-    {
-      value: aenderungsAnfrage?.length,
-      title: "Änderungsanfragen",
-    },
-  ];
+  return [];
 };
 
 const Statistics = ({

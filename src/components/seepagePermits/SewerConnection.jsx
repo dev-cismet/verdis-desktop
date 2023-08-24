@@ -3,38 +3,8 @@ import CustomCard from "../ui/Card";
 import { getKassenzeichen } from "../../store/slices/search";
 import { useSelector } from "react-redux";
 
-const extractor = (kassenzeichen) => {
-  const sewegeConnection = kassenzeichen?.kanalanschlussObject;
-
-  return {
-    rk: {
-      vorhanden: sewegeConnection?.rkvorhanden,
-      angeschlossen: sewegeConnection?.rkangeschlossen,
-    },
-    mkr: {
-      vorhanden: sewegeConnection?.mkrvorhanden,
-      angeschlossen: sewegeConnection?.mkrangeschlossen,
-    },
-    mks: {
-      vorhanden: sewegeConnection?.mksvorhanden,
-      angeschlossen: sewegeConnection?.mksangeschlossen,
-    },
-    sk: {
-      vorhanden: sewegeConnection?.skvorhanden,
-      angeschlossen: sewegeConnection?.skangeschlossen,
-    },
-    sg: {
-      vorhanden: sewegeConnection?.sgvorhanden,
-      entleerung: sewegeConnection?.sgentleerung,
-    },
-    kka: {
-      vorhanden: sewegeConnection?.kkavorhanden,
-      entleerung: sewegeConnection?.kkaentleerung,
-    },
-    evg: {
-      vorhanden: sewegeConnection?.evg,
-    },
-  };
+const mockExtractor = (kassenzeichen) => {
+  return {};
 };
 
 const Row = ({ title, data, useCheckbox }) => {
@@ -74,7 +44,12 @@ const Row = ({ title, data, useCheckbox }) => {
   );
 };
 
-const SewerConnection = ({ width = 300, height = 200, style }) => {
+const SewerConnection = ({
+  width = 300,
+  height = 200,
+  style,
+  extractor = mockExtractor,
+}) => {
   const kassenzeichen = useSelector(getKassenzeichen);
   const data = extractor(kassenzeichen);
 

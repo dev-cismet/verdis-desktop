@@ -7,6 +7,7 @@ import Fronts from "../components/streetCleaning/Fronts";
 import Summary from "../components/overview/Summary";
 import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
+import { frontsExtractor, summaryExtractor } from "../tools/extractors";
 
 const Page = ({
   width = "100%",
@@ -53,6 +54,7 @@ const Page = ({
               width={cardStyleFronts.width}
               height={cardStyleFronts.height}
               style={cardStyleFronts}
+              extractor={frontsExtractor}
             />
             <LegalNotice
               width={cardStyleLegal.width}
@@ -64,6 +66,7 @@ const Page = ({
               width={cardStyleSummary.width}
               height={cardStyleSummary.height}
               style={cardStyleSummary}
+              extractor={summaryExtractor}
             />
           </div>
           <Map width={"80%"} height={"100%"} />

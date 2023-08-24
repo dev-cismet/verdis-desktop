@@ -6,6 +6,7 @@ import Areas from "../components/sealedSurfaces/Areas";
 import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
+import { areasExtractor, sumsExtractor } from "../tools/extractors";
 
 const Page = ({
   width = "100%",
@@ -54,11 +55,13 @@ const Page = ({
               width={cardStyleArea.width}
               height={cardStyleArea.height}
               style={cardStyleArea}
+              extractor={areasExtractor}
             />
             <Sums
               width={cardStyleSum.width}
               height={cardStyleSum.height}
               style={cardStyleSum}
+              extractor={sumsExtractor}
             />
 
             <ChangeRequests

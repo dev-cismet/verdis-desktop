@@ -7,17 +7,8 @@ import {
 } from "../../store/slices/search";
 import { useDispatch, useSelector } from "react-redux";
 
-const extractor = (kassenzeichen) => {
-  const data = kassenzeichen?.frontenArray?.map((row) => ({
-    number: row?.frontObject?.nummer,
-    length: row?.frontObject?.frontinfoObject?.laenge_grafik,
-    class:
-      row?.frontObject?.frontinfoObject?.lage_sr_satzung?.strassenreinigung
-        ?.key,
-    id: row?.frontObject?.id,
-  }));
-
-  return data;
+const mockExtractor = (kassenzeichen) => {
+  return [];
 };
 
 const columns = [
@@ -38,7 +29,12 @@ const columns = [
   },
 ];
 
-const Fronts = ({ width = 300, height = 200, style }) => {
+const Fronts = ({
+  width = 300,
+  height = 200,
+  style,
+  extractor = mockExtractor,
+}) => {
   const kassenzeichen = useSelector(getKassenzeichen);
   const data = extractor(kassenzeichen);
   const frontenId = useSelector(getFrontenId);

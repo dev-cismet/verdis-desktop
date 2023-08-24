@@ -7,7 +7,7 @@ import {
   storeFlaechenId,
 } from "../../store/slices/search";
 
-const extractor = (input) => {
+const mockExtractor = (input) => {
   const data = input?.flaechenArray?.map((flaeche) => ({
     name: flaeche?.flaecheObject?.flaechenbezeichnung,
     size: flaeche?.flaecheObject?.flaecheninfoObject?.groesse_aus_grafik,
@@ -59,7 +59,12 @@ const columns = [
   },
 ];
 
-const TableView = ({ width = 300, height = 200, style }) => {
+const TableView = ({
+  width = 300,
+  height = 200,
+  style,
+  extractor = mockExtractor,
+}) => {
   const kassenzeichen = useSelector(getKassenzeichen);
   const data = extractor(kassenzeichen);
   const flaechenId = useSelector(getFlaechenId);
