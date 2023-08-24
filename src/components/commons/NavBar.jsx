@@ -133,8 +133,7 @@ const NavBar = ({
 
   useEffect(() => {
     if (error) {
-      dispatch(storeJWT(""));
-      dispatch(storeKassenzeichen({}));
+      logout();
     }
   }, [error]);
 
