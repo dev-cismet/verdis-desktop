@@ -1,7 +1,7 @@
 import { AutoComplete, Avatar, Button, Dropdown, Input, Switch } from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faX } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import {
   ClockCircleOutlined,
   CommentOutlined,
@@ -22,7 +22,6 @@ import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
 import {
   addSearch,
   getPreviousSearches,
-  removePreviousSearch,
   storeAenderungsAnfrage,
   storeKassenzeichen,
 } from "../../store/slices/search";

@@ -1,7 +1,6 @@
 import React from "react";
 import Map from "../components/commons/Map";
 import InfoTable from "../components/info/InfoTable";
-import NavBar from "../components/commons/NavBar";
 import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
 

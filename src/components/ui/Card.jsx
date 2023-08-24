@@ -1,6 +1,5 @@
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card } from "antd";
+
 const CustomCard = ({ style, title, children, fullHeight, ...props }) => {
   return (
     <Card
