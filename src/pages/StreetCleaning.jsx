@@ -3,11 +3,12 @@ import Map from "../components/commons/Map";
 import { Button } from "antd";
 import Chat from "../components/commons/Chat";
 import LegalNotice from "../components/streetCleaning/LegalNotice";
-import Fronts from "../components/streetCleaning/Fronts";
 import Summary from "../components/overview/Summary";
 import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
 import { frontsExtractor, summaryExtractor } from "../tools/extractors";
+import TableCard from "../components/ui/TableCard";
+import { compare } from "../tools/helper";
 
 const Page = ({
   width = "100%",
@@ -50,10 +51,31 @@ const Page = ({
         </InfoBar>
         <div className="flex gap-2 h-full max-h-[calc(100%-40px)]">
           <div className="flex flex-col gap-2 h-full w-[30%]">
-            <Fronts
+            <TableCard
               width={cardStyleFronts.width}
               height={cardStyleFronts.height}
               style={cardStyleFronts}
+              title="Fronten"
+              columns={[
+                {
+                  title: "Nummer",
+                  dataIndex: "number",
+                  key: "number",
+                  sorter: (a, b) => compare(a.number, b.number),
+                },
+                {
+                  title: "Länge in m",
+                  dataIndex: "length",
+                  key: "length",
+                  sorter: (a, b) => compare(a.length, b.length),
+                },
+                {
+                  title: "Klasse",
+                  dataIndex: "class",
+                  key: "class",
+                  sorter: (a, b) => compare(a.class, b.class),
+                },
+              ]}
               extractor={frontsExtractor}
             />
             <LegalNotice

@@ -1,6 +1,6 @@
 import React from "react";
 import Map from "../components/commons/Map";
-import { Button } from "antd";
+import { Button, Checkbox } from "antd";
 import Chat from "../components/commons/Chat";
 import Exemption from "../components/seepagePermits/Exemption";
 import Details from "../components/seepagePermits/Details";
@@ -10,6 +10,8 @@ import {
   exemptionExtractor,
   seepageDetailsExtractor,
 } from "../tools/extractors";
+import TableCard from "../components/ui/TableCard";
+import { compare } from "../tools/helper";
 
 const Page = ({
   width = "100%",
@@ -27,7 +29,7 @@ const Page = ({
   }
   const navigate = useNavigate();
 
-  const cardStyleFronts = { width: "100%", height: "50%", minHeight: 0 };
+  const cardStylePermits = { width: "100%", height: "50%", minHeight: 0 };
   const cardStyleDetails = { width: "100%", height: "100%", minHeight: 0 };
 
   return (
@@ -48,10 +50,58 @@ const Page = ({
           </Button>
         </InfoBar>
         <div className="flex flex-col gap-2 h-full max-h-[calc(100%-40px)]">
-          <Exemption
-            width={cardStyleFronts.width}
-            height={cardStyleFronts.height}
-            style={cardStyleFronts}
+          <TableCard
+            width={cardStylePermits.width}
+            height={cardStylePermits.height}
+            style={cardStylePermits}
+            title="Befreiung/Erlaubnis"
+            columns={[
+              {
+                title: "Aktenzeichen",
+                dataIndex: "name",
+                key: "name",
+                sorter: (a, b) => compare(a.name, b.name),
+              },
+              {
+                title: "Antrag vom",
+                dataIndex: "seepageFrom",
+                key: "seepageFrom",
+                sorter: (a, b) => compare(a.seepageFrom, b.seepageFrom),
+              },
+              {
+                title: "gültig bis",
+                dataIndex: "seepageUntil",
+                key: "seepageUntil",
+                sorter: (a, b) => compare(a.seepageUntil, b.seepageUntil),
+              },
+              {
+                title: "Nutzung",
+                dataIndex: "useCase",
+                key: "useCase",
+                sorter: (a, b) => compare(a.useCase, b.useCase),
+              },
+              {
+                title: "Typ",
+                dataIndex: "type",
+                key: "type",
+                sorter: (a, b) => compare(a.type, b.type),
+              },
+              {
+                title: "Q[l/s]",
+                dataIndex: "seepage",
+                key: "seepage",
+                sorter: (a, b) => compare(a.seepage, b.seepage),
+              },
+              {
+                title: "G-Verth",
+                dataIndex: "gVerth",
+                key: "gVerth",
+                sorter: (a, b) => compare(a.gVerth, b.gVerth),
+                render: (gVerth) => (
+                  <Checkbox checked={gVerth} className="flex justify-center" />
+                ),
+              },
+            ]}
             extractor={exemptionExtractor}
           />
           <div className="flex gap-2 h-[50%]">

@@ -2,11 +2,12 @@ import Map from "../components/commons/Map";
 import { Button } from "antd";
 import ChangeRequests from "../components/sealedSurfaces/ChangeRequests";
 import Sums from "../components/sealedSurfaces/Sums";
-import Areas from "../components/sealedSurfaces/Areas";
 import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
 import { areasExtractor, sumsExtractor } from "../tools/extractors";
+import TableCard from "../components/ui/TableCard";
+import { compare } from "../tools/helper";
 
 const Page = ({
   width = "100%",
@@ -51,10 +52,32 @@ const Page = ({
         </InfoBar>
         <div className="flex gap-2 h-full max-h-[calc(100%-40px)]">
           <div className="flex flex-col gap-2 h-full w-[30%]">
-            <Areas
+            <TableCard
               width={cardStyleArea.width}
               height={cardStyleArea.height}
               style={cardStyleArea}
+              title="Flächen"
+              columns={[
+                {
+                  title: "Bez.",
+                  dataIndex: "name",
+                  key: "name",
+                  sorter: (a, b) => compare(a.name, b.name),
+                },
+                {
+                  title: "Typ",
+                  dataIndex: "type",
+                  key: "type",
+                  sorter: (a, b) => compare(a.type, b.type),
+                },
+                {
+                  title: "Größe",
+                  dataIndex: "size",
+                  key: "size",
+                  sorter: (a, b) => compare(a.size, b.size),
+                  render: (area) => <div>{area} m²</div>,
+                },
+              ]}
               extractor={areasExtractor}
             />
             <Sums

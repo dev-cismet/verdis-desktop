@@ -3,10 +3,13 @@ import Map from "../components/commons/Map";
 import { Button } from "antd";
 import Chat from "../components/commons/Chat";
 import Details from "../components/streetCleaning/Details";
-import Fronts from "../components/streetCleaning/Fronts";
 import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
 import { frontsExtractor } from "../tools/extractors";
+import TableCard from "../components/ui/TableCard";
+import { compare } from "../tools/helper";
+import { getFrontenId, storeFrontenId } from "../store/slices/search";
+import { useDispatch, useSelector } from "react-redux";
 
 const Page = ({
   width = "100%",
@@ -23,6 +26,8 @@ const Page = ({
     };
   }
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const frontenId = useSelector(getFrontenId);
 
   const cardStyleFronts = { width: "50%", height: "100%", minHeight: 0 };
   const cardStyleDetails = { width: "100%", height: "50%", minHeight: 0 };
@@ -45,10 +50,33 @@ const Page = ({
           </Button>
         </InfoBar>
         <div className="flex gap-2 h-full max-h-[calc(100%-40px)]">
-          <Fronts
+          <TableCard
             width={cardStyleFronts.width}
             height={cardStyleFronts.height}
             style={cardStyleFronts}
+            title="Fronten"
+            columns={[
+              {
+                title: "Nummer",
+                dataIndex: "number",
+                key: "number",
+                sorter: (a, b) => compare(a.number, b.number),
+              },
+              {
+                title: "Länge in m",
+                dataIndex: "length",
+                key: "length",
+                sorter: (a, b) => compare(a.length, b.length),
+              },
+              {
+                title: "Klasse",
+                dataIndex: "class",
+                key: "class",
+                sorter: (a, b) => compare(a.class, b.class),
+              },
+            ]}
+            id={frontenId}
+            onRowClick={(record) => dispatch(storeFrontenId(record.id))}
             extractor={frontsExtractor}
           />
           <div className="flex flex-col gap-2 h-full w-[60%]">

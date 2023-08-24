@@ -1,12 +1,15 @@
 import React from "react";
 import Map from "../components/commons/Map";
 import { Button } from "antd";
-import TableView from "../components/sealedSurfaces/TableView";
 import Details from "../components/sealedSurfaces/Details";
 import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
 import { areasDetailsExtractor } from "../tools/extractors";
+import TableCard from "../components/ui/TableCard";
+import { useDispatch, useSelector } from "react-redux";
+import { getFlaechenId, storeFlaechenId } from "../store/slices/search";
+import { compare } from "../tools/helper";
 
 const Page = ({
   width = "100%",
@@ -23,6 +26,8 @@ const Page = ({
     };
   }
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const flaechenId = useSelector(getFlaechenId);
 
   const cardStyleTable = { width: "50%", height: "100%", minHeight: 0 };
   const cardStyleDetails = { width: "100%", height: "50%", minHeight: 0 };
@@ -45,10 +50,51 @@ const Page = ({
           </Button>
         </InfoBar>
         <div className="flex gap-2 h-full max-h-[calc(100%-40px)]">
-          <TableView
+          <TableCard
             width={cardStyleTable.width}
             height={cardStyleTable.height}
             style={cardStyleTable}
+            title="Flächen"
+            columns={[
+              {
+                title: "Bezeichnung",
+                dataIndex: "name",
+                key: "name",
+                sorter: (a, b) => compare(a.name, b.name),
+              },
+              {
+                title: "Größe m²",
+                dataIndex: "size",
+                key: "size",
+                sorter: (a, b) => compare(a.size, b.size),
+              },
+              {
+                title: "Flächenart",
+                dataIndex: "type",
+                key: "type",
+                sorter: (a, b) => compare(a.type, b.type),
+              },
+              {
+                title: "Anschlussgrad",
+                dataIndex: "connection",
+                key: "connection",
+                sorter: (a, b) => compare(a.connection, b.connection),
+              },
+              {
+                title: "Beschreibung",
+                dataIndex: "description",
+                key: "description",
+                sorter: (a, b) => compare(a.description, b.description),
+              },
+              {
+                title: "Erfassungdatum",
+                dataIndex: "date",
+                key: "date",
+                sorter: (a, b) => compare(a.date, b.date),
+              },
+            ]}
+            id={flaechenId}
+            onRowClick={(record) => dispatch(storeFlaechenId(record.id))}
             extractor={areasDetailsExtractor}
           />
           <div className="flex flex-col gap-2 h-full w-[50%]">
