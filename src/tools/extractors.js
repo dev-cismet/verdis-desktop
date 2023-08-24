@@ -100,13 +100,15 @@ export const sumsExtractor = (kassenzeichen) => {
 export const summaryExtractor = (kassenzeichen) => {
   const data = kassenzeichen?.frontenArray?.map((front) => ({
     key:
-      front.frontObject.frontinfoObject.lage_sr_satzung.strassenreinigung.key +
+      front?.frontObject?.frontinfoObject?.lage_sr_satzung?.strassenreinigung
+        ?.key +
       "-" +
-      front.frontObject.frontinfoObject.lage_sr_satzung.strassenreinigung
-        .schluessel,
-    streetNumber: front.frontObject.frontinfoObject.strasseObject.schluessel,
-    streetName: front.frontObject.frontinfoObject.strasseObject.name,
-    length: front.frontObject.frontinfoObject.laenge_grafik,
+      front?.frontObject?.frontinfoObject?.lage_sr_satzung?.strassenreinigung
+        ?.schluessel,
+    streetNumber:
+      front?.frontObject?.frontinfoObject?.strasseObject?.schluessel,
+    streetName: front?.frontObject?.frontinfoObject?.strasseObject?.name,
+    length: front?.frontObject?.frontinfoObject?.laenge_grafik,
   }));
 
   return data;
@@ -198,69 +200,34 @@ export const fileNumberExtractor = (kassenzeichen) => {
   return data;
 };
 
-export const exemptionExtractor = (input) => {
-  return [
-    {
-      key: "1",
-      name: "2173862/0(PRl)",
-      seepageFrom: "21.07.2018",
-      seepageUntil: "23.08.2020",
-      useCase: "Wohnen",
-      type: "Seepage",
-      seepage: "1.234",
-      gVerth: true,
-    },
-    {
-      key: "2",
-      name: "2173862/0(PRl)",
-      seepageFrom: "21.07.2018",
-      seepageUntil: "23.08.2020",
-      useCase: "Wohnen",
-      type: "Seepage",
-      seepage: "1.234",
-      gVerth: true,
-    },
-    {
-      key: "3",
-      name: "2173862/0(PRl)",
-      seepageFrom: "21.07.2018",
-      seepageUntil: "23.08.2020",
-      useCase: "Wohnen",
-      type: "Seepage",
-      seepage: "1.234",
-      gVerth: false,
-    },
-    {
-      key: "4",
-      name: "2173862/0(PRl)",
-      seepageFrom: "21.07.2018",
-      seepageUntil: "23.08.2020",
-      useCase: "Wohnen",
-      type: "Seepage",
-      seepage: "1.234",
-      gVerth: false,
-    },
-    {
-      key: "5",
-      name: "2173862/0(PRl)",
-      seepageFrom: "21.07.2018",
-      seepageUntil: "23.08.2020",
-      useCase: "Wohnen",
-      type: "Seepage",
-      seepage: "1.234",
-      gVerth: false,
-    },
-    {
-      key: "6",
-      name: "2173862/0(PRl)",
-      seepageFrom: "21.07.2018",
-      seepageUntil: "23.08.2020",
-      useCase: "Wohnen",
-      type: "Seepage",
-      seepage: "1.234",
-      gVerth: true,
-    },
-  ];
+export const exemptionExtractor = (kassenzeichen) => {
+  const data =
+    kassenzeichen?.kanalanschlussObject?.befreiungenunderlaubnisseArray?.map(
+      (befreiungErlaubnis, i) => ({
+        key: i,
+        name:
+          befreiungErlaubnis?.befreiungerlaubnisObject?.aktenzeichen +
+          " (" +
+          befreiungErlaubnis?.befreiungerlaubnisObject
+            ?.befreiungerlaubnis_nutzung?.name +
+          ")",
+        seepageFrom: befreiungErlaubnis?.befreiungerlaubnisObject?.antrag_vom,
+        seepageUntil: befreiungErlaubnis?.befreiungerlaubnisObject?.gueltig_bis,
+        useCase: "Muss noch hinzugefügt werden",
+        type: befreiungErlaubnis?.befreiungerlaubnisObject
+          ?.befreiungerlaubnis_geometrieArrayRelationShip
+          ?.befreiungerlaubnis_geometrie_typ_versickerung?.name,
+        seepage:
+          befreiungErlaubnis?.befreiungerlaubnisObject
+            ?.befreiungerlaubnis_geometrieArrayRelationShip?.durchfluss,
+        gVerth:
+          befreiungErlaubnis?.befreiungerlaubnisObject
+            ?.befreiungerlaubnis_geometrieArrayRelationShip
+            ?.gutachten_vorhanden,
+      })
+    );
+
+  return [data];
 };
 
 export const seepageDetailsExtractor = (input) => {

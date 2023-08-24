@@ -19,7 +19,6 @@ const mockExtractor = (input) => {
     {
       title: "Typ",
       select: true,
-      seperator: true,
     },
     {
       title: "Q[l/s]",
@@ -45,9 +44,9 @@ const mockExtractor = (input) => {
 
 const Row = ({ title, textArea, select, checkbox }) => {
   return (
-    <div className="flex items-center gap-2">
+    <div className={`flex gap-2 ${textArea && "h-full"}`}>
       <span className="md:w-1/5 w-1/3">{title}:</span>
-      {textArea && <Input.TextArea className="w-full" />}
+      {textArea && <Input.TextArea className="w-full h-full" />}
       {select && <Select className="w-full" />}
       {checkbox && <Checkbox className="w-full flex justify-start" />}
       {!textArea && !select && !checkbox && <Input className="w-full" />}
@@ -65,18 +64,15 @@ const Details = ({
   const data = extractor(dataIn);
   return (
     <CustomCard style={{ ...style, width, height }} title="Details">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 h-full">
         {data.map((row, i) => (
-          <>
-            {row.seperator && <hr className="h-px bg-gray-100 border-0" />}
-            <Row
-              key={`seepage_details_${i}`}
-              title={row.title}
-              textArea={row.textArea}
-              select={row.select}
-              checkbox={row.checkbox}
-            />
-          </>
+          <Row
+            key={`seepage_details_${i}`}
+            title={row.title}
+            textArea={row.textArea}
+            select={row.select}
+            checkbox={row.checkbox}
+          />
         ))}
       </div>
     </CustomCard>

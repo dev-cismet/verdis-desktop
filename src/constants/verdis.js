@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 
-export const REST_SERVICE = "https://verdis-cloud.cismet.de/verdis/api/";
+export const REST_SERVICE = "https://verdis-cloud.cismet.de/verdis/api";
 export const DOMAIN = "VERDIS_GRUNDIS";
 export const ENDPOINT = REST_SERVICE + `/graphql/` + DOMAIN + "/execute";
 export const APP_KEY = "verdis-desktop";
@@ -74,21 +74,17 @@ export const query = gql`
         evg
         kkaentleerung
         kkavorhanden
-      }
-      kassenzeichen_geometrienArray {
-        kassenzeichen_geometrieObject {
-          name
-        }
-      }
-      kanalanschlussObject {
         befreiungenunderlaubnisseArray {
           befreiungerlaubnisObject {
             aktenzeichen
+            antrag_vom
+            gueltig_bis
             befreiungerlaubnis_nutzung {
               name
             }
             befreiungerlaubnis_geometrieArrayRelationShip {
               durchfluss
+              gutachten_vorhanden
               befreiungerlaubnis_geometrie_typ_versickerung {
                 name
               }
@@ -96,6 +92,11 @@ export const query = gql`
           }
         }
         befreiungenunderlaubnisse
+      }
+      kassenzeichen_geometrienArray {
+        kassenzeichen_geometrieObject {
+          name
+        }
       }
     }
     aenderungsanfrage(
