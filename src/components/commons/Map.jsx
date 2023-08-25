@@ -4,11 +4,28 @@ import "react-cismap/topicMaps.css";
 import "leaflet/dist/leaflet.css";
 import { Card } from "antd";
 import PropTypes from "prop-types";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import FeatureCollection from "react-cismap/FeatureCollection";
+import { flaechen } from "../../stories/_data/rathausKassenzeichenfeatureCollection";
+import {
+  FeatureCollectionDisplay,
+  MappingConstants,
+  RoutedMap,
+} from "react-cismap";
+import { TopicMapStylingContext } from "react-cismap/contexts/TopicMapStylingContextProvider";
+import { useNavigate, useLocation } from "react-router-dom";
+import { modifyQueryPart } from "react-cismap/tools/routingHelper";
+import bbox from "@turf/bbox";
+import {
+  fitFeatureArray,
+  getBoundsForFeatureArray,
+} from "../../tools/mappingTools";
+
 const mockExtractor = (input) => {
   return {
     homeCenter: [51.27225612927373, 7.199918031692506],
     homeZoom: 16,
+    featureCollection: flaechen,
   };
 };
 
@@ -18,12 +35,32 @@ const Map = ({
   width = 400,
   height = 500,
 }) => {
+  const navigate = useNavigate();
+
   const data = extractor(dataIn);
   const padding = 5;
   const headHeight = 37;
   const cardRef = useRef(null);
   const [mapWidth, setMapWidth] = useState(0);
   const [mapHeight, setMapHeight] = useState(0);
+  const {
+    backgroundModes,
+    selectedBackground,
+    baseLayerConf,
+    backgroundConfigurations,
+    additionalLayerConfiguration,
+    activeAdditionalLayerKeys,
+  } = useContext(TopicMapStylingContext);
+  let backgroundsFromMode;
+  const browserlocation = useLocation();
+
+  const urlSearchParams = new URLSearchParams(browserlocation.search);
+
+  try {
+    backgroundsFromMode = backgroundConfigurations[selectedBackground].layerkey;
+  } catch (e) {}
+
+  const _backgroundLayers = backgroundsFromMode || "rvrGrau@40";
 
   useEffect(() => {
     setMapWidth(cardRef?.current?.offsetWidth);
@@ -36,8 +73,21 @@ const Map = ({
 
     window.addEventListener("resize", setSize);
 
+    console.log("xxx first load", data?.featureCollection);
+    if (data?.featureCollection && refRoutedMap?.current) {
+      fitFeatureArray(data?.featureCollection, refRoutedMap);
+    }
+
     return () => window.removeEventListener("resize", setSize);
   }, []);
+  let refRoutedMap = useRef(null);
+
+  const mapStyle = {
+    width: mapWidth - 2 * padding,
+    height: mapHeight - 2 * padding - headHeight,
+    cursor: "pointer",
+    clear: "both",
+  };
 
   return (
     <Card
@@ -53,20 +103,37 @@ const Map = ({
       type="inner"
       ref={cardRef}
     >
-      <TopicMapContextProvider appKey="verdis-desktop.map">
-        <TopicMapComponent
-          mapStyle={{
-            width: mapWidth - 2 * padding,
-            height: mapHeight - 2 * padding - headHeight,
-          }}
-          homeZoom={data.homeZoom}
-          homeCenter={data.homeCenter}
-          gazData={[]}
-          gazetteerSearchControl={false}
-          hamburgerMenu={false}
-          fullScreenControl={false}
-        ></TopicMapComponent>
-      </TopicMapContextProvider>
+      <RoutedMap
+        editable={false}
+        style={mapStyle}
+        key={"leafletRoutedMap"}
+        backgroundlayers={_backgroundLayers}
+        urlSearchParams={urlSearchParams}
+        layers=""
+        referenceSystem={MappingConstants.crs3857}
+        referenceSystemDefinition={MappingConstants.proj4crs3857def}
+        ref={refRoutedMap}
+        minZoom={11}
+        maxZoom={22}
+        zoomSnap={0.5}
+        zoomDelta={0.5}
+        fallbackPosition={{
+          lat: data.homeCenter[0],
+          lng: data.homeCenter[1],
+        }}
+        fallbackZoom={data.homeZoom}
+        locationChangedHandler={(location) => {
+          navigate(modifyQueryPart(browserlocation.search, location));
+        }}
+        boundingBoxChangedHandler={(boundingBox) => {
+          // console.log("xxx boundingBox Changed", boundingBox);
+        }}
+      >
+        <FeatureCollectionDisplay
+          featureCollection={data.featureCollection}
+          style={data.styler}
+        />
+      </RoutedMap>
     </Card>
   );
 };

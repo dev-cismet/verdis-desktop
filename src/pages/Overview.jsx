@@ -12,6 +12,12 @@ import {
   summaryExtractor,
   sumsExtractor,
 } from "../tools/extractors";
+import { getKassenzeichen } from "../store/slices/search";
+import { useSelector } from "react-redux";
+import {
+  createFlaechenStyler,
+  getFlaechenFeatureCollection,
+} from "../tools/mappingTools";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -27,6 +33,7 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
     width: "100%",
     height: "100%",
   };
+  const kassenzeichen = useSelector(getKassenzeichen);
 
   return (
     <div
@@ -61,7 +68,31 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
             extractor={sumsExtractor}
           />
           <div className="col-span-2 row-span-2">
-            <Map width={"100%"} height={"100%"} />
+            <Map
+              key={JSON.stringify(kassenzeichen)}
+              width={"calc(100%-40px)"}
+              height={"100%"}
+              dataIn={kassenzeichen}
+              extractor={(dataIn) => {
+                if (dataIn !== undefined && JSON.stringify(dataIn) !== "{}") {
+                  const featureCollection =
+                    getFlaechenFeatureCollection(dataIn);
+
+                  return {
+                    homeCenter: [51.27225612927373, 7.199918031692506],
+                    homeZoom: 16,
+                    featureCollection,
+                    styler: createFlaechenStyler(false, featureCollection),
+                  };
+                }
+
+                return {
+                  homeCenter: [51.27225612927373, 7.199918031692506],
+                  homeZoom: 16,
+                  featureCollection: undefined,
+                };
+              }}
+            />
           </div>
           <Summary
             width={cardStyle.width}

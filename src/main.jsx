@@ -27,6 +27,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getReadOnly } from "./store/slices/settings";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
+import TopicMapContextProvider from "react-cismap/contexts/TopicMapContextProvider";
+import {
+  backgroundConfigurations,
+  backgroundModes,
+  extendBaseLayerConf,
+  offlineConfig,
+} from "./constants/backgrounds";
+import { defaultLayerConf } from "react-cismap/tools/layerFactory";
+
+const baseLayerConf = extendBaseLayerConf({ ...defaultLayerConf });
 
 const persistor = persistStore(store);
 
@@ -120,7 +130,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
-            <RouterProvider router={router} />
+            <TopicMapContextProvider
+              appKey="verdis-desktop.map"
+              backgroundModes={backgroundModes}
+              backgroundConfigurations={backgroundConfigurations}
+              baseLayerConf={baseLayerConf}
+              offlineCacheConfig={offlineConfig}
+            >
+              <RouterProvider router={router} />
+            </TopicMapContextProvider>
           </Provider>
         </QueryClientProvider>
       </PersistGate>

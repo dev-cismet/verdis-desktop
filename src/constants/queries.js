@@ -2,6 +2,161 @@ const queries = {};
 export const geomFactories = {};
 export default queries;
 
+queries.kassenzeichenD = `
+  query Kassenzeichen($kassenzeichen: Int) {
+    kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {
+      id
+      datum_erfassung
+      bemerkung
+      sperre
+      kassenzeichennummer8
+      frontenArray(
+        order_by: {
+          frontObject: {
+            frontinfoObject: {
+              lage_sr_satzung: { strassenreinigung: { key: asc } }
+            }
+          }
+        }
+      ) {
+        frontObject {
+          frontinfoObject {
+            laenge_grafik
+            strasseObject {
+              name
+              schluessel
+            }
+            lage_sr_satzung {
+              strassenreinigung {
+                key
+                schluessel
+              }
+            }
+          }
+        }
+      }
+      flaechenArray(
+        order_by: {
+          flaecheObject: {
+            flaecheninfoObject: { flaechenbeschreibung: { beschreibung: asc } }
+          }
+        }
+      ) {
+        flaecheObject {
+          datum_erfassung
+          flaechenbezeichnung
+          flaecheninfoObject {
+            groesse_aus_grafik
+            flaechenartObject {
+              art_abkuerzung
+            }
+            anschlussgradObject {
+              grad_abkuerzung
+            }
+            flaechenbeschreibung {
+              beschreibung
+            }
+          }
+          id
+        }
+      }
+    }
+    aenderungsanfrage(
+      where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
+    ) {
+      aenderungsanfrage_status {
+        name
+      }
+    }
+  }
+`;
+
+queries.kassenzeichenT = `
+  query Kassenzeichen($kassenzeichen: Int) {
+    kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {
+      id
+      datum_erfassung
+      bemerkung
+      sperre
+      kassenzeichennummer8
+      frontenArray(
+        order_by: {
+          frontObject: {
+            frontinfoObject: {
+              lage_sr_satzung: { strassenreinigung: { key: asc } }
+            }
+          }
+        }
+      ) {
+        frontObject {
+          frontinfoObject {
+            laenge_grafik
+            strasseObject {
+              name
+              schluessel
+            }
+            lage_sr_satzung {
+              strassenreinigung {
+                key
+                schluessel
+              }
+            }
+          }
+        }
+      }
+      flaechenArray(
+        order_by: {
+          flaecheObject: {
+            flaecheninfoObject: { flaechenbeschreibung: { beschreibung: asc } }
+          }
+        }
+      ) {
+        flaecheObject {
+          anteil
+          bemerkung
+          datum_erfassung
+          datum_veranlagung
+          flaechenbezeichnung
+          id
+          flaecheninfoObject {
+            anschlussgradObject {
+              grad
+              grad_abkuerzung
+              id
+            }
+            flaechenartObject {
+              art
+              art_abkuerzung
+              id
+            }
+            groesse_aus_grafik
+            groesse_korrektur
+            id
+            nachgewiesen
+            flaechenbeschreibung {
+              dachflaeche
+              id
+              beschreibung
+            }
+            beschreibung
+            geom {
+              geo_field
+            }
+          }
+          flaecheninfo
+        }
+      }
+    }
+    aenderungsanfrage(
+      where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
+    ) {
+      aenderungsanfrage_status {
+        name
+      }
+    }
+  }
+`;
+
 queries.kassenzeichen = `query q($kassenzeichen: Int) {
     kassenzeichen(where: {kassenzeichennummer8: {_eq: $kassenzeichen}}) {
       bemerkung
