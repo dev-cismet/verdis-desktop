@@ -38,7 +38,7 @@ const Page = ({
       className="flex flex-col items-center relative h-full max-h-[calc(100vh-73px)]"
     >
       <div className="flex flex-col gap-2 w-full bg-zinc-100 h-full overflow-clip p-2">
-        <InfoBar title="Straßenreinigung">
+        <InfoBar title="Versickerungsgenehmigungen">
           <Button onClick={() => navigate("/versickerungsgenehmigungen")}>
             Übersicht
           </Button>
