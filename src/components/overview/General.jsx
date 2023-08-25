@@ -58,7 +58,6 @@ const General = ({
       <div className="flex flex-col gap-2 h-full">
         <GeneralRow
           title="Kassenzeichen"
-          placeholder="123456790"
           width={width}
           value={data.kassenzeichenNummer}
         />
@@ -67,7 +66,6 @@ const General = ({
           customInput={
             <DatePicker
               className={`${width > 365 ? "w-full" : "w-1/2"}`}
-              placeholder="02.03.2023"
               format={dateFormat}
               value={data.date}
             />
@@ -94,7 +92,6 @@ const General = ({
           title="Änderungsanfrage"
           customInput={
             <Select
-              placeholder="In Bearbeitung"
               options={[
                 { value: "in Bearbeitung", label: "In Bearbeitung" },
                 { value: "erledigt", label: "Erledigt" },
