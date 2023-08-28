@@ -4,7 +4,7 @@ import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import Logo from "/logo.svg";
 import { useDispatch } from "react-redux";
 import useDevSecrets from "../../hooks/useDevSecrets";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DOMAIN, REST_SERVICE } from "../../constants/verdis";
 import {
   setLoginRequested,
@@ -26,6 +26,8 @@ const Login = ({
   const dispatch = useDispatch();
   const { user, password } = useDevSecrets();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
@@ -51,7 +53,7 @@ const Login = ({
               dispatch(storeJWT(jwt));
               dispatch(storeLogin(user));
               dispatch(setLoginRequested(false));
-              navigate("/");
+              navigate(from, { replace: true });
             }, 500);
           });
         } else {
