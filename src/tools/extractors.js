@@ -111,7 +111,24 @@ export const summaryExtractor = (kassenzeichen) => {
     length: front?.frontObject?.frontinfoObject?.laenge_grafik,
   }));
 
-  return data;
+  const streetMap = data.reduce((map, obj) => {
+    const { key, streetNumber, streetName, length } = obj;
+    const uniqueKey = `${key}-${streetNumber}-${streetName}`;
+
+    if (!map[uniqueKey]) {
+      map[uniqueKey] = { ...obj };
+    } else {
+      map[uniqueKey].length = (
+        Number(map[uniqueKey].length) + Number(length)
+      ).toString();
+    }
+
+    return map;
+  }, {});
+
+  const resultArray = Object.values(streetMap);
+
+  return resultArray;
 };
 
 export const areasExtractor = (kassenzeichen) => {
