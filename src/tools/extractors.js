@@ -111,7 +111,7 @@ export const summaryExtractor = (kassenzeichen) => {
     length: front?.frontObject?.frontinfoObject?.laenge_grafik,
   }));
 
-  const streetMap = data.reduce((map, obj) => {
+  const streetMap = data?.reduce((map, obj) => {
     const { key, streetNumber, streetName, length } = obj;
     const uniqueKey = `${key}-${streetNumber}-${streetName}`;
 
@@ -126,7 +126,7 @@ export const summaryExtractor = (kassenzeichen) => {
     return map;
   }, {});
 
-  const resultArray = Object.values(streetMap);
+  const resultArray = Object.values(streetMap || []);
 
   return resultArray;
 };
