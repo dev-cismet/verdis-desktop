@@ -46,7 +46,7 @@ const Page = ({
             Übersicht
           </Button>
           <Button onClick={() => navigate("/strassenreinigung/details")}>
-            Flächen
+            Fronten
           </Button>
         </InfoBar>
         <div className="flex gap-2 h-full max-h-[calc(100%-40px)]">
