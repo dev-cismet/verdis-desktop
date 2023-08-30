@@ -142,20 +142,25 @@ export const areasExtractor = (kassenzeichen) => {
 };
 
 export const areasDetailsExtractor = (kassenzeichen) => {
-  const data = kassenzeichen?.flaechenArray?.map((flaeche) => ({
-    name: flaeche?.flaecheObject?.flaechenbezeichnung,
-    size: flaeche?.flaecheObject?.flaecheninfoObject?.groesse_aus_grafik,
-    type: flaeche?.flaecheObject?.flaecheninfoObject?.flaechenartObject
-      ?.art_abkuerzung,
-    connection:
-      flaeche?.flaecheObject?.flaecheninfoObject?.anschlussgradObject
-        ?.grad_abkuerzung,
-    description:
-      flaeche?.flaecheObject?.flaecheninfoObject?.flaechenbeschreibung
-        ?.beschreibung,
-    date: flaeche?.flaecheObject?.datum_erfassung,
-    id: flaeche?.flaecheObject?.id,
-  }));
+  const data = kassenzeichen?.flaechenArray?.map((row) => {
+    const flaeche = row?.flaecheObject;
+    const flaecheInfo = flaeche?.flaecheninfoObject;
+    return {
+      name: flaeche?.flaechenbezeichnung,
+      groesseGrafik: flaecheInfo?.groesse_aus_grafik,
+      groesseKorrektor: flaecheInfo?.groesse_korrektur,
+      flaechenArt: flaecheInfo?.flaechenart,
+      anschlussgrad: flaecheInfo?.anschlussgrad,
+      anteil: flaeche?.anteil,
+      bemerkung: flaeche?.bemerkung,
+      datumErfassung: flaeche?.datum_erfassung,
+      datumVeranlagung: flaeche?.datum_veranlagung,
+      type: flaecheInfo?.flaechenartObject?.art_abkuerzung,
+      connection: flaecheInfo?.anschlussgradObject?.grad_abkuerzung,
+      beschreibung: flaecheInfo?.flaechenbeschreibung?.beschreibung,
+      id: flaeche?.id,
+    };
+  });
 
   return data;
 };

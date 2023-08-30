@@ -8,7 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { areasDetailsExtractor } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { useDispatch, useSelector } from "react-redux";
-import { getFlaechenId, storeFlaechenId } from "../store/slices/search";
+import {
+  getFlaechenId,
+  storeFlaeche,
+  storeFlaechenId,
+} from "../store/slices/search";
 import { compare } from "../tools/helper";
 
 const Page = ({
@@ -64,9 +68,9 @@ const Page = ({
               },
               {
                 title: "Größe m²",
-                dataIndex: "size",
-                key: "size",
-                sorter: (a, b) => compare(a.size, b.size),
+                dataIndex: "groesseGrafik",
+                key: "groesseGrafik",
+                sorter: (a, b) => compare(a.groesseGrafik, b.groesseGrafik),
               },
               {
                 title: "Flächenart",
@@ -76,25 +80,28 @@ const Page = ({
               },
               {
                 title: "Anschlussgrad",
-                dataIndex: "connection",
-                key: "connection",
-                sorter: (a, b) => compare(a.connection, b.connection),
+                dataIndex: "anschlussgrad",
+                key: "anschlussgrad",
+                sorter: (a, b) => compare(a.anschlussgrad, b.anschlussgrad),
               },
               {
                 title: "Beschreibung",
-                dataIndex: "description",
-                key: "description",
-                sorter: (a, b) => compare(a.description, b.description),
+                dataIndex: "beschreibung",
+                key: "beschreibung",
+                sorter: (a, b) => compare(a.beschreibung, b.beschreibung),
               },
               {
                 title: "Erfassungdatum",
-                dataIndex: "date",
-                key: "date",
-                sorter: (a, b) => compare(a.date, b.date),
+                dataIndex: "datumErfassung",
+                key: "datumErfassung",
+                sorter: (a, b) => compare(a.datumErfassung, b.datumErfassung),
               },
             ]}
             id={flaechenId}
-            onRowClick={(record) => dispatch(storeFlaechenId(record.id))}
+            onRowClick={(record) => (
+              dispatch(storeFlaeche(record)),
+              dispatch(storeFlaechenId(record.id))
+            )}
             extractor={areasDetailsExtractor}
           />
           <div className="flex flex-col gap-2 h-full w-[50%]">
