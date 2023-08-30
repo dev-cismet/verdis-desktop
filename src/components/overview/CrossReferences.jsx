@@ -40,8 +40,8 @@ const CrossReferences = ({
   return (
     <CustomCard style={{ ...style, width, height }} title="Querverweise">
       <div className="flex flex-col gap-1 items-center justify-center text-sm">
-        {data.map((row) => (
-          <span>{row.value}</span>
+        {data.map((row, i) => (
+          <span key={`crossReferences_${i}`}>{row.value}</span>
         ))}
       </div>
     </CustomCard>
