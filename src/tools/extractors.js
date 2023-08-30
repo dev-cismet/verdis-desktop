@@ -290,14 +290,27 @@ export const seepageDetailsExtractor = (input) => {
 };
 
 export const frontsExtractor = (kassenzeichen) => {
-  const data = kassenzeichen?.frontenArray?.map((row) => ({
-    number: row?.frontObject?.nummer,
-    length: row?.frontObject?.frontinfoObject?.laenge_grafik,
-    class:
-      row?.frontObject?.frontinfoObject?.lage_sr_satzung?.strassenreinigung
-        ?.key,
-    id: row?.frontObject?.id,
-  }));
+  const data = kassenzeichen?.frontenArray?.map((row) => {
+    const front = row?.frontObject;
+    const frontInfo = front?.frontinfoObject;
+    return {
+      nummer: front?.nummer,
+      laengeGrafik: frontInfo?.laenge_grafik,
+      klasse: frontInfo?.lage_sr_satzung?.strassenreinigung?.key,
+      id: front?.id,
+      laengeKorrektur: frontInfo?.laenge_korrektur,
+      bearbeitetDurch: front?.bearbeitet_durch,
+      erfassungsdatum: front?.erfassungsdatum,
+      straße: frontInfo?.strasseObject?.name,
+      lage: frontInfo?.lage_sr,
+      straßenReinigung: frontInfo?.lage_sr_satzung?.sr_klasse,
+      bemerkung: frontInfo?.lage_sr_satzung?.sr_bem,
+      veranlagung: frontInfo?.sr_veranlagung,
+      garageStellplatz: frontInfo?.garage_stellplatz,
+      anteil: frontInfo?.anteil,
+      winkel: frontInfo?.winkel,
+    };
+  });
 
   return data;
 };

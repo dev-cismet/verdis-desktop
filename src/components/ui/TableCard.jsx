@@ -26,7 +26,7 @@ const TableCard = ({
         dataSource={data}
         columns={columns}
         pagination={false}
-        rowKey={(record) => record}
+        rowKey={(record, i) => `tableRow_${i}`}
         size="small"
         onRow={(record) => {
           return {

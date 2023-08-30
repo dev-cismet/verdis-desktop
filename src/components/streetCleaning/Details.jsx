@@ -1,78 +1,10 @@
 import { Input } from "antd";
 import CustomCard from "../ui/Card";
-import { useQuery } from "@tanstack/react-query";
-import request, { gql } from "graphql-request";
 import { useSelector } from "react-redux";
-import { getFrontenId } from "../../store/slices/search";
-import { getJWT } from "../../store/slices/auth";
-import { ENDPOINT } from "../../constants/verdis";
-
-const query = gql`
-  query FrontenDetails($id: Int!) {
-    front_by_pk(id: $id) {
-      nummer
-      frontinfoObject {
-        laenge_grafik
-        laenge_korrektur
-        strasseObject {
-          name
-        }
-        sr_veranlagung
-        lage_sr_satzung {
-          sr_bem
-        }
-        winkel
-        anteil
-        garage_stellplatz
-      }
-      bearbeitet_durch
-      erfassungsdatum
-    }
-  }
-`;
+import { getFront } from "../../store/slices/search";
 
 const mockExtractor = (input) => {
-  return [
-    {
-      title: "Nummer",
-    },
-    {
-      title: "Länge (Grafik)",
-    },
-    {
-      title: "Länge (Korrektur)",
-    },
-    {
-      title: "Bearbeitet durch",
-    },
-    {
-      title: "Erfassungsdatum",
-    },
-    {
-      title: "Straße",
-    },
-    {
-      title: "Lage",
-    },
-    {
-      title: "Straßenreinigung",
-    },
-    {
-      title: "Bemerkung",
-    },
-    {
-      title: "Veranlagung",
-    },
-    {
-      title: "Garage/Stellplatz",
-    },
-    {
-      title: "Anteil",
-    },
-    {
-      title: "Winkel",
-    },
-  ];
+  return [];
 };
 
 const DetailsRow = ({ title, value }) => {
@@ -92,75 +24,24 @@ const Details = ({
   style,
 }) => {
   const mockData = extractor(dataIn);
-  const jwt = useSelector(getJWT);
-  const frontenId = useSelector(getFrontenId);
-
-  const { data } = useQuery({
-    queryKey: ["frontenDetails", frontenId],
-    queryFn: async () =>
-      request(
-        ENDPOINT,
-        query,
-        { id: frontenId },
-        {
-          Authorization: `Bearer ${jwt}`,
-        }
-      ),
-    enabled: !!frontenId,
-  });
+  const front = useSelector(getFront);
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Details">
       <div className="flex flex-col gap-1">
-        <DetailsRow title="Nummer" value={data?.front_by_pk?.nummer} />
-        <DetailsRow
-          title="Länge (Grafik)"
-          value={data?.front_by_pk?.frontinfoObject?.laenge_grafik}
-        />
-        <DetailsRow
-          title="Länge (Korrektur)"
-          value={data?.front_by_pk?.frontinfoObject?.laenge_korrektur}
-        />
-        <DetailsRow
-          title="Bearbeitet durch"
-          value={data?.front_by_pk?.bearbeitet_durch}
-        />
-        <DetailsRow
-          title="Erfassungsdatum"
-          value={data?.front_by_pk?.erfassungsdatum}
-        />
-        <DetailsRow
-          title="Straße"
-          value={data?.front_by_pk?.frontinfoObject?.strasseObject?.name}
-        />
-        <DetailsRow
-          title="Lage"
-          value={data?.front_by_pk?.frontinfoObject?.lage_sr}
-        />
-        <DetailsRow
-          title="Straßenreinigung"
-          value={data?.front_by_pk?.frontinfoObject?.lage_sr_satzung?.sr_klasse}
-        />
-        <DetailsRow
-          title="Bemerkung"
-          value={data?.front_by_pk?.frontinfoObject?.lage_sr_satzung?.sr_bem}
-        />
-        <DetailsRow
-          title="Veranlagung"
-          value={data?.front_by_pk?.frontinfoObject?.sr_veranlagung}
-        />
-        <DetailsRow
-          title="Garage/Stellplatz"
-          value={data?.front_by_pk?.frontinfoObject?.garage_stellplatz}
-        />
-        <DetailsRow
-          title="Anteil"
-          value={data?.front_by_pk?.frontinfoObject?.anteil}
-        />
-        <DetailsRow
-          title="Winkel"
-          value={data?.front_by_pk?.frontinfoObject?.winkel}
-        />
+        <DetailsRow title="Nummer" value={front?.nummer} />
+        <DetailsRow title="Länge (Grafik)" value={front?.laengeGrafik} />
+        <DetailsRow title="Länge (Korrektur)" value={front?.laengeKorrektur} />
+        <DetailsRow title="Bearbeitet durch" value={front?.bearbeitetDurch} />
+        <DetailsRow title="Erfassungsdatum" value={front?.erfassungsdatum} />
+        <DetailsRow title="Straße" value={front?.straße} />
+        <DetailsRow title="Lage" value={front?.lage} />
+        <DetailsRow title="Straßenreinigung" value={front?.straßenReinigung} />
+        <DetailsRow title="Bemerkung" value={front?.bemerkung} />
+        <DetailsRow title="Veranlagung" value={front?.veranlagung} />
+        <DetailsRow title="Garage/Stellplatz" value={front?.garageStellplatz} />
+        <DetailsRow title="Anteil" value={front?.anteil} />
+        <DetailsRow title="Winkel" value={front?.winkel} />
       </div>
     </CustomCard>
   );

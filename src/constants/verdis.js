@@ -46,17 +46,25 @@ export const query = gql`
           nummer
           frontinfoObject {
             laenge_grafik
+            laenge_korrektur
             strasseObject {
               name
               schluessel
             }
+            sr_veranlagung
             lage_sr_satzung {
+              sr_bem
               strassenreinigung {
                 key
                 schluessel
               }
             }
+            winkel
+            anteil
+            garage_stellplatz
           }
+          bearbeitet_durch
+          erfassungsdatum
           id
         }
       }
