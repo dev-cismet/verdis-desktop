@@ -64,8 +64,8 @@ const mockExtractor = (input) => {
 const Chat = ({
   dataIn,
   extractor = mockExtractor,
-  width = 300,
-  height = 200,
+  width = 350,
+  height = 400,
   style,
 }) => {
   const data = extractor(dataIn);
@@ -76,6 +76,7 @@ const Chat = ({
       bodyStyle={{
         padding: 0,
       }}
+      className="absolute bottom-2 right-2 z-[99999]"
       title={<ChatHeader />}
     >
       <div

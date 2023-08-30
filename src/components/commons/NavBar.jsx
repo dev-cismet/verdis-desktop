@@ -26,7 +26,12 @@ import {
   storeAenderungsAnfrage,
   storeKassenzeichen,
 } from "../../store/slices/search";
-import { getReadOnly, setReadOnly } from "../../store/slices/settings";
+import {
+  getReadOnly,
+  getShowChat,
+  setReadOnly,
+  setShowChat,
+} from "../../store/slices/settings";
 import { ENDPOINT, query } from "../../constants/verdis";
 import { useQuery } from "@tanstack/react-query";
 import request from "graphql-request";
@@ -73,6 +78,7 @@ const NavBar = ({
   const mockData = extractor(dataIn);
   const location = useLocation();
   const readOnly = useSelector(getReadOnly);
+  const showChat = useSelector(getShowChat);
   const jwt = useSelector(getJWT);
   const prevSearches = useSelector(getPreviousSearches);
   const [inputValue, setInpuValue] = useState("");
@@ -207,7 +213,10 @@ const NavBar = ({
       <div className="flex items-center gap-3">
         <ExclamationCircleOutlined className="text-2xl cursor-pointer" />
         <QuestionCircleOutlined className="text-2xl cursor-pointer" />
-        <CommentOutlined className="text-2xl cursor-pointer" />
+        <CommentOutlined
+          className="text-2xl cursor-pointer"
+          onClick={() => dispatch(setShowChat(!showChat))}
+        />
         <Dropdown trigger={["click"]} menu={{ items }} placement="bottomRight">
           <Avatar
             size="large"

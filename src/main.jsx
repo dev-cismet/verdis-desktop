@@ -40,6 +40,8 @@ import {
 import { defaultLayerConf } from "react-cismap/tools/layerFactory";
 
 const baseLayerConf = extendBaseLayerConf({ ...defaultLayerConf });
+import { getReadOnly, getShowChat } from "./store/slices/settings";
+import Chat from "./components/commons/Chat";
 
 const persistor = persistStore(store);
 
@@ -47,6 +49,7 @@ const NavBarWrapper = () => {
   const jwt = useSelector(getJWT);
   const readOnly = useSelector(getReadOnly);
   const location = useLocation();
+  const showChat = useSelector(getShowChat);
 
   if (!jwt) {
     return <Navigate to="/login" state={{ from: location }} replace />;
@@ -57,6 +60,7 @@ const NavBarWrapper = () => {
       <NavBar />
       <ConfigProvider componentDisabled={readOnly}>
         <Outlet />
+        {showChat ? <Chat /> : <></>}
       </ConfigProvider>
     </div>
   );
