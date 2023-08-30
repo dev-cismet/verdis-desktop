@@ -59,21 +59,21 @@ const Page = ({
               columns={[
                 {
                   title: "Nummer",
-                  dataIndex: "number",
-                  key: "number",
-                  sorter: (a, b) => compare(a.number, b.number),
+                  dataIndex: "nummer",
+                  key: "nummer",
+                  sorter: (a, b) => compare(a.nummer, b.nummer),
                 },
                 {
                   title: "Länge in m",
-                  dataIndex: "length",
-                  key: "length",
-                  sorter: (a, b) => compare(a.length, b.length),
+                  dataIndex: "laengeGrafik",
+                  key: "laengeGrafik",
+                  sorter: (a, b) => compare(a.laengeGrafik, b.laengeGrafik),
                 },
                 {
                   title: "Klasse",
-                  dataIndex: "class",
-                  key: "class",
-                  sorter: (a, b) => compare(a.class, b.class),
+                  dataIndex: "klasse",
+                  key: "klasse",
+                  sorter: (a, b) => compare(a.klasse, b.klasse),
                 },
               ]}
               extractor={frontsExtractor}
