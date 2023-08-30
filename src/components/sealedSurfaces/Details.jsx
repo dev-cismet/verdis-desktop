@@ -2,6 +2,7 @@ import { DatePicker, Input, Select } from "antd";
 import CustomCard from "../ui/Card";
 import { useSelector } from "react-redux";
 import { getFlaeche } from "../../store/slices/search";
+import dayjs from "dayjs";
 
 const DetailsRow = ({ title, value, width, customInput }) => {
   return (
@@ -41,7 +42,24 @@ const Details = ({
         <DetailsRow title="Anschlussgrad" value={flaeche?.anschlussgrad} />
         <DetailsRow title="Beschreibung" value={flaeche?.beschreibung} />
         <DetailsRow title="Anteil" value={flaeche?.anteil} />
-        <DetailsRow title="Änderungsdatum" value={flaeche?.datumErfassung} />
+        <DetailsRow
+          title="Änderungsdatum"
+          customInput={
+            <DatePicker
+              className="w-full"
+              format="DD.MM.YYYY"
+              placeholder=""
+              value={
+                flaeche?.datumErfassung
+                  ? dayjs(
+                      dayjs(flaeche?.datumErfassung).format("DD.MM.YYYY"),
+                      "DD.MM.YYYY"
+                    )
+                  : null
+              }
+            />
+          }
+        />
         <DetailsRow
           title="Veranlagungsdatum"
           value={flaeche?.datumVeranlagung}
