@@ -83,9 +83,7 @@ const NavBar = ({
   const prevSearches = useSelector(getPreviousSearches);
   const [inputValue, setInpuValue] = useState("");
   const [urlParams, setUrlParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState(
-    urlParams.get("kassenzeichen")
-  );
+  const [searchQuery, setSearchQuery] = useState("");
 
   const items = [
     {
@@ -149,11 +147,19 @@ const NavBar = ({
       const trimmedQuery = searchQuery.trim();
       dispatch(storeKassenzeichen(data.kassenzeichen[0]));
       dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
-      setUrlParams({ kassenzeichen: trimmedQuery });
+      if (urlParams.get("kassenzeichen") !== trimmedQuery) {
+        setUrlParams({ kassenzeichen: trimmedQuery });
+      }
       dispatch(addSearch(trimmedQuery));
       dispatch(resetStates());
     }
   }, [data]);
+
+  useEffect(() => {
+    if (urlParams.get("kassenzeichen")) {
+      setSearchQuery(urlParams.get("kassenzeichen"));
+    }
+  }, [urlParams]);
 
   return (
     <header
