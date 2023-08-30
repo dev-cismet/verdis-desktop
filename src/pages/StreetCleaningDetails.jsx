@@ -8,7 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { frontsExtractor } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
-import { getFrontenId, storeFrontenId } from "../store/slices/search";
+import {
+  getFrontenId,
+  storeFront,
+  storeFrontenId,
+} from "../store/slices/search";
 import { useDispatch, useSelector } from "react-redux";
 
 const Page = ({
@@ -58,25 +62,27 @@ const Page = ({
             columns={[
               {
                 title: "Nummer",
-                dataIndex: "number",
-                key: "number",
-                sorter: (a, b) => compare(a.number, b.number),
+                dataIndex: "nummer",
+                key: "nummer",
+                sorter: (a, b) => compare(a.nummer, b.nummer),
               },
               {
                 title: "Länge in m",
-                dataIndex: "length",
-                key: "length",
-                sorter: (a, b) => compare(a.length, b.length),
+                dataIndex: "laengeGrafik",
+                key: "laengeGrafik",
+                sorter: (a, b) => compare(a.laengeGrafik, b.laengeGrafik),
               },
               {
                 title: "Klasse",
-                dataIndex: "class",
-                key: "class",
-                sorter: (a, b) => compare(a.class, b.class),
+                dataIndex: "klasse",
+                key: "klasse",
+                sorter: (a, b) => compare(a.klasse, b.klasse),
               },
             ]}
             id={frontenId}
-            onRowClick={(record) => dispatch(storeFrontenId(record.id))}
+            onRowClick={(record) => (
+              dispatch(storeFront(record)), dispatch(storeFrontenId(record.id))
+            )}
             extractor={frontsExtractor}
           />
           <div className="flex flex-col gap-2 h-full w-[60%]">

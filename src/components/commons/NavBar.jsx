@@ -22,6 +22,7 @@ import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
 import {
   addSearch,
   getPreviousSearches,
+  resetStates,
   storeAenderungsAnfrage,
   storeKassenzeichen,
 } from "../../store/slices/search";
@@ -128,6 +129,7 @@ const NavBar = ({
   const logout = () => {
     dispatch(storeJWT(undefined));
     dispatch(storeLogin(undefined));
+    dispatch(resetStates());
   };
 
   useEffect(() => {
@@ -143,6 +145,7 @@ const NavBar = ({
       dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
       setUrlParams({ kassenzeichen: trimmedQuery });
       dispatch(addSearch(trimmedQuery));
+      dispatch(resetStates());
     }
   }, [data]);
 
