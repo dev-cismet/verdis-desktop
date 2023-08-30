@@ -26,8 +26,16 @@ export const query = gql`
         flaecheObject {
           datum_erfassung
           flaechenbezeichnung
+          anteil
+          bemerkung
+          datum_erfassung
+          datum_veranlagung
           flaecheninfoObject {
             groesse_aus_grafik
+            groesse_korrektur
+            flaechenart
+            anschlussgrad
+            beschreibung
             flaechenartObject {
               art_abkuerzung
             }
