@@ -49,7 +49,10 @@ export const getBoundsForFeatureArray = (featureArray) => {
     type: "FeatureCollection",
     features: featureArray,
   };
+  return getBoundsForFeatureCollection(featureCollection);
+};
 
+export const getBoundsForFeatureCollection = (featureCollection) => {
   // Get bbox in EPSG:3857 from Turf.js
   const boundingBox3857 = bbox(featureCollection);
   console.log("xxx boundingBox3857", boundingBox3857);
@@ -85,6 +88,11 @@ export function convertBBox2Bounds(bbox, refDef = proj4crs25832def) {
     [projectedSW[1], projectedNE[0]],
   ];
 }
+export const getCenterAndZoomForBounds = (map, bounds) => {
+  const center = bounds.getCenter();
+  const zoom = map.getBoundsZoom(bounds); // Returns the maximum zoom level on which the given bounds fit to the map view in its entirety. If inside is set to true, it instead returns the minimum zoom level on which the map view fits into the given bounds in its entirety.
+  return { center, zoom };
+};
 
 export const getColorFromFlaechenArt = (art_abk) => {
   let color = "#ff0000";

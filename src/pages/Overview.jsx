@@ -16,6 +16,7 @@ import { getKassenzeichen } from "../store/slices/search";
 import { useSelector } from "react-redux";
 import {
   createFlaechenStyler,
+  getCenterAndZoomForBounds,
   getFlaechenFeatureCollection,
 } from "../tools/mappingTools";
 
@@ -69,7 +70,7 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
           />
           <div className="col-span-2 row-span-2">
             <Map
-              key={JSON.stringify(kassenzeichen)}
+              key={"sdjfhg"}
               width={"calc(100%-40px)"}
               height={"100%"}
               dataIn={kassenzeichen}
@@ -77,17 +78,15 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
                 if (dataIn !== undefined && JSON.stringify(dataIn) !== "{}") {
                   const featureCollection =
                     getFlaechenFeatureCollection(dataIn);
-
                   return {
-                    homeCenter: [51.27225612927373, 7.199918031692506],
-                    homeZoom: 16,
+                    homeCenter: [52.27225612927373, 7.199918031692506],
                     featureCollection,
                     styler: createFlaechenStyler(false, featureCollection),
                   };
                 }
 
                 return {
-                  homeCenter: [51.27225612927373, 7.199918031692506],
+                  homeCenter: [50.27225612927373, 7.199918031692506],
                   homeZoom: 16,
                   featureCollection: undefined,
                 };

@@ -13,12 +13,14 @@ import {
   RoutedMap,
 } from "react-cismap";
 import { TopicMapStylingContext } from "react-cismap/contexts/TopicMapStylingContextProvider";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { modifyQueryPart } from "react-cismap/tools/routingHelper";
 import bbox from "@turf/bbox";
 import {
   fitFeatureArray,
   getBoundsForFeatureArray,
+  getBoundsForFeatureCollection,
+  getCenterAndZoomForBounds,
 } from "../../tools/mappingTools";
 
 const mockExtractor = (input) => {
@@ -36,6 +38,7 @@ const Map = ({
   height = 500,
 }) => {
   const navigate = useNavigate();
+  const [urlParams, setUrlParams] = useSearchParams();
 
   const data = extractor(dataIn);
   const padding = 5;
@@ -53,9 +56,16 @@ const Map = ({
   } = useContext(TopicMapStylingContext);
   let backgroundsFromMode;
   const browserlocation = useLocation();
-
+  function paramsToObject(entries) {
+    const result = {};
+    for (const [key, value] of entries) {
+      // each 'entry' is a [key, value] tupple
+      result[key] = value;
+    }
+    return result;
+  }
   const urlSearchParams = new URLSearchParams(browserlocation.search);
-
+  const urlSearchParamsObject = paramsToObject(urlParams);
   try {
     backgroundsFromMode = backgroundConfigurations[selectedBackground].layerkey;
   } catch (e) {}
@@ -73,13 +83,21 @@ const Map = ({
 
     window.addEventListener("resize", setSize);
 
-    console.log("xxx first load", data?.featureCollection);
-    if (data?.featureCollection && refRoutedMap?.current) {
-      fitFeatureArray(data?.featureCollection, refRoutedMap);
-    }
-
     return () => window.removeEventListener("resize", setSize);
   }, []);
+
+  useEffect(() => {
+    // const params = paramsToObject(urlParams);
+    // if (params.lat && params.lng && params.zoom) {
+    //   console.log("xxx won't change map view");
+    // } else {
+    //   console.log("xxx data changed", data?.featureCollection);
+    //   if (data?.featureCollection && refRoutedMap?.current) {
+    //     fitFeatureArray(data?.featureCollection, refRoutedMap);
+    //   }
+    // }
+  }, [data?.featureCollection, urlParams]);
+
   let refRoutedMap = useRef(null);
 
   const mapStyle = {
@@ -88,6 +106,20 @@ const Map = ({
     cursor: "pointer",
     clear: "both",
   };
+
+  let fallback = {};
+  if (data?.featureCollection && refRoutedMap?.current) {
+    const map = refRoutedMap.current.leafletMap.leafletElement;
+    console.log("xxx ", data?.featureCollection);
+
+    const bb = getBoundsForFeatureArray(data?.featureCollection);
+    const { center, zoom } = getCenterAndZoomForBounds(map, bb);
+    console.log("xxx center", center, zoom);
+    fallback.position = {};
+    fallback.position.lat = center.lat;
+    fallback.position.lng = center.lng;
+    fallback.zoom = zoom;
+  }
 
   return (
     <Card
@@ -118,12 +150,15 @@ const Map = ({
         zoomSnap={0.5}
         zoomDelta={0.5}
         fallbackPosition={{
-          lat: data.homeCenter[0],
-          lng: data.homeCenter[1],
+          lat: urlSearchParamsObject?.lat ?? fallback?.position.lat,
+          lng: urlSearchParamsObject?.lng ?? fallback?.position.lng,
         }}
-        fallbackZoom={data.homeZoom}
+        fallbackZoom={urlSearchParamsObject?.zoom ?? fallback.zoom}
         locationChangedHandler={(location) => {
-          navigate(modifyQueryPart(browserlocation.search, location));
+          //navigate(modifyQueryPart(browserlocation.search, location));
+          const newParams = { ...paramsToObject(urlParams), ...location };
+          console.log("xxx locationChangedHandler)", newParams);
+          setUrlParams(newParams);
         }}
         boundingBoxChangedHandler={(boundingBox) => {
           // console.log("xxx boundingBox Changed", boundingBox);
