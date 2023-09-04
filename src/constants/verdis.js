@@ -66,6 +66,7 @@ export const query = gql`
               strassenreinigung {
                 key
                 schluessel
+                name
               }
             }
             winkel

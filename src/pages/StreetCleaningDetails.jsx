@@ -52,12 +52,13 @@ const Page = ({
                 dataIndex: "nummer",
                 key: "nummer",
                 sorter: (a, b) => compare(a.nummer, b.nummer),
+                defaultSortOrder: "ascend",
               },
               {
                 title: "Länge in m",
-                dataIndex: "laengeGrafik",
-                key: "laengeGrafik",
-                sorter: (a, b) => compare(a.laengeGrafik, b.laengeGrafik),
+                dataIndex: "laengeKorrektur",
+                key: "laengeKorrektur",
+                sorter: (a, b) => compare(a.laengeKorrektur, b.laengeKorrektur),
               },
               {
                 title: "Klasse",

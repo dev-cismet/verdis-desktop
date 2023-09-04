@@ -307,8 +307,10 @@ export const frontsExtractor = (kassenzeichen) => {
       bearbeitetDurch: front?.bearbeitet_durch,
       erfassungsdatum: front?.erfassungsdatum,
       straße: frontInfo?.strasseObject?.name,
-      lage: frontInfo?.lage_sr,
-      straßenReinigung: frontInfo?.lage_sr_satzung?.sr_klasse,
+      lage:
+        frontInfo?.strasseObject?.name +
+        ` (${frontInfo?.lage_sr_satzung?.strassenreinigung?.key})`,
+      straßenReinigung: frontInfo?.lage_sr_satzung?.strassenreinigung?.name,
       bemerkung: frontInfo?.lage_sr_satzung?.sr_bem,
       veranlagung: frontInfo?.sr_veranlagung,
       garageStellplatz: frontInfo?.garage_stellplatz,
