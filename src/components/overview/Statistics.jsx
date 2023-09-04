@@ -23,10 +23,15 @@ const Statistics = ({
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Statistik">
-      <div className="flex flex-col gap-4 text-sm font-medium">
+      <div className="flex flex-col gap-1 text-sm font-medium">
         {data.map((row, i) => (
-          <div key={`statistics_row_${i}`} className="flex gap-2 items-center">
-            <span>{row.value || 0}</span>
+          <div
+            key={`statistics_row_${i}`}
+            className={`flex gap-2 items-center py-1 hover:bg-zinc-100 ${
+              row.value ? "" : "hidden"
+            }`}
+          >
+            <span>{row.value}</span>
             <span className="w-full">{row.title}</span>
             <FontAwesomeIcon icon={faHandPointer} className="cursor-pointer" />
             <FontAwesomeIcon icon={faMap} className="cursor-pointer" />
