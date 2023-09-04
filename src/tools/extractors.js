@@ -87,7 +87,7 @@ export const sumsExtractor = (kassenzeichen) => {
 
   return [
     {
-      title: "Bewertung",
+      title: "Veranlagung",
       items: types,
     },
     {
@@ -149,8 +149,8 @@ export const areasDetailsExtractor = (kassenzeichen) => {
       name: flaeche?.flaechenbezeichnung,
       groesseGrafik: flaecheInfo?.groesse_aus_grafik,
       groesseKorrektor: flaecheInfo?.groesse_korrektur,
-      flaechenArt: flaecheInfo?.flaechenart,
-      anschlussgrad: flaecheInfo?.anschlussgrad,
+      flaechenArt: flaecheInfo?.flaechenartObject?.art,
+      anschlussgrad: flaecheInfo?.anschlussgradObject?.grad_abkuerzung,
       anteil: flaeche?.anteil,
       bemerkung: flaeche?.bemerkung,
       datumErfassung: flaeche?.datum_erfassung,

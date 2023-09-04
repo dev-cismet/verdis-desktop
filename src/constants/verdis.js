@@ -38,6 +38,7 @@ export const query = gql`
             beschreibung
             flaechenartObject {
               art_abkuerzung
+              art
             }
             anschlussgradObject {
               grad_abkuerzung

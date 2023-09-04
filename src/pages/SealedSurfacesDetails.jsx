@@ -12,6 +12,7 @@ import {
 } from "../store/slices/search";
 import { compare } from "../tools/helper";
 import SubNav from "../components/sealedSurfaces/SubNav";
+import dayjs from "dayjs";
 
 const Page = ({
   width = "100%",
@@ -52,6 +53,7 @@ const Page = ({
                 dataIndex: "name",
                 key: "name",
                 sorter: (a, b) => compare(a.name, b.name),
+                defaultSortOrder: "ascend",
               },
               {
                 title: "Größe m²",
@@ -82,6 +84,7 @@ const Page = ({
                 dataIndex: "datumErfassung",
                 key: "datumErfassung",
                 sorter: (a, b) => compare(a.datumErfassung, b.datumErfassung),
+                render: (date) => <>{dayjs(date).format("DD.MM.YYYY")}</>,
               },
             ]}
             id={flaechenId}
