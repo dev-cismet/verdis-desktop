@@ -2,7 +2,6 @@ import Map from "../components/commons/Map";
 import ChangeRequests from "../components/sealedSurfaces/ChangeRequests";
 import Sums from "../components/sealedSurfaces/Sums";
 import Chat from "../components/commons/Chat";
-import { useNavigate } from "react-router-dom";
 import { areasExtractor, sumsExtractor } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
@@ -22,7 +21,6 @@ const Page = ({
       padding: "10px",
     };
   }
-  const navigate = useNavigate();
 
   const cardStyleArea = { width: "100%", height: "40%", minHeight: 0 };
   const cardStyleSum = { width: "100%", height: "40%", minHeight: 0 };

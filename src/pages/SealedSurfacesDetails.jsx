@@ -2,7 +2,6 @@ import React from "react";
 import Map from "../components/commons/Map";
 import Details from "../components/sealedSurfaces/Details";
 import Chat from "../components/commons/Chat";
-import { useNavigate } from "react-router-dom";
 import { areasDetailsExtractor } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +27,6 @@ const Page = ({
       padding: "10px",
     };
   }
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const flaechenId = useSelector(getFlaechenId);
 
