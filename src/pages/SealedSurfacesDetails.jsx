@@ -1,9 +1,7 @@
 import React from "react";
 import Map from "../components/commons/Map";
-import { Button } from "antd";
 import Details from "../components/sealedSurfaces/Details";
 import Chat from "../components/commons/Chat";
-import InfoBar from "../components/commons/InfoBar";
 import { useNavigate } from "react-router-dom";
 import { areasDetailsExtractor } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
@@ -14,6 +12,7 @@ import {
   storeFlaechenId,
 } from "../store/slices/search";
 import { compare } from "../tools/helper";
+import SubNav from "../components/sealedSurfaces/SubNav";
 
 const Page = ({
   width = "100%",
@@ -42,17 +41,7 @@ const Page = ({
       className="flex flex-col items-center relative h-full max-h-[calc(100vh-73px)]"
     >
       <div className="flex flex-col gap-2 w-full bg-zinc-100 h-full overflow-clip p-2">
-        <InfoBar title="Versiegelte Flächen">
-          <Button onClick={() => navigate("/versiegelteFlaechen")}>
-            Übersicht
-          </Button>
-          <Button
-            type="primary"
-            onClick={() => navigate("/versiegelteFlaechen/details")}
-          >
-            Flächen
-          </Button>
-        </InfoBar>
+        <SubNav />
         <div className="flex gap-2 h-full max-h-[calc(100%-40px)]">
           <TableCard
             width={cardStyleTable.width}

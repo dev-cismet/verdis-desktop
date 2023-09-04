@@ -1,17 +1,15 @@
 import React from "react";
 import Map from "../components/commons/Map";
-import { Button, Checkbox } from "antd";
+import { Checkbox } from "antd";
 import Chat from "../components/commons/Chat";
-import Exemption from "../components/seepagePermits/Exemption";
 import Details from "../components/seepagePermits/Details";
-import InfoBar from "../components/commons/InfoBar";
-import { useNavigate } from "react-router-dom";
 import {
   exemptionExtractor,
   seepageDetailsExtractor,
 } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
+import SubNav from "../components/seepagePermits/SubNav";
 
 const Page = ({
   width = "100%",
@@ -27,7 +25,6 @@ const Page = ({
       padding: "10px",
     };
   }
-  const navigate = useNavigate();
 
   const cardStylePermits = { width: "100%", height: "50%", minHeight: 0 };
   const cardStyleDetails = { width: "100%", height: "100%", minHeight: 0 };
@@ -38,17 +35,7 @@ const Page = ({
       className="flex flex-col items-center relative h-full max-h-[calc(100vh-73px)]"
     >
       <div className="flex flex-col gap-2 w-full bg-zinc-100 h-full overflow-clip p-2">
-        <InfoBar title="Versickerungsgenehmigungen">
-          <Button onClick={() => navigate("/versickerungsgenehmigungen")}>
-            Übersicht
-          </Button>
-          <Button
-            type="primary"
-            onClick={() => navigate("/versickerungsgenehmigungen/details")}
-          >
-            Details
-          </Button>
-        </InfoBar>
+        <SubNav />
         <div className="flex flex-col gap-2 h-full max-h-[calc(100%-40px)]">
           <TableCard
             width={cardStylePermits.width}

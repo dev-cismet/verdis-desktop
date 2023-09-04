@@ -1,10 +1,7 @@
 import React from "react";
 import Map from "../components/commons/Map";
-import { Button } from "antd";
 import Chat from "../components/commons/Chat";
 import Details from "../components/streetCleaning/Details";
-import InfoBar from "../components/commons/InfoBar";
-import { useNavigate } from "react-router-dom";
 import { frontsExtractor } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
@@ -14,6 +11,7 @@ import {
   storeFrontenId,
 } from "../store/slices/search";
 import { useDispatch, useSelector } from "react-redux";
+import SubNav from "../components/streetCleaning/SubNav";
 
 const Page = ({
   width = "100%",
@@ -29,7 +27,6 @@ const Page = ({
       padding: "10px",
     };
   }
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const frontenId = useSelector(getFrontenId);
 
@@ -42,17 +39,7 @@ const Page = ({
       className="flex flex-col items-center relative h-full max-h-[calc(100vh-73px)]"
     >
       <div className="flex flex-col gap-2 w-full bg-zinc-100 h-full overflow-clip p-2">
-        <InfoBar title="Straßenreinigung">
-          <Button onClick={() => navigate("/strassenreinigung")}>
-            Übersicht
-          </Button>
-          <Button
-            type="primary"
-            onClick={() => navigate("/strassenreinigung/details")}
-          >
-            Fronten
-          </Button>
-        </InfoBar>
+        <SubNav />
         <div className="flex gap-2 h-full max-h-[calc(100%-40px)]">
           <TableCard
             width={cardStyleFronts.width}
