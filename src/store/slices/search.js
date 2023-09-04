@@ -45,14 +45,17 @@ const slice = createSlice({
         (state.flaechenId = null);
     },
     addSearch(state, action) {
-      if (state.previousSearches.length >= 10) {
-        const updatedSearches = state.previousSearches.slice(1);
+      if (state.previousSearches.length >= 8) {
+        const updatedSearches = state.previousSearches.slice(
+          0,
+          state.previousSearches.length - 1
+        );
         state.previousSearches = [
-          ...new Set([...updatedSearches, action.payload]),
+          ...new Set([action.payload, ...updatedSearches]),
         ];
       } else {
         state.previousSearches = [
-          ...new Set([...state.previousSearches, action.payload]),
+          ...new Set([action.payload, ...state.previousSearches]),
         ];
       }
       return state;
