@@ -1,17 +1,20 @@
-import { Input } from "antd";
+import { Checkbox, Input, Select } from "antd";
 import CustomCard from "../ui/Card";
 import { useSelector } from "react-redux";
 import { getFront } from "../../store/slices/search";
+import TextArea from "antd/es/input/TextArea";
 
 const mockExtractor = (input) => {
   return [];
 };
 
-const DetailsRow = ({ title, value }) => {
+const DetailsRow = ({ title, value, customInput }) => {
   return (
-    <div className="w-full flex items-center justify-between">
-      <span className="w-full font-medium">{title}:</span>
-      <Input value={value} />
+    <div className="w-full flex justify-between">
+      <span className="text-sm font-medium w-1/2">{title}:</span>
+      <div className="w-1/2">
+        {customInput ? customInput : <Input value={value} size="small" />}
+      </div>
     </div>
   );
 };
@@ -34,13 +37,49 @@ const Details = ({
         <DetailsRow title="Länge (Korrektur)" value={front?.laengeKorrektur} />
         <DetailsRow title="Bearbeitet durch" value={front?.bearbeitetDurch} />
         <DetailsRow title="Erfassungsdatum" value={front?.erfassungsdatum} />
-        <DetailsRow title="Straße" value={front?.straße} />
-        <DetailsRow title="Lage" value={front?.lage} />
-        <DetailsRow title="Straßenreinigung" value={front?.straßenReinigung} />
-        <DetailsRow title="Bemerkung" value={front?.bemerkung} />
+        <DetailsRow
+          title="Straße"
+          customInput={
+            <Select className="w-full" size="small" value={front?.straße} />
+          }
+        />
+        <hr className="h-px bg-gray-100 border-0" />
+        <DetailsRow
+          title="Lage"
+          customInput={
+            <Select className="w-full" size="small" value={front?.lage} />
+          }
+        />
+        <DetailsRow
+          title="Straßenreinigung"
+          customInput={
+            <Select
+              className="w-full"
+              size="small"
+              value={front?.straßenReinigung}
+            />
+          }
+        />
+        <DetailsRow
+          title="Bemerkung"
+          customInput={<TextArea className="w-full" value={front?.bemerkung} />}
+        />
         <DetailsRow title="Veranlagung" value={front?.veranlagung} />
-        <DetailsRow title="Garage/Stellplatz" value={front?.garageStellplatz} />
-        <DetailsRow title="Anteil" value={front?.anteil} />
+        <hr className="h-px bg-gray-100 border-0" />
+        <div className="w-full flex justify-center items-center">
+          <Checkbox
+            className="w-full font-medium text-sm"
+            checked={front?.garageStellplatz}
+          >
+            Garage/Stellplatz
+          </Checkbox>
+          <Checkbox
+            checked={front?.anteil}
+            className="w-full font-medium text-sm"
+          >
+            Anteil
+          </Checkbox>
+        </div>
         <DetailsRow title="Winkel" value={front?.winkel} />
       </div>
     </CustomCard>
