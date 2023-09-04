@@ -168,22 +168,30 @@ export const areasDetailsExtractor = (kassenzeichen) => {
 export const sewerConnectionExtractor = (kassenzeichen) => {
   const sewegeConnection = kassenzeichen?.kanalanschlussObject;
 
+  const getSelectValue = (angeschlossen) => {
+    if (angeschlossen === -1) {
+      return "";
+    } else {
+      return "ja";
+    }
+  };
+
   return {
     rk: {
       vorhanden: sewegeConnection?.rkvorhanden,
-      angeschlossen: sewegeConnection?.rkangeschlossen,
+      angeschlossen: getSelectValue(sewegeConnection?.rkangeschlossen),
     },
     mkr: {
       vorhanden: sewegeConnection?.mkrvorhanden,
-      angeschlossen: sewegeConnection?.mkrangeschlossen,
+      angeschlossen: getSelectValue(sewegeConnection?.mkrangeschlossen),
     },
     mks: {
       vorhanden: sewegeConnection?.mksvorhanden,
-      angeschlossen: sewegeConnection?.mksangeschlossen,
+      angeschlossen: getSelectValue(sewegeConnection?.mksangeschlossen),
     },
     sk: {
       vorhanden: sewegeConnection?.skvorhanden,
-      angeschlossen: sewegeConnection?.skangeschlossen,
+      angeschlossen: getSelectValue(sewegeConnection?.skangeschlossen),
     },
     sg: {
       vorhanden: sewegeConnection?.sgvorhanden,
@@ -235,7 +243,9 @@ export const exemptionExtractor = (kassenzeichen) => {
           ")",
         seepageFrom: befreiungErlaubnis?.befreiungerlaubnisObject?.antrag_vom,
         seepageUntil: befreiungErlaubnis?.befreiungerlaubnisObject?.gueltig_bis,
-        useCase: "Muss noch hinzugefügt werden",
+        useCase:
+          befreiungErlaubnis?.befreiungerlaubnisObject
+            ?.befreiungerlaubnis_nutzung?.name,
         type: befreiungErlaubnis?.befreiungerlaubnisObject
           ?.befreiungerlaubnis_geometrieArrayRelationShip
           ?.befreiungerlaubnis_geometrie_typ_versickerung?.name,
@@ -249,7 +259,7 @@ export const exemptionExtractor = (kassenzeichen) => {
       })
     );
 
-  return [data];
+  return data;
 };
 
 export const seepageDetailsExtractor = (input) => {
