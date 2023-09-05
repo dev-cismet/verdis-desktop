@@ -88,7 +88,7 @@ export const getGeneralGeomfeatureCollection = (kassenzeichen) => {
 
 export const fitFeatureArray = (featureArray, mapRef) => {
   const bounds = getBoundsForFeatureArray(featureArray);
-  console.log("xxx fitFeatureArray bounds", bounds);
+
   //ugly winning to avoid some race condition
   setTimeout(() => {
     mapRef.current.leafletMap.leafletElement.fitBounds(bounds);
