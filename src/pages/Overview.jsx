@@ -87,7 +87,6 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
                     ...frontenArray,
                     // ...generalGeomArray,
                   ];
-                  console.log("xxx featureArray", featureArray);
 
                   let featureCollection;
                   if (featureArray.length > 0) {
