@@ -110,11 +110,9 @@ const Map = ({
   let fallback = {};
   if (data?.featureCollection && refRoutedMap?.current) {
     const map = refRoutedMap.current.leafletMap.leafletElement;
-    console.log("xxx ", data?.featureCollection);
 
     const bb = getBoundsForFeatureArray(data?.featureCollection);
     const { center, zoom } = getCenterAndZoomForBounds(map, bb);
-    console.log("xxx center", center, zoom);
     fallback.position = {};
     fallback.position.lat = center.lat;
     fallback.position.lng = center.lng;
@@ -150,14 +148,19 @@ const Map = ({
         zoomSnap={0.5}
         zoomDelta={0.5}
         fallbackPosition={{
-          lat: urlSearchParamsObject?.lat ?? fallback?.position.lat,
-          lng: urlSearchParamsObject?.lng ?? fallback?.position.lng,
+          lat:
+            urlSearchParamsObject?.lat ??
+            fallback?.position?.lat ??
+            51.272570027476256,
+          lng:
+            urlSearchParamsObject?.lng ??
+            fallback?.position?.lng ??
+            7.19963690266013,
         }}
-        fallbackZoom={urlSearchParamsObject?.zoom ?? fallback.zoom}
+        fallbackZoom={urlSearchParamsObject?.zoom ?? fallback.zoom ?? 17}
         locationChangedHandler={(location) => {
           //navigate(modifyQueryPart(browserlocation.search, location));
           const newParams = { ...paramsToObject(urlParams), ...location };
-          console.log("xxx locationChangedHandler)", newParams);
           setUrlParams(newParams);
         }}
         boundingBoxChangedHandler={(boundingBox) => {
