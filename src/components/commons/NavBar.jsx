@@ -40,6 +40,16 @@ import {
 import { ENDPOINT, query } from "../../constants/verdis";
 import { useQuery } from "@tanstack/react-query";
 import request from "graphql-request";
+import {
+  setFlaechenCollection,
+  setFrontenCollection,
+  setGeneralGeometryCollection,
+} from "../../store/slices/mapping";
+import {
+  getFlaechenFeatureCollection,
+  getFrontenFeatureCollection,
+  getGeneralGeomfeatureCollection,
+} from "../../tools/mappingTools";
 
 const mockExtractor = (input) => {
   return [
@@ -158,6 +168,23 @@ const NavBar = ({
       }
       dispatch(addSearch(trimmedQuery));
       dispatch(resetStates());
+
+      //create the featureCollections
+
+      dispatch(
+        setFlaechenCollection(
+          getFlaechenFeatureCollection(data.kassenzeichen[0])
+        )
+      );
+      dispatch(
+        setFrontenCollection(getFrontenFeatureCollection(data.kassenzeichen[0]))
+      );
+
+      dispatch(
+        setGeneralGeometryCollection(
+          getGeneralGeomfeatureCollection(data.kassenzeichen[0])
+        )
+      );
     }
   }, [data]);
 

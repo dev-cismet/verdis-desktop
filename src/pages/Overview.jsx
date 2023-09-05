@@ -16,9 +16,13 @@ import { getKassenzeichen } from "../store/slices/search";
 import { useSelector } from "react-redux";
 import {
   createFlaechenStyler,
-  getCenterAndZoomForBounds,
   getFlaechenFeatureCollection,
 } from "../tools/mappingTools";
+import {
+  getFlaechenCollection,
+  getFrontenCollection,
+  getGeneralGeometryCollection,
+} from "../store/slices/mapping";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -35,7 +39,9 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
     height: "100%",
   };
   const kassenzeichen = useSelector(getKassenzeichen);
-
+  const flaechenArray = useSelector(getFlaechenCollection);
+  const frontenArray = useSelector(getFrontenCollection);
+  const generalGeomArray = useSelector(getGeneralGeometryCollection);
   return (
     <div
       style={{ ...storyStyle, width, height }}
@@ -76,17 +82,21 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
               dataIn={kassenzeichen}
               extractor={(dataIn) => {
                 if (dataIn !== undefined && JSON.stringify(dataIn) !== "{}") {
-                  const featureCollection =
-                    getFlaechenFeatureCollection(dataIn);
+                  const featureArray = [
+                    ...flaechenArray,
+                    ...frontenArray,
+                    // ...generalGeomArray,
+                  ];
+
                   return {
-                    homeCenter: [52.27225612927373, 7.199918031692506],
-                    featureCollection,
-                    styler: createFlaechenStyler(false, featureCollection),
+                    homeCenter: [51.272570027476256, 7.19963690266013],
+                    featureCollection: featureArray,
+                    styler: createFlaechenStyler(false, featureArray),
                   };
                 }
 
                 return {
-                  homeCenter: [50.27225612927373, 7.199918031692506],
+                  homeCenter: [51.272570027476256, 7.19963690266013],
                   homeZoom: 16,
                   featureCollection: undefined,
                 };

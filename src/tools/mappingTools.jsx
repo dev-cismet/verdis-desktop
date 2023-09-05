@@ -10,11 +10,12 @@ export const getFlaechenFeatureCollection = (kassenzeichen) => {
   const features = flaechenArray.map((flaeche) => {
     return {
       type: "Feature",
+      featureType: "flaeche",
       id: flaeche.flaecheObject.id,
       geometry: flaeche.flaecheObject.flaecheninfoObject.geom.geo_field,
       crs: flaeche.flaecheObject.flaecheninfoObject.geom.geo_field.crs,
       properties: {
-        id: flaeche.flaecheObject.id,
+        id: "flaeche." + flaeche.flaecheObject.id,
         bez: flaeche.flaecheObject.flaechenbezeichnung,
         art_abk:
           flaeche.flaecheObject.flaecheninfoObject.flaechenartObject
@@ -27,6 +28,55 @@ export const getFlaechenFeatureCollection = (kassenzeichen) => {
         groesse_korrektur:
           flaeche.flaecheObject.flaecheninfoObject.groesse_korrektur,
         geom: undefined, // Exclude the geom in the properties
+      },
+    };
+  });
+
+  return features;
+};
+
+export const getFrontenFeatureCollection = (kassenzeichen) => {
+  // extract the frontenArray from the response
+  const frontenArray = kassenzeichen.frontenArray;
+  const features = frontenArray.map((front) => {
+    const frontObject = front.frontObject;
+    return {
+      type: "Feature",
+      featureType: "front",
+      id: "front." + frontObject.frontinfoObject.id,
+      geometry: frontObject.frontinfoObject.geom.geo_field,
+      crs: frontObject.frontinfoObject.geom.geo_field.crs,
+      properties: {
+        id: frontObject.frontinfoObject.id,
+        strassenreinigung: frontObject.frontinfoObject.strassenreinigung,
+        winterdienst: frontObject.frontinfoObject.winterdienst,
+        wd_prio_or: frontObject.frontinfoObject.wd_prio_or,
+        sr_klasse_or: frontObject.frontinfoObject.sr_klasse_or,
+        strasse: frontObject.frontinfoObject.strasseObject,
+      },
+    };
+  });
+
+  return features;
+};
+
+export const getGeneralGeomfeatureCollection = (kassenzeichen) => {
+  // extract the general Geom Array from the response
+
+  const generalGeomArray = kassenzeichen.kassenzeichen_geometrienArray;
+
+  const features = generalGeomArray.map((geom) => {
+    const geomObject = geom.kassenzeichen_geometrieObject;
+    return {
+      type: "Feature",
+      featureType: "general",
+      id: "general." + geom.id,
+      geometry: geomObject.geom.geo_field,
+      crs: geomObject.geom.geo_field.crs,
+      properties: {
+        id: geom.id,
+        name: geomObject.name,
+        isfrei: geomObject.isfrei,
       },
     };
   });
@@ -55,7 +105,6 @@ export const getBoundsForFeatureArray = (featureArray) => {
 export const getBoundsForFeatureCollection = (featureCollection) => {
   // Get bbox in EPSG:3857 from Turf.js
   const boundingBox3857 = bbox(featureCollection);
-  console.log("xxx boundingBox3857", boundingBox3857);
 
   // Convert the bounding box from EPSG:3857 to EPSG:4326
   const southWest4326 = proj4("EPSG:25832", "EPSG:4326", [

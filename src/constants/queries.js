@@ -120,72 +120,173 @@ export default queries;
 //   }
 // }
 queries.kassenzeichenD = `
-  query Kassenzeichen($kassenzeichen: Int) {
-    kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {
-      id
-      datum_erfassung
-      bemerkung
-      sperre
-      kassenzeichennummer8
-      frontenArray(
-        order_by: {
-          frontObject: {
-            frontinfoObject: {
-              lage_sr_satzung: { strassenreinigung: { key: asc } }
-            }
+query Kassenzeichen($kassenzeichen: Int) {
+  kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {
+    id
+    datum_erfassung
+    bemerkung
+    sperre
+    kassenzeichennummer8
+    frontenArray(
+      order_by: {
+        frontObject: {
+          frontinfoObject: {
+            lage_sr_satzung: { strassenreinigung: { key: asc } }
           }
         }
-      ) {
-        frontObject {
-          frontinfoObject {
-            laenge_grafik
+      }
+    ) {
+      frontObject {
+        frontinfoObject {
+          anteil
+          baulasten
+          grunddienstbarkeit
+          id
+          geom {
+            geo_field
+          }
+          laenge_grafik
+          laenge_korrektur
+          lage_sr_satzung {
+            id
+            sr_bem
+            sr_klasse
+            strasse
             strasseObject {
+              id
               name
               schluessel
             }
-            lage_sr_satzung {
-              strassenreinigung {
-                key
-                schluessel
-              }
+            strassenreinigung {
+              id
+              key
+              name
+              schluessel
+            }
+            wd_bem
+            winterdienst {
+              id
+              key
+              name
+              schluessel
+            }
+            wd_prio
+          }
+          lage_wd_satzung {
+            id
+            sr_klasse
+            strasse
+            strasseObject {
+              id
+              name
+              schluessel
+            }
+            strassenreinigung {
+              id
+              key
+              name
+              schluessel
+            }
+            wd_bem
+            winterdienst {
+              key
+              id
+              name
+              schluessel
             }
           }
-        }
-      }
-      flaechenArray(
-        order_by: {
-          flaecheObject: {
-            flaecheninfoObject: { flaechenbeschreibung: { beschreibung: asc } }
+          quadratwurzel
+          sr_bem
+          sr_klasse_or
+          sr_veranlagung
+          strasseObject {
+            id
+            name
+            schluessel
           }
-        }
-      ) {
-        flaecheObject {
-          datum_erfassung
-          flaechenbezeichnung
-          flaecheninfoObject {
-            groesse_aus_grafik
-            flaechenartObject {
-              art_abkuerzung
-            }
-            anschlussgradObject {
-              grad_abkuerzung
-            }
-            flaechenbeschreibung {
-              beschreibung
-            }
+          wd_bem
+          strassenreinigung {
+            id
+            key
+            name
+            schluessel
           }
-          id
+          wd_prio_or
+          wd_veranlagung
+          winkel
+          winterdienst {
+            id
+            key
+            name
+            schluessel
+          }
+          
         }
       }
     }
-    aenderungsanfrage(
-      where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
+    flaechenArray(
+      order_by: {
+        flaecheObject: {
+          flaecheninfoObject: { flaechenbeschreibung: { beschreibung: asc } }
+        }
+      }
     ) {
-      aenderungsanfrage_status {
+      flaecheObject {
+        anteil
+        bemerkung
+        datum_erfassung
+        datum_veranlagung
+        flaechenbezeichnung
+        id
+        flaecheninfoObject {
+          anschlussgradObject {
+            grad
+            grad_abkuerzung
+            id
+          }
+          flaechenartObject {
+            art
+            art_abkuerzung
+            id
+          }
+          groesse_aus_grafik
+          groesse_korrektur
+          id
+          nachgewiesen
+          flaechenbeschreibung {
+            dachflaeche
+            id
+            beschreibung
+          }
+          beschreibung
+          geom {
+            geo_field
+          }
+        }
+        flaecheninfo
+      }
+    }
+    kassenzeichen_geometrienArray {
+      id
+      kassenzeichen_geometrieObject {
+        id
+        istfrei
         name
+        geom {
+          geo_field
+          
+        }
       }
     }
   }
+  aenderungsanfrage(
+    where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
+  ) {
+    aenderungsanfrage_status {
+      name
+    }
+  }
+}
 `;
 
 queries.kassenzeichenT = `
@@ -221,6 +322,7 @@ queries.kassenzeichenT = `
             anteil
             garage_stellplatz
             strasseObject {
+              id
               name
               schluessel
             }
@@ -262,22 +364,53 @@ queries.kassenzeichenT = `
               grad
               grad_abkuerzung
               id
+              key
+              name
+              schluessel
             }
-            flaechenartObject {
-              art
-              art_abkuerzung
+            wd_bem
+            winterdienst {
               id
+              key
+              name
+              schluessel
             }
             flaechenbeschreibung {
               dachflaeche
               id
-              beschreibung
+              name
+              schluessel
             }
             geom {
               geo_field
             }
           }
-          flaecheninfo
+          quadratwurzel
+          sr_bem
+          sr_klasse_or
+          sr_veranlagung
+          strasseObject {
+            id
+            name
+            schluessel
+          }
+          wd_bem
+          strassenreinigung {
+            id
+            key
+            name
+            schluessel
+          }
+          wd_prio_or
+          wd_veranlagung
+          winkel
+          winterdienst {
+            id
+            key
+            name
+            schluessel
+          }
+          
         }
       }
     }
@@ -322,11 +455,62 @@ queries.kassenzeichenT = `
     aenderungsanfrage(
       where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
     ) {
-      aenderungsanfrage_status {
+      flaecheObject {
+        anteil
+        bemerkung
+        datum_erfassung
+        datum_veranlagung
+        flaechenbezeichnung
+        id
+        flaecheninfoObject {
+          anschlussgradObject {
+            grad
+            grad_abkuerzung
+            id
+          }
+          flaechenartObject {
+            art
+            art_abkuerzung
+            id
+          }
+          groesse_aus_grafik
+          groesse_korrektur
+          id
+          nachgewiesen
+          flaechenbeschreibung {
+            dachflaeche
+            id
+            beschreibung
+          }
+          beschreibung
+          geom {
+            geo_field
+          }
+        }
+        flaecheninfo
+      }
+    }
+    kassenzeichen_geometrienArray {
+      id
+      kassenzeichen_geometrieObject {
+        id
+        istfrei
         name
+        geom {
+          geo_field
+          
+        }
       }
     }
   }
+  aenderungsanfrage(
+    where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
+  ) {
+    aenderungsanfrage_status {
+      name
+    }
+  }
+}
 `;
 
 queries.kassenzeichen = `query q($kassenzeichen: Int) {
@@ -569,6 +753,10 @@ queries.kassenzeichen = `query q($kassenzeichen: Int) {
           id
           istfrei
           name
+          geom {
+            geo_field
+            
+          }
         }
       }
       schmutzwasserObject {
@@ -693,6 +881,9 @@ queries.kassenzeichenHC = `query q {
             baulasten
             grunddienstbarkeit
             id
+            geom {
+              geo_field
+            }
             laenge_grafik
             laenge_korrektur
             lage_sr_satzung {
