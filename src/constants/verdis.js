@@ -7,5 +7,5 @@ export const ENDPOINT = REST_SERVICE + `/graphql/` + DOMAIN + "/execute";
 export const APP_KEY = "verdis-desktop";
 export const STORAGE_PREFIX = "1";
 export const query = gql`
-  ${queries.kassenzeichenT}
+  ${queries.kassenzeichenD}
 `;
