@@ -204,9 +204,10 @@ export const getColorForKassenzeichenGeometry = (geo_field) => {
   return colorHash.hex("" + geo_field);
 };
 
-export const createFlaechenStyler = (changeRequestsEditMode, kassenzeichen) => {
+export const createStyler = (changeRequestsEditMode, kassenzeichen) => {
   return (feature) => {
     if (feature.properties.type === "annotation") {
+      //will be used later
       // const currentColor = '#ffff00';
 
       let opacity,
@@ -247,32 +248,59 @@ export const createFlaechenStyler = (changeRequestsEditMode, kassenzeichen) => {
         }),
       };
     } else {
-      let color;
-      if (changeRequestsEditMode === false) {
-        color = getColorFromFlaechenArt(feature.properties.art_abk);
-      } else {
-        let cr = getCRsForFeature(kassenzeichen, feature.properties);
-        let mergedFlaeche = getMergedFlaeche(feature.properties, cr);
-        color = getColorFromFlaechenArt(mergedFlaeche.art_abk);
-      }
-      let opacity = 0.6;
-      let linecolor = "#000000";
-      let weight = 1;
+      switch (feature.featureType) {
+        case "flaeche": {
+          let color;
+          if (changeRequestsEditMode === false) {
+            color = getColorFromFlaechenArt(feature.properties.art_abk);
+          } else {
+            let cr = getCRsForFeature(kassenzeichen, feature.properties);
+            let mergedFlaeche = getMergedFlaeche(feature.properties, cr);
+            color = getColorFromFlaechenArt(mergedFlaeche.art_abk);
+          }
+          let opacity = 0.6;
+          let linecolor = "#000000";
+          let weight = 1;
 
-      if (feature.selected === true) {
-        opacity = 0.9;
-        linecolor = "#0C7D9D";
-        weight = "2";
+          if (feature.selected === true) {
+            opacity = 0.9;
+            linecolor = "#0C7D9D";
+            weight = "2";
+          }
+          const style = {
+            color: linecolor,
+            weight: weight,
+            opacity: 1.0,
+            fillColor: color,
+            fillOpacity: opacity,
+            className: "verdis-flaeche-" + feature.properties.bez,
+          };
+          return style;
+        }
+        case "front": {
+          let linecolor = getColorFromFrontKey(feature.properties.key);
+          let opacity = 0.6;
+          let weight = 10;
+
+          if (feature.selected === true) {
+            opacity = 0.9;
+            linecolor = "#0C7D9D";
+            weight = "10";
+          }
+
+          const style = {
+            color: linecolor,
+            weight: weight,
+            opacity: opacity,
+          };
+          return style;
+        }
+
+        case "general":
+          break;
+        default:
+          break;
       }
-      const style = {
-        color: linecolor,
-        weight: weight,
-        opacity: 1.0,
-        fillColor: color,
-        fillOpacity: opacity,
-        className: "verdis-flaeche-" + feature.properties.bez,
-      };
-      return style;
     }
   };
 };
