@@ -153,7 +153,7 @@ const NavBar = ({
   };
 
   useEffect(() => {
-    if (error) {
+    if (error && !isFetching) {
       logout();
     }
   }, [error]);
