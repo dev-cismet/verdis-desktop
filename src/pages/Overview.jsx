@@ -15,7 +15,7 @@ import {
 import { getKassenzeichen } from "../store/slices/search";
 import { useSelector } from "react-redux";
 import {
-  createFlaechenStyler,
+  createStyler,
   getFlaechenFeatureCollection,
 } from "../tools/mappingTools";
 import {
@@ -96,7 +96,7 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
                   return {
                     homeCenter: [51.272570027476256, 7.19963690266013],
                     featureCollection,
-                    styler: createFlaechenStyler(false, featureArray),
+                    styler: createStyler(false, featureArray),
                   };
                 }
 
