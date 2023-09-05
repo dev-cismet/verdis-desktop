@@ -87,10 +87,16 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
                     ...frontenArray,
                     // ...generalGeomArray,
                   ];
+                  console.log("xxx featureArray", featureArray);
+
+                  let featureCollection;
+                  if (featureArray.length > 0) {
+                    featureCollection = featureArray;
+                  }
 
                   return {
                     homeCenter: [51.272570027476256, 7.19963690266013],
-                    featureCollection: featureArray,
+                    featureCollection,
                     styler: createFlaechenStyler(false, featureArray),
                   };
                 }

@@ -167,10 +167,12 @@ const Map = ({
           // console.log("xxx boundingBox Changed", boundingBox);
         }}
       >
-        <FeatureCollectionDisplay
-          featureCollection={data.featureCollection}
-          style={data.styler}
-        />
+        {data.featureCollection && data.featureCollection.length > 0 && (
+          <FeatureCollectionDisplay
+            featureCollection={data.featureCollection}
+            style={data.styler}
+          />
+        )}
       </RoutedMap>
     </Card>
   );
