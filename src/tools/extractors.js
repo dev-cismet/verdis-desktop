@@ -169,10 +169,10 @@ export const sewerConnectionExtractor = (kassenzeichen) => {
   const sewegeConnection = kassenzeichen?.kanalanschlussObject;
 
   const getSelectValue = (angeschlossen) => {
-    if (angeschlossen === -1) {
-      return "";
-    } else {
+    if (angeschlossen === 0) {
       return "ja";
+    } else {
+      return "";
     }
   };
 
