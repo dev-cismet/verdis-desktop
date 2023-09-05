@@ -16,7 +16,12 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
 import {
@@ -75,6 +80,7 @@ const NavBar = ({
   inStory,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const mockData = extractor(dataIn);
   const location = useLocation();
   const readOnly = useSelector(getReadOnly);
@@ -217,7 +223,12 @@ const NavBar = ({
         </AutoComplete>
       </div>
       <div className="flex items-center gap-3">
-        <ExclamationCircleOutlined className="text-2xl cursor-pointer" />
+        <ExclamationCircleOutlined
+          className="text-2xl cursor-pointer"
+          onClick={() => {
+            setUrlParams({ xxx: "yyy", kassenzeichen: 60145620 });
+          }}
+        />
         <QuestionCircleOutlined className="text-2xl cursor-pointer" />
         <CommentOutlined
           className="text-2xl cursor-pointer"

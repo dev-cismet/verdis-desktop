@@ -2,6 +2,333 @@ const queries = {};
 export const geomFactories = {};
 export default queries;
 
+// query Kassenzeichen($kassenzeichen: Int) {
+//   kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {
+//     datum_erfassung
+//     bemerkung
+//     sperre
+//     kassenzeichennummer8
+//     grunddienstbarkeit
+//     baulasten
+//     quadratwurzel
+//     keine_gesicherte_erschliessung
+//     flaechenArray(
+//       order_by: {
+//         flaecheObject: {
+//           flaecheninfoObject: { flaechenbeschreibung: { beschreibung: asc } }
+//         }
+//       }
+//     ) {
+//       flaecheObject {
+//         datum_erfassung
+//         flaechenbezeichnung
+//         anteil
+//         bemerkung
+//         datum_erfassung
+//         datum_veranlagung
+//         flaecheninfoObject {
+//           groesse_aus_grafik
+//           groesse_korrektur
+//           flaechenart
+//           anschlussgrad
+//           beschreibung
+//           flaechenartObject {
+//             art_abkuerzung
+//           }
+//           anschlussgradObject {
+//             grad_abkuerzung
+//           }
+//           flaechenbeschreibung {
+//             beschreibung
+//           }
+//         }
+//         id
+//       }
+//     }
+//     frontenArray(order_by: { frontObject: { nummer: asc } }) {
+//       frontObject {
+//         nummer
+//         frontinfoObject {
+//           laenge_grafik
+//           laenge_korrektur
+//           strasseObject {
+//             name
+//             schluessel
+//           }
+//           sr_veranlagung
+//           lage_sr_satzung {
+//             sr_bem
+//             strassenreinigung {
+//               key
+//               schluessel
+//             }
+//           }
+//           winkel
+//           anteil
+//           garage_stellplatz
+//         }
+//         bearbeitet_durch
+//         erfassungsdatum
+//         id
+//       }
+//     }
+//     kanalanschlussObject {
+//       rkangeschlossen
+//       rkvorhanden
+//       mkrangeschlossen
+//       mkrvorhanden
+//       mksangeschlossen
+//       mksvorhanden
+//       skvorhanden
+//       skangeschlossen
+//       sgvorhanden
+//       sgentleerung
+//       evg
+//       kkaentleerung
+//       kkavorhanden
+//       befreiungenunderlaubnisseArray {
+//         befreiungerlaubnisObject {
+//           aktenzeichen
+//           antrag_vom
+//           gueltig_bis
+//           befreiungerlaubnis_nutzung {
+//             name
+//           }
+//           befreiungerlaubnis_geometrieArrayRelationShip {
+//             durchfluss
+//             gutachten_vorhanden
+//             befreiungerlaubnis_geometrie_typ_versickerung {
+//               name
+//             }
+//           }
+//         }
+//       }
+//       befreiungenunderlaubnisse
+//     }
+//     kassenzeichen_geometrienArray {
+//       kassenzeichen_geometrieObject {
+//         name
+//       }
+//     }
+//   }
+//   aenderungsanfrage(
+//     where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
+//   ) {
+//     aenderungsanfrage_status {
+//       name
+//     }
+//   }
+// }
+queries.kassenzeichenD = `
+  query Kassenzeichen($kassenzeichen: Int) {
+    kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {
+      id
+      datum_erfassung
+      bemerkung
+      sperre
+      kassenzeichennummer8
+      frontenArray(
+        order_by: {
+          frontObject: {
+            frontinfoObject: {
+              lage_sr_satzung: { strassenreinigung: { key: asc } }
+            }
+          }
+        }
+      ) {
+        frontObject {
+          frontinfoObject {
+            laenge_grafik
+            strasseObject {
+              name
+              schluessel
+            }
+            lage_sr_satzung {
+              strassenreinigung {
+                key
+                schluessel
+              }
+            }
+          }
+        }
+      }
+      flaechenArray(
+        order_by: {
+          flaecheObject: {
+            flaecheninfoObject: { flaechenbeschreibung: { beschreibung: asc } }
+          }
+        }
+      ) {
+        flaecheObject {
+          datum_erfassung
+          flaechenbezeichnung
+          flaecheninfoObject {
+            groesse_aus_grafik
+            flaechenartObject {
+              art_abkuerzung
+            }
+            anschlussgradObject {
+              grad_abkuerzung
+            }
+            flaechenbeschreibung {
+              beschreibung
+            }
+          }
+          id
+        }
+      }
+    }
+    aenderungsanfrage(
+      where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
+    ) {
+      aenderungsanfrage_status {
+        name
+      }
+    }
+  }
+`;
+
+queries.kassenzeichenT = `
+  query Kassenzeichen($kassenzeichen: Int) {
+    kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {
+      id
+      datum_erfassung
+      bemerkung
+      sperre
+      kassenzeichennummer8
+      grunddienstbarkeit
+      baulasten
+      quadratwurzel
+      keine_gesicherte_erschliessung
+      frontenArray(
+        order_by: {
+          frontObject: {
+            frontinfoObject: {
+              lage_sr_satzung: { strassenreinigung: { key: asc } }
+            }
+          }
+        }
+      ) {
+        frontObject {
+          nummer
+          bearbeitet_durch
+          erfassungsdatum
+          id
+          frontinfoObject {
+            laenge_grafik
+            laenge_korrektur
+            winkel
+            anteil
+            garage_stellplatz
+            strasseObject {
+              name
+              schluessel
+            }
+            sr_veranlagung
+            lage_sr_satzung {
+              sr_bem
+              strassenreinigung {
+                key
+                schluessel
+                name
+              }
+            }
+          }
+        }
+      }
+      flaechenArray(
+        order_by: {
+          flaecheObject: {
+            flaecheninfoObject: { flaechenbeschreibung: { beschreibung: asc } }
+          }
+        }
+      ) {
+        flaecheObject {
+          anteil
+          bemerkung
+          datum_erfassung
+          datum_veranlagung
+          flaechenbezeichnung
+          id
+          flaecheninfoObject {
+            groesse_aus_grafik
+            groesse_korrektur
+            id
+            nachgewiesen
+            flaechenart
+            anschlussgrad
+            beschreibung
+            anschlussgradObject {
+              grad
+              grad_abkuerzung
+              id
+            }
+            flaechenartObject {
+              art
+              art_abkuerzung
+              id
+            }
+            flaechenbeschreibung {
+              dachflaeche
+              id
+              beschreibung
+            }
+            geom {
+              geo_field
+            }
+          }
+          flaecheninfo
+        }
+      }
+    }
+    kanalanschlussObject {
+      rkangeschlossen
+      rkvorhanden
+      mkrangeschlossen
+      mkrvorhanden
+      mksangeschlossen
+      mksvorhanden
+      skvorhanden
+      skangeschlossen
+      sgvorhanden
+      sgentleerung
+      evg
+      kkaentleerung
+      kkavorhanden
+      befreiungenunderlaubnisseArray {
+        befreiungerlaubnisObject {
+          aktenzeichen
+          antrag_vom
+          gueltig_bis
+          befreiungerlaubnis_nutzung {
+            name
+          }
+          befreiungerlaubnis_geometrieArrayRelationShip {
+            durchfluss
+            gutachten_vorhanden
+            befreiungerlaubnis_geometrie_typ_versickerung {
+              name
+            }
+          }
+        }
+      }
+      befreiungenunderlaubnisse
+      kassenzeichen_geometrienArray {
+        kassenzeichen_geometrieObject {
+          name
+        }
+      }
+    }
+    aenderungsanfrage(
+      where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
+    ) {
+      aenderungsanfrage_status {
+        name
+      }
+    }
+  }
+`;
+
 queries.kassenzeichen = `query q($kassenzeichen: Int) {
     kassenzeichen(where: {kassenzeichennummer8: {_eq: $kassenzeichen}}) {
       bemerkung
