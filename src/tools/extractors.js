@@ -350,6 +350,7 @@ export const mappingExtractor = ({
   flaechenArray,
   frontenArray,
   generalGeomArray,
+  befreiungErlaubnisseArray,
   shownFeatureTypes,
 }) => {
   if (kassenzeichen !== undefined && JSON.stringify(kassenzeichen) !== "{}") {
@@ -367,6 +368,10 @@ export const mappingExtractor = ({
     if (shownFeatureTypes.includes("flaeche")) {
       //add flaechenArray to featureArray
       featureArray.push(...flaechenArray);
+    }
+    if (shownFeatureTypes.includes("befreiung")) {
+      //add flaechenArray to featureArray
+      featureArray.push(...befreiungErlaubnisseArray);
     }
 
     const featureCollections = [];
