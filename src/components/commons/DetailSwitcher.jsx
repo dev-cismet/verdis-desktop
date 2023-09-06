@@ -12,6 +12,7 @@ const DetailSwitcher = ({ title, buttonName, baseRoute }) => {
       <Button
         type={match ? "primary" : "default"}
         onClick={() =>
+          !match &&
           navigate(".." + `?${urlParams}`, { relative: "path", state: {} })
         }
       >
@@ -20,7 +21,7 @@ const DetailSwitcher = ({ title, buttonName, baseRoute }) => {
       <Button
         type={match ? "default" : "primary"}
         onClick={() =>
-          navigate("./details" + `?${urlParams}`, { relative: "path" })
+          match && navigate("./details" + `?${urlParams}`, { relative: "path" })
         }
       >
         {buttonName}
