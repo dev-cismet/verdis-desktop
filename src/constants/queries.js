@@ -165,6 +165,38 @@ query Kassenzeichen($kassenzeichen: Int) {
         }
       }
     }
+    kanalanschlussObject {
+      rkangeschlossen
+      mkrangeschlossen
+      mksangeschlossen
+      skangeschlossen
+      rkvorhanden
+      mkrvorhanden
+      mksvorhanden
+      skvorhanden
+      sgvorhanden
+      sgentleerung
+      kkaentleerung
+      kkavorhanden
+      evg
+      befreiungenunderlaubnisseArray {
+        befreiungerlaubnisObject {
+          aktenzeichen
+          antrag_vom
+          gueltig_bis
+          befreiungerlaubnis_nutzung {
+            name
+          }
+          befreiungerlaubnis_geometrieArrayRelationShip {
+            befreiungerlaubnis_geometrie_typ_versickerung {
+              name
+            }
+            gutachten_vorhanden
+            durchfluss
+          }
+        }
+      }
+    }
   }
   aenderungsanfrage(
     where: { kassenzeichen_nummer: { _eq: $kassenzeichen } }
