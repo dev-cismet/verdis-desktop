@@ -17,12 +17,14 @@ import { useSelector } from "react-redux";
 import {
   createStyler,
   getFlaechenFeatureCollection,
+  getMarkerStyleFromFeatureConsideringSelection,
 } from "../tools/mappingTools";
 import {
   getFlaechenCollection,
   getFrontenCollection,
   getGeneralGeometryCollection,
 } from "../store/slices/mapping";
+import { getOverviewFeatureTypes } from "../store/slices/ui";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -42,6 +44,8 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   const flaechenArray = useSelector(getFlaechenCollection);
   const frontenArray = useSelector(getFrontenCollection);
   const generalGeomArray = useSelector(getGeneralGeometryCollection);
+  const overviewFeatureTypes = useSelector(getOverviewFeatureTypes) || [];
+
   return (
     <div
       style={{ ...storyStyle, width, height }}
@@ -82,11 +86,23 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
               dataIn={kassenzeichen}
               extractor={(dataIn) => {
                 if (dataIn !== undefined && JSON.stringify(dataIn) !== "{}") {
-                  const featureArray = [
-                    ...flaechenArray,
-                    ...frontenArray,
-                    // ...generalGeomArray,
-                  ];
+                  const featureArray = [];
+
+                  if (overviewFeatureTypes.includes("front")) {
+                    //add frontenArray to featureArray
+                    featureArray.push(...frontenArray);
+                  }
+
+                  if (overviewFeatureTypes.includes("general")) {
+                    //add generalGeomArray to featureArray
+                    featureArray.push(...generalGeomArray);
+                  }
+                  if (overviewFeatureTypes.includes("flaeche")) {
+                    //add flaechenArray to featureArray
+                    featureArray.push(...flaechenArray);
+                  }
+
+                  const featureCollections = [];
 
                   let featureCollection;
                   if (featureArray.length > 0) {
@@ -97,6 +113,8 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
                     homeCenter: [51.272570027476256, 7.19963690266013],
                     featureCollection,
                     styler: createStyler(false, featureArray),
+                    markerStyle: getMarkerStyleFromFeatureConsideringSelection,
+                    showMarkerCollection: false,
                   };
                 }
 
