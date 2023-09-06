@@ -191,6 +191,9 @@ query Kassenzeichen($kassenzeichen: Int) {
             befreiungerlaubnis_geometrie_typ_versickerung {
               name
             }
+            befreiungerlaubnis_geometrie_typ_einleitung {
+              name
+            }
             gutachten_vorhanden
             durchfluss
           }

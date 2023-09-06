@@ -169,10 +169,13 @@ export const sewerConnectionExtractor = (kassenzeichen) => {
   const sewegeConnection = kassenzeichen?.kanalanschlussObject;
 
   const getSelectValue = (angeschlossen) => {
-    if (angeschlossen === 0) {
-      return "ja";
-    } else {
-      return "";
+    switch (angeschlossen) {
+      case 0:
+        return "ja";
+      case 1:
+        return "nein";
+      default:
+        return "";
     }
   };
 
@@ -220,7 +223,9 @@ export const fileNumberExtractor = (kassenzeichen) => {
         data: befreiungErlaubnis?.befreiungerlaubnisObject?.befreiungerlaubnis_geometrieArrayRelationShip?.map(
           (relationship) => ({
             title:
-              relationship?.befreiungerlaubnis_geometrie_typ_versickerung?.name,
+              relationship?.befreiungerlaubnis_geometrie_typ_versickerung
+                ?.name ||
+              relationship?.befreiungerlaubnis_geometrie_typ_einleitung?.name,
             value: relationship?.durchfluss + " l/s",
           })
         ),
@@ -246,12 +251,16 @@ export const exemptionExtractor = (kassenzeichen) => {
         useCase:
           befreiungErlaubnis?.befreiungerlaubnisObject
             ?.befreiungerlaubnis_nutzung?.name,
-        type: befreiungErlaubnis?.befreiungerlaubnisObject
-          ?.befreiungerlaubnis_geometrieArrayRelationShip
-          ?.befreiungerlaubnis_geometrie_typ_versickerung?.name,
+        type:
+          befreiungErlaubnis?.befreiungerlaubnisObject
+            ?.befreiungerlaubnis_geometrieArrayRelationShip[0]
+            ?.befreiungerlaubnis_geometrie_typ_versickerung?.name ||
+          befreiungErlaubnis?.befreiungerlaubnisObject
+            ?.befreiungerlaubnis_geometrieArrayRelationShip[0]
+            ?.befreiungerlaubnis_geometrie_typ_einleitung?.name,
         seepage:
           befreiungErlaubnis?.befreiungerlaubnisObject
-            ?.befreiungerlaubnis_geometrieArrayRelationShip?.durchfluss,
+            ?.befreiungerlaubnis_geometrieArrayRelationShip[0]?.durchfluss,
         gVerth:
           befreiungErlaubnis?.befreiungerlaubnisObject
             ?.befreiungerlaubnis_geometrieArrayRelationShip
