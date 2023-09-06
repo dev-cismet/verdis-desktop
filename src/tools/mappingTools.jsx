@@ -53,6 +53,8 @@ export const getFrontenFeatureCollection = (kassenzeichen) => {
         wd_prio_or: frontObject.frontinfoObject.wd_prio_or,
         sr_klasse_or: frontObject.frontinfoObject.sr_klasse_or,
         strasse: frontObject.frontinfoObject.strasseObject,
+        lage_sr_satzung: frontObject.frontinfoObject.lage_sr_satzung,
+        lage_wd_satzung: frontObject.frontinfoObject.lage_wd_satzung,
       },
     };
   });
@@ -86,7 +88,7 @@ export const getGeneralGeomfeatureCollection = (kassenzeichen) => {
 
 export const fitFeatureArray = (featureArray, mapRef) => {
   const bounds = getBoundsForFeatureArray(featureArray);
-  console.log("xxx fitFeatureArray bounds", bounds);
+
   //ugly winning to avoid some race condition
   setTimeout(() => {
     mapRef.current.leafletMap.leafletElement.fitBounds(bounds);
@@ -278,22 +280,7 @@ export const createStyler = (changeRequestsEditMode, kassenzeichen) => {
           return style;
         }
         case "front": {
-          let linecolor = getColorFromFrontKey(feature.properties.key);
-          let opacity = 0.6;
-          let weight = 10;
-
-          if (feature.selected === true) {
-            opacity = 0.9;
-            linecolor = "#0C7D9D";
-            weight = "10";
-          }
-
-          const style = {
-            color: linecolor,
-            weight: weight,
-            opacity: opacity,
-          };
-          return style;
+          return frontenStyle(feature);
         }
 
         case "general":
@@ -329,7 +316,9 @@ export const kassenzeichenGeometrienStyle = (feature) => {
 };
 
 export const frontenStyle = (feature) => {
-  let linecolor = getColorFromFrontKey(feature.properties.key);
+  let linecolor = getColorFromFrontKey(
+    feature.properties.lage_sr_satzung.strassenreinigung.key
+  );
   let opacity = 0.6;
   let weight = 10;
 
