@@ -3,10 +3,17 @@ import Map from "../components/commons/Map";
 import Chat from "../components/commons/Chat";
 import LegalNotice from "../components/streetCleaning/LegalNotice";
 import Summary from "../components/overview/Summary";
-import { frontsExtractor, summaryExtractor } from "../tools/extractors";
+import {
+  frontsExtractor,
+  mappingExtractor,
+  summaryExtractor,
+} from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
 import SubNav from "../components/streetCleaning/SubNav";
+import { useSelector } from "react-redux";
+import { getFrontenCollection } from "../store/slices/mapping";
+import { getKassenzeichen } from "../store/slices/search";
 
 const Page = ({
   width = "100%",
@@ -30,7 +37,8 @@ const Page = ({
     minHeight: 0,
   };
   const mapHeight = height - 100;
-
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const frontenArray = useSelector(getFrontenCollection);
   return (
     <div
       style={{ ...storyStyle, width, height }}
@@ -81,7 +89,18 @@ const Page = ({
               extractor={summaryExtractor}
             />
           </div>
-          <Map width={"80%"} height={"100%"} />
+
+          <Map
+            key="streetCleaning.map"
+            width={"80%"}
+            height={"100%"}
+            dataIn={{
+              kassenzeichen,
+              frontenArray,
+              shownFeatureTypes: ["front"],
+            }}
+            extractor={mappingExtractor}
+          />
         </div>
       </div>
       {showChat && (

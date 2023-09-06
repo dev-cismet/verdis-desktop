@@ -1,4 +1,8 @@
 import dayjs from "dayjs";
+import {
+  createStyler,
+  getMarkerStyleFromFeatureConsideringSelection,
+} from "./mappingTools";
 
 export const generalExtractor = (kassenzeichen, aenderungsAnfrage) => {
   const dateFormat = "DD.MM.YYYY";
@@ -339,4 +343,51 @@ export const frontsExtractor = (kassenzeichen) => {
   });
 
   return data;
+};
+
+export const mappingExtractor = ({
+  kassenzeichen,
+  flaechenArray,
+  frontenArray,
+  generalGeomArray,
+  shownFeatureTypes,
+}) => {
+  if (kassenzeichen !== undefined && JSON.stringify(kassenzeichen) !== "{}") {
+    const featureArray = [];
+
+    if (shownFeatureTypes.includes("front")) {
+      //add frontenArray to featureArray
+      featureArray.push(...frontenArray);
+    }
+
+    if (shownFeatureTypes.includes("general")) {
+      //add generalGeomArray to featureArray
+      featureArray.push(...generalGeomArray);
+    }
+    if (shownFeatureTypes.includes("flaeche")) {
+      //add flaechenArray to featureArray
+      featureArray.push(...flaechenArray);
+    }
+
+    const featureCollections = [];
+
+    let featureCollection;
+    if (featureArray.length > 0) {
+      featureCollection = featureArray;
+    }
+
+    return {
+      homeCenter: [51.272570027476256, 7.19963690266013],
+      featureCollection,
+      styler: createStyler(false, featureArray),
+      markerStyle: getMarkerStyleFromFeatureConsideringSelection,
+      showMarkerCollection: false,
+    };
+  }
+
+  return {
+    homeCenter: [51.272570027476256, 7.19963690266013],
+    homeZoom: 16,
+    featureCollection: undefined,
+  };
 };
