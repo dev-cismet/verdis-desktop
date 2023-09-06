@@ -3,6 +3,7 @@ import authSlice from "./slices/auth";
 import searchSlice from "./slices/search";
 import settingsSlice from "./slices/settings";
 import mappingSlice from "./slices/mapping";
+import uiSlice from "./slices/ui";
 import { createLogger } from "redux-logger";
 import { persistReducer } from "redux-persist";
 import { APP_KEY, STORAGE_PREFIX } from "../constants/verdis";
@@ -81,6 +82,7 @@ export default configureStore({
     search: persistReducer(searchConfig, searchSlice.reducer),
     settings: settingsSlice.reducer,
     mapping: mappingSlice.reducer,
+    ui: uiSlice.reducer,
   },
   devTools: devToolsEnabled === true && inProduction === false,
   middleware,
