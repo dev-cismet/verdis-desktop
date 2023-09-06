@@ -20,6 +20,10 @@ query Kassenzeichen($kassenzeichen: Int) {
       }
     ) {
       frontObject {
+        nummer
+        id
+        bearbeitet_durch
+        erfassungsdatum
         frontinfoObject {
           anteil
           baulasten
