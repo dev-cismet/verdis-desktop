@@ -1,11 +1,8 @@
-import TopicMapContextProvider from "react-cismap/contexts/TopicMapContextProvider";
-import TopicMapComponent from "react-cismap/topicmaps/TopicMapComponent.js";
 import "react-cismap/topicMaps.css";
 import "leaflet/dist/leaflet.css";
 import { Card } from "antd";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
-import FeatureCollection from "react-cismap/FeatureCollection";
 import { flaechen } from "../../stories/_data/rathausKassenzeichenfeatureCollection";
 import {
   FeatureCollectionDisplay,
@@ -14,12 +11,8 @@ import {
 } from "react-cismap";
 import { TopicMapStylingContext } from "react-cismap/contexts/TopicMapStylingContextProvider";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import { modifyQueryPart } from "react-cismap/tools/routingHelper";
-import bbox from "@turf/bbox";
 import {
-  fitFeatureArray,
   getBoundsForFeatureArray,
-  getBoundsForFeatureCollection,
   getCenterAndZoomForBounds,
 } from "../../tools/mappingTools";
 
@@ -159,7 +152,6 @@ const Map = ({
         }}
         fallbackZoom={urlSearchParamsObject?.zoom ?? fallback.zoom ?? 17}
         locationChangedHandler={(location) => {
-          //navigate(modifyQueryPart(browserlocation.search, location));
           const newParams = { ...paramsToObject(urlParams), ...location };
           setUrlParams(newParams);
         }}
@@ -171,6 +163,14 @@ const Map = ({
           <FeatureCollectionDisplay
             featureCollection={data.featureCollection}
             style={data.styler}
+            markerStyle={data.markerStyle}
+            showMarkerCollection={data.showMarkerCollection || false}
+            featureClickHandler={
+              data.featureClickHandler ||
+              ((e) => {
+                console.log("no featureClickHandler set", e.target.feature);
+              })
+            }
           />
         )}
       </RoutedMap>
