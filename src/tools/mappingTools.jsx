@@ -1,6 +1,15 @@
 import bbox from "@turf/bbox";
 import proj4 from "proj4";
 import L from "leaflet";
+import ColorHash from "color-hash";
+
+export const LandParcelColors = [
+  "#2956B2",
+  "#659CEF",
+  "#7DBD00",
+  "#DCF600",
+  "#FF5B00",
+];
 
 export const getFlaechenFeatureCollection = (kassenzeichen) => {
   // Extract the flaechenArray from the response
@@ -284,6 +293,7 @@ export const createStyler = (changeRequestsEditMode, kassenzeichen) => {
         }
 
         case "general":
+          return kassenzeichenGeometrienStyle(feature);
           break;
         default:
           break;
@@ -293,7 +303,12 @@ export const createStyler = (changeRequestsEditMode, kassenzeichen) => {
 };
 
 export const kassenzeichenGeometrienStyle = (feature) => {
-  let color = getColorForKassenzeichenGeometry(feature.properties.geomstring);
+  // let color = getColorForKassenzeichenGeometry(
+  //   //JSON.stringify(feature.geometry)
+  //   feature.properties.id
+  // );
+  const color =
+    LandParcelColors[feature.properties.id % LandParcelColors.length];
   let opacity = 0.6;
   let linecolor = "#000000";
   let weight = 1;
