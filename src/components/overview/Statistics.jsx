@@ -30,8 +30,6 @@ const Statistics = ({
     <CustomCard style={{ ...style, width, height }} title="Statistik">
       <div className="flex flex-col gap-1 text-sm font-medium">
         {data.map((row, i) => {
-          console.log("xxx row", row);
-
           const toggle = (featureType) => {
             const ft = overviewFeatureTypes;
             if (ft.includes(featureType)) {
