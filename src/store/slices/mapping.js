@@ -4,6 +4,7 @@ const initialState = {
   flaechenCollection: undefined,
   frontenCollection: undefined,
   generalGeometryCollection: undefined,
+  befreiungErlaubnisCollection: undefined,
 };
 
 const slice = createSlice({
@@ -22,10 +23,15 @@ const slice = createSlice({
       state.generalGeometryCollection = action.payload;
       return state;
     },
+    setBefreiungErlaubnisCollection(state, action) {
+      state.befreiungErlaubnisCollection = action.payload;
+      return state;
+    },
     clear(state) {
       state.flaechenCollection = undefined;
       state.frontenCollection = undefined;
       state.generalGeometryCollection1 = undefined;
+      state.befreiungErlaubnisCollection = undefined;
       return state;
     },
   },
@@ -37,6 +43,7 @@ export const {
   setFlaechenCollection,
   setFrontenCollection,
   setGeneralGeometryCollection,
+  setBefreiungErlaubnisCollection,
   clear,
 } = slice.actions;
 
@@ -50,4 +57,8 @@ export const getFrontenCollection = (state) => {
 
 export const getGeneralGeometryCollection = (state) => {
   return state.mapping.generalGeometryCollection;
+};
+
+export const getBefreiungErlaubnisCollection = (state) => {
+  return state.mapping.befreiungErlaubnisCollection;
 };

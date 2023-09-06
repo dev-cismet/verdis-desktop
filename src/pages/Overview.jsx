@@ -15,12 +15,9 @@ import {
 } from "../tools/extractors";
 import { getKassenzeichen } from "../store/slices/search";
 import { useSelector } from "react-redux";
+
 import {
-  createStyler,
-  getFlaechenFeatureCollection,
-  getMarkerStyleFromFeatureConsideringSelection,
-} from "../tools/mappingTools";
-import {
+  getBefreiungErlaubnisCollection,
   getFlaechenCollection,
   getFrontenCollection,
   getGeneralGeometryCollection,
@@ -46,7 +43,9 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   const frontenArray = useSelector(getFrontenCollection);
   const generalGeomArray = useSelector(getGeneralGeometryCollection);
   const overviewFeatureTypes = useSelector(getOverviewFeatureTypes) || [];
-
+  const befreiungErlaubnisseArray = useSelector(
+    getBefreiungErlaubnisCollection
+  );
   return (
     <div
       style={{ ...storyStyle, width, height }}
@@ -89,6 +88,7 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
                 flaechenArray,
                 frontenArray,
                 generalGeomArray,
+                befreiungErlaubnisseArray,
                 shownFeatureTypes: overviewFeatureTypes,
               }}
               extractor={mappingExtractor}
