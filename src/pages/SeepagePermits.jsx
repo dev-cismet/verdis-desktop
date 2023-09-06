@@ -35,7 +35,6 @@ const Page = ({
   const befreiungErlaubnisseArray = useSelector(
     getBefreiungErlaubnisCollection
   );
-  console.log("xxx befreiungErlaubnisse", befreiungErlaubnisseArray);
 
   return (
     <div
