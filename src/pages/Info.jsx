@@ -3,6 +3,10 @@ import Map from "../components/commons/Map";
 import InfoTable from "../components/info/InfoTable";
 import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
+import { useSelector } from "react-redux";
+import { getKassenzeichen } from "../store/slices/search";
+import { getGeneralGeometryCollection } from "../store/slices/mapping";
+import { mappingExtractor } from "../tools/extractors";
 
 const Page = ({
   width = "100%",
@@ -20,6 +24,8 @@ const Page = ({
   }
 
   const cardStyle = { width: "100%", height: "100%", minHeight: 0 };
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const generalGeomArray = useSelector(getGeneralGeometryCollection);
 
   return (
     <div
@@ -65,7 +71,16 @@ const Page = ({
             />
           </div>
 
-          <Map width="100%" height="100%" />
+          <Map
+            width="100%"
+            height="100%"
+            dataIn={{
+              kassenzeichen,
+              generalGeomArray,
+              shownFeatureTypes: ["general"],
+            }}
+            extractor={mappingExtractor}
+          />
         </div>
       </div>
       {showChat && (

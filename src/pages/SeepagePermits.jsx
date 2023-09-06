@@ -5,9 +5,13 @@ import FileNumber from "../components/seepagePermits/FileNumber";
 import Chat from "../components/commons/Chat";
 import {
   fileNumberExtractor,
+  mappingExtractor,
   sewerConnectionExtractor,
 } from "../tools/extractors";
 import SubNav from "../components/seepagePermits/SubNav";
+import { getKassenzeichen } from "../store/slices/search";
+import { useSelector } from "react-redux";
+import { getBefreiungErlaubnisCollection } from "../store/slices/mapping";
 
 const Page = ({
   width = "100%",
@@ -26,6 +30,11 @@ const Page = ({
 
   const cardStyleConnection = { width: "100%", height: "65%", minHeight: 0 };
   const cardStyleFileNumber = { width: "100%", height: "100%", minHeight: 0 };
+
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const befreiungErlaubnisseArray = useSelector(
+    getBefreiungErlaubnisCollection
+  );
 
   return (
     <div
@@ -49,7 +58,17 @@ const Page = ({
               extractor={fileNumberExtractor}
             />
           </div>
-          <Map width={"80%"} height={"100%"} />
+          <Map
+            key={"seepagePermits.map"}
+            width={"80%"}
+            height={"100%"}
+            dataIn={{
+              kassenzeichen,
+              befreiungErlaubnisseArray,
+              shownFeatureTypes: ["befreiung"],
+            }}
+            extractor={mappingExtractor}
+          />
         </div>
       </div>
       {showChat && (

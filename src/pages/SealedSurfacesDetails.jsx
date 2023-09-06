@@ -2,17 +2,23 @@ import React from "react";
 import Map from "../components/commons/Map";
 import Details from "../components/sealedSurfaces/Details";
 import Chat from "../components/commons/Chat";
-import { areasDetailsExtractor } from "../tools/extractors";
+import { areasDetailsExtractor, mappingExtractor } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getFlaechenId,
+  getKassenzeichen,
   storeFlaeche,
   storeFlaechenId,
 } from "../store/slices/search";
 import { compare } from "../tools/helper";
 import SubNav from "../components/sealedSurfaces/SubNav";
 import dayjs from "dayjs";
+import { getFlaechenCollection } from "../store/slices/mapping";
+import {
+  createStyler,
+  getMarkerStyleFromFeatureConsideringSelection,
+} from "../tools/mappingTools";
 
 const Page = ({
   width = "100%",
@@ -33,6 +39,8 @@ const Page = ({
 
   const cardStyleTable = { width: "50%", height: "100%", minHeight: 0 };
   const cardStyleDetails = { width: "100%", height: "50%", minHeight: 0 };
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const flaechenArray = useSelector(getFlaechenCollection);
 
   return (
     <div
@@ -100,7 +108,17 @@ const Page = ({
               height={cardStyleDetails.height}
               style={cardStyleDetails}
             />
-            <Map width={"100%"} height={"50%"} />
+            <Map
+              key="sealedSurfacesDetails.map"
+              width={"100%"}
+              height={"50%"}
+              dataIn={{
+                kassenzeichen,
+                flaechenArray,
+                shownFeatureTypes: ["flaeche"],
+              }}
+              extractor={mappingExtractor}
+            />
           </div>
         </div>
       </div>

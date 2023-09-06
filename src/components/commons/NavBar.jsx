@@ -41,15 +41,18 @@ import { ENDPOINT, query } from "../../constants/verdis";
 import { useQuery } from "@tanstack/react-query";
 import request from "graphql-request";
 import {
+  setBefreiungErlaubnisCollection,
   setFlaechenCollection,
   setFrontenCollection,
   setGeneralGeometryCollection,
 } from "../../store/slices/mapping";
+
 import {
   getFlaechenFeatureCollection,
   getFrontenFeatureCollection,
   getGeneralGeomfeatureCollection,
-} from "../../tools/mappingTools";
+  getVersickerungsGenFeatureCollection,
+} from "../../tools/featureFactories";
 
 const mockExtractor = (input) => {
   return [
@@ -183,6 +186,12 @@ const NavBar = ({
       dispatch(
         setGeneralGeometryCollection(
           getGeneralGeomfeatureCollection(data.kassenzeichen[0])
+        )
+      );
+
+      dispatch(
+        setBefreiungErlaubnisCollection(
+          getVersickerungsGenFeatureCollection(data.kassenzeichen[0])
         )
       );
     }

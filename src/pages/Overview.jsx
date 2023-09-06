@@ -8,18 +8,16 @@ import Summary from "../components/overview/Summary";
 import InfoBar from "../components/commons/InfoBar";
 import {
   generalExtractor,
+  mappingExtractor,
   statisticsExtractor,
   summaryExtractor,
   sumsExtractor,
 } from "../tools/extractors";
 import { getKassenzeichen } from "../store/slices/search";
 import { useSelector } from "react-redux";
+
 import {
-  createStyler,
-  getFlaechenFeatureCollection,
-  getMarkerStyleFromFeatureConsideringSelection,
-} from "../tools/mappingTools";
-import {
+  getBefreiungErlaubnisCollection,
   getFlaechenCollection,
   getFrontenCollection,
   getGeneralGeometryCollection,
@@ -45,7 +43,9 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   const frontenArray = useSelector(getFrontenCollection);
   const generalGeomArray = useSelector(getGeneralGeometryCollection);
   const overviewFeatureTypes = useSelector(getOverviewFeatureTypes) || [];
-
+  const befreiungErlaubnisseArray = useSelector(
+    getBefreiungErlaubnisCollection
+  );
   return (
     <div
       style={{ ...storyStyle, width, height }}
@@ -80,50 +80,18 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
           />
           <div className="col-span-2 row-span-2">
             <Map
-              key={"sdjfhg"}
+              key={"overview.map"}
               width={"calc(100%-40px)"}
               height={"100%"}
-              dataIn={kassenzeichen}
-              extractor={(dataIn) => {
-                if (dataIn !== undefined && JSON.stringify(dataIn) !== "{}") {
-                  const featureArray = [];
-
-                  if (overviewFeatureTypes.includes("front")) {
-                    //add frontenArray to featureArray
-                    featureArray.push(...frontenArray);
-                  }
-
-                  if (overviewFeatureTypes.includes("general")) {
-                    //add generalGeomArray to featureArray
-                    featureArray.push(...generalGeomArray);
-                  }
-                  if (overviewFeatureTypes.includes("flaeche")) {
-                    //add flaechenArray to featureArray
-                    featureArray.push(...flaechenArray);
-                  }
-
-                  const featureCollections = [];
-
-                  let featureCollection;
-                  if (featureArray.length > 0) {
-                    featureCollection = featureArray;
-                  }
-
-                  return {
-                    homeCenter: [51.272570027476256, 7.19963690266013],
-                    featureCollection,
-                    styler: createStyler(false, featureArray),
-                    markerStyle: getMarkerStyleFromFeatureConsideringSelection,
-                    showMarkerCollection: false,
-                  };
-                }
-
-                return {
-                  homeCenter: [51.272570027476256, 7.19963690266013],
-                  homeZoom: 16,
-                  featureCollection: undefined,
-                };
+              dataIn={{
+                kassenzeichen,
+                flaechenArray,
+                frontenArray,
+                generalGeomArray,
+                befreiungErlaubnisseArray,
+                shownFeatureTypes: overviewFeatureTypes,
               }}
+              extractor={mappingExtractor}
             />
           </div>
           <Summary

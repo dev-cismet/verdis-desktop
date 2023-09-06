@@ -53,6 +53,8 @@ const Statistics = ({
                   toggle("front");
                 } else if (row.title === "Geometrien") {
                   toggle("general");
+                } else if (row.title === "Versickerungsgenehmigungen") {
+                  toggle("befreiung");
                 }
               }}
             >

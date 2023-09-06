@@ -2,16 +2,18 @@ import React from "react";
 import Map from "../components/commons/Map";
 import Chat from "../components/commons/Chat";
 import Details from "../components/streetCleaning/Details";
-import { frontsExtractor } from "../tools/extractors";
+import { frontsExtractor, mappingExtractor } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
 import {
   getFrontenId,
+  getKassenzeichen,
   storeFront,
   storeFrontenId,
 } from "../store/slices/search";
 import { useDispatch, useSelector } from "react-redux";
 import SubNav from "../components/streetCleaning/SubNav";
+import { getFrontenCollection } from "../store/slices/mapping";
 
 const Page = ({
   width = "100%",
@@ -32,7 +34,8 @@ const Page = ({
 
   const cardStyleFronts = { width: "50%", height: "100%", minHeight: 0 };
   const cardStyleDetails = { width: "100%", height: "50%", minHeight: 0 };
-
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const frontenArray = useSelector(getFrontenCollection);
   return (
     <div
       style={{ ...storyStyle, width, height }}
@@ -79,7 +82,18 @@ const Page = ({
               height={cardStyleDetails.height}
               style={cardStyleDetails}
             />
-            <Map width={"100%"} height={"50%"} />
+
+            <Map
+              key="streetCleaningDetails.map"
+              width={"100%"}
+              height={"50%"}
+              dataIn={{
+                kassenzeichen,
+                frontenArray,
+                shownFeatureTypes: ["front"],
+              }}
+              extractor={mappingExtractor}
+            />
           </div>
         </div>
       </div>

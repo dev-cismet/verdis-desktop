@@ -181,6 +181,7 @@ query Kassenzeichen($kassenzeichen: Int) {
       evg
       befreiungenunderlaubnisseArray {
         befreiungerlaubnisObject {
+          id
           aktenzeichen
           antrag_vom
           gueltig_bis
@@ -188,14 +189,20 @@ query Kassenzeichen($kassenzeichen: Int) {
             name
           }
           befreiungerlaubnis_geometrieArrayRelationShip {
+            id
             befreiungerlaubnis_geometrie_typ_versickerung {
               name
             }
             befreiungerlaubnis_geometrie_typ_einleitung {
               name
             }
+            bemerkung
+            gewaessername           
             gutachten_vorhanden
             durchfluss
+            geom {
+              geo_field
+            }
           }
         }
       }

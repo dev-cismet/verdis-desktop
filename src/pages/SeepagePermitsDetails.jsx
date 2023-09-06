@@ -5,11 +5,15 @@ import Chat from "../components/commons/Chat";
 import Details from "../components/seepagePermits/Details";
 import {
   exemptionExtractor,
+  mappingExtractor,
   seepageDetailsExtractor,
 } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
 import SubNav from "../components/seepagePermits/SubNav";
+import { useSelector } from "react-redux";
+import { getKassenzeichen } from "../store/slices/search";
+import { getBefreiungErlaubnisCollection } from "../store/slices/mapping";
 
 const Page = ({
   width = "100%",
@@ -29,6 +33,10 @@ const Page = ({
   const cardStylePermits = { width: "100%", height: "50%", minHeight: 0 };
   const cardStyleDetails = { width: "100%", height: "100%", minHeight: 0 };
 
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const befreiungErlaubnisseArray = useSelector(
+    getBefreiungErlaubnisCollection
+  );
   return (
     <div
       style={{ ...storyStyle, width, height }}
@@ -92,7 +100,17 @@ const Page = ({
             extractor={exemptionExtractor}
           />
           <div className="flex gap-2 h-[50%]">
-            <Map width={"100%"} height={"100%"} />
+            <Map
+              key={"seepagePermitsDetails.map"}
+              width={"100%"}
+              height={"100%"}
+              dataIn={{
+                kassenzeichen,
+                befreiungErlaubnisseArray,
+                shownFeatureTypes: ["befreiung"],
+              }}
+              extractor={mappingExtractor}
+            />
             <Details
               width={cardStyleDetails.width}
               height={cardStyleDetails.height}

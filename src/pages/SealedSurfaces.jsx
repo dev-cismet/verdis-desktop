@@ -2,10 +2,21 @@ import Map from "../components/commons/Map";
 import ChangeRequests from "../components/sealedSurfaces/ChangeRequests";
 import Sums from "../components/sealedSurfaces/Sums";
 import Chat from "../components/commons/Chat";
-import { areasExtractor, sumsExtractor } from "../tools/extractors";
+import {
+  areasExtractor,
+  mappingExtractor,
+  sumsExtractor,
+} from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
 import SubNav from "../components/sealedSurfaces/SubNav";
+import { useSelector } from "react-redux";
+import { getKassenzeichen } from "../store/slices/search";
+import { getFlaechenCollection } from "../store/slices/mapping";
+import {
+  createStyler,
+  getMarkerStyleFromFeatureConsideringSelection,
+} from "../tools/mappingTools";
 
 const Page = ({
   width = "100%",
@@ -13,6 +24,9 @@ const Page = ({
   inStory = false,
   showChat = false,
 }) => {
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const flaechenArray = useSelector(getFlaechenCollection);
+
   let storyStyle = {};
   if (inStory) {
     storyStyle = {
@@ -82,7 +96,17 @@ const Page = ({
             />
           </div>
 
-          <Map width={"80%"} height={"100%"} />
+          <Map
+            key="sealedSurfaces.map"
+            width={"80%"}
+            height={"100%"}
+            dataIn={{
+              kassenzeichen,
+              flaechenArray,
+              shownFeatureTypes: ["flaeche"],
+            }}
+            extractor={mappingExtractor}
+          />
         </div>
       </div>
       {showChat && (
