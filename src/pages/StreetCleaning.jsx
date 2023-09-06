@@ -51,6 +51,7 @@ const Page = ({
                   dataIndex: "nummer",
                   key: "nummer",
                   sorter: (a, b) => compare(a.nummer, b.nummer),
+                  defaultSortOrder: "ascend",
                 },
                 {
                   title: "Länge in m",

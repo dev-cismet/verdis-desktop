@@ -50,6 +50,7 @@ const Page = ({
                   dataIndex: "name",
                   key: "name",
                   sorter: (a, b) => compare(a.name, b.name),
+                  defaultSortOrder: "ascend",
                 },
                 {
                   title: "Typ",
