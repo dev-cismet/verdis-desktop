@@ -1,3 +1,4 @@
+import { setShowSeepageDetails } from "../../store/slices/settings";
 import DetailSwitcher from "../commons/DetailSwitcher";
 
 const SubNav = () => {
@@ -6,6 +7,7 @@ const SubNav = () => {
       title="Versickerungsgenehmigungen"
       buttonName="Details"
       baseRoute="/versickerungsgenehmigungen"
+      setShowDetails={setShowSeepageDetails}
     />
   );
 };

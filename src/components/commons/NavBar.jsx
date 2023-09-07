@@ -34,6 +34,9 @@ import {
 import {
   getReadOnly,
   getShowChat,
+  getShowFrontDetails,
+  getShowSeepageDetails,
+  getShowSurfaceDetails,
   setReadOnly,
   setShowChat,
 } from "../../store/slices/settings";
@@ -55,6 +58,10 @@ import {
 } from "../../tools/featureFactories";
 
 const mockExtractor = (input) => {
+  const showSurfaceDetails = useSelector(getShowSurfaceDetails);
+  const showFrontDetails = useSelector(getShowFrontDetails);
+  const showSeepageDetails = useSelector(getShowSeepageDetails);
+
   return [
     {
       title: "Übersicht",
@@ -63,12 +70,16 @@ const mockExtractor = (input) => {
     },
     {
       title: "Versiegelte Flächen",
-      href: "/versiegelteFlaechen",
+      href: showSurfaceDetails
+        ? "/versiegelteFlaechen/details"
+        : "/versiegelteFlaechen",
       icon: <GatewayOutlined className="text-2xl" />,
     },
     {
       title: "Straßenreinigung",
-      href: "/strassenreinigung",
+      href: showFrontDetails
+        ? "/strassenreinigung/details"
+        : "/strassenreinigung",
       icon: <PullRequestOutlined className="text-2xl" />,
     },
     {
@@ -78,7 +89,9 @@ const mockExtractor = (input) => {
     },
     {
       title: "Versickerungsgenehmigungen",
-      href: "/versickerungsgenehmigungen",
+      href: showSeepageDetails
+        ? "/versickerungsgenehmigungen/details"
+        : "/versickerungsgenehmigungen",
       icon: <LinkOutlined className="text-2xl" />,
     },
   ];

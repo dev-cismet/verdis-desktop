@@ -1,3 +1,4 @@
+import { setShowSurfaceDetails } from "../../store/slices/settings";
 import DetailSwitcher from "../commons/DetailSwitcher";
 
 const SubNav = () => {
@@ -6,6 +7,7 @@ const SubNav = () => {
       title="Versiegelte Flächen"
       buttonName="Flächen"
       baseRoute="/versiegelteFlaechen"
+      setShowDetails={setShowSurfaceDetails}
     />
   );
 };

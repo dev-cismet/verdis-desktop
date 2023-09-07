@@ -1,3 +1,4 @@
+import { setShowFrontDetails } from "../../store/slices/settings";
 import DetailSwitcher from "../commons/DetailSwitcher";
 
 const SubNav = () => {
@@ -6,6 +7,7 @@ const SubNav = () => {
       title="Straßenreinigung"
       buttonName="Fronten"
       baseRoute="/strassenreinigung"
+      setShowDetails={setShowFrontDetails}
     />
   );
 };

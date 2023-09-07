@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { readOnly: false, showChat: false };
+const initialState = {
+  readOnly: false,
+  showChat: false,
+  showSurfaceDetails: false,
+  showFrontDetails: false,
+  showSeepageDetails: false,
+};
 
 const slice = createSlice({
   name: "settings",
@@ -14,12 +20,30 @@ const slice = createSlice({
       state.showChat = action.payload;
       return state;
     },
+    setShowSurfaceDetails(state, action) {
+      state.showSurfaceDetails = action.payload;
+      return state;
+    },
+    setShowFrontDetails(state, action) {
+      state.showFrontDetails = action.payload;
+      return state;
+    },
+    setShowSeepageDetails(state, action) {
+      state.showSeepageDetails = action.payload;
+      return state;
+    },
   },
 });
 
 export default slice;
 
-export const { setReadOnly, setShowChat } = slice.actions;
+export const {
+  setReadOnly,
+  setShowChat,
+  setShowSurfaceDetails,
+  setShowFrontDetails,
+  setShowSeepageDetails,
+} = slice.actions;
 
 export const getReadOnly = (state) => {
   return state.settings.readOnly;
@@ -27,4 +51,16 @@ export const getReadOnly = (state) => {
 
 export const getShowChat = (state) => {
   return state.settings.showChat;
+};
+
+export const getShowSurfaceDetails = (state) => {
+  return state.settings.showSurfaceDetails;
+};
+
+export const getShowFrontDetails = (state) => {
+  return state.settings.showFrontDetails;
+};
+
+export const getShowSeepageDetails = (state) => {
+  return state.settings.showSeepageDetails;
 };
