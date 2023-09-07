@@ -116,7 +116,7 @@ const Map = ({
     <Card
       size="small"
       hoverable={false}
-      title={<span>Karte</span>}
+      title={<span className="text-lg">Karte</span>}
       style={{
         width: width,
         height: height,
