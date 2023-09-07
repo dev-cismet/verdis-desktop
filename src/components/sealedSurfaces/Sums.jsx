@@ -34,7 +34,7 @@ const Sums = ({
           {categories.items.map((item, i) => (
             <div
               key={`sum_items_${i}`}
-              className="flex justify-between w-full items-center text-sm 3xl:text-base"
+              className="flex justify-between w-full items-center text-sm 3xl:text-base py-1 hover:bg-zinc-100"
             >
               <div>{item.type}</div>
               <div>{item.size} m²</div>
