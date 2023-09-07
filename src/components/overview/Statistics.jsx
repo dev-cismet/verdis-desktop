@@ -67,6 +67,7 @@ const Statistics = ({
                 checked={
                   overviewFeatureTypes.indexOf(featureMap[row.title]) !== -1
                 }
+                size="small"
               />
             </div>
           );
