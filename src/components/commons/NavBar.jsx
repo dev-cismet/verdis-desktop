@@ -242,15 +242,21 @@ const NavBar = ({
       </div>
       <div className="flex relative items-center gap-3 w-full">
         <AutoComplete
-          options={prevSearches.map((kassenzeichen, i) => ({
-            value: kassenzeichen,
-            label: (
-              <div className="flex gap-2 items-center">
-                <ClockCircleOutlined className="text-lg" />
-                <span className="w-full">{kassenzeichen}</span>
-              </div>
-            ),
-          }))}
+          options={prevSearches
+            .map((kassenzeichen) =>
+              kassenzeichen !== searchQuery
+                ? {
+                    value: kassenzeichen,
+                    label: (
+                      <div className="flex gap-2 items-center">
+                        <ClockCircleOutlined className="text-lg" />
+                        <span className="w-full">{kassenzeichen}</span>
+                      </div>
+                    ),
+                  }
+                : null
+            )
+            .filter((item) => item !== null)}
           className="xl:w-1/2 w-full mx-auto"
           defaultValue={urlParams.get("kassenzeichen")}
           onSelect={(value) => setSearchQuery(value)}
