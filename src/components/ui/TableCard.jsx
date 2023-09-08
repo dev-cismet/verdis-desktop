@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { getKassenzeichen } from "../../store/slices/search";
 import CustomCard from "./Card";
 import { Table } from "antd";
+import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 
 const mockExtractor = (kassenzeichen) => {
   return [];
@@ -24,7 +25,16 @@ const TableCard = ({
     <CustomCard style={{ ...style, width, height }} title={title}>
       <Table
         dataSource={data}
-        columns={columns}
+        columns={columns.map((column) => ({
+          ...column,
+          sortIcon: ({ sortOrder }) =>
+            sortOrder &&
+            (sortOrder === "descend" ? (
+              <CaretDownOutlined />
+            ) : (
+              <CaretUpOutlined />
+            )),
+        }))}
         pagination={false}
         rowKey={(record, i) => `tableRow_${i}`}
         size="small"
