@@ -178,6 +178,8 @@ export const sewerConnectionExtractor = (kassenzeichen) => {
         return "ja";
       case 1:
         return "nein";
+      case 2:
+        return "unklar";
       default:
         return "";
     }
@@ -267,7 +269,7 @@ export const exemptionExtractor = (kassenzeichen) => {
             ?.befreiungerlaubnis_geometrieArrayRelationShip[0]?.durchfluss,
         gVerth:
           befreiungErlaubnis?.befreiungerlaubnisObject
-            ?.befreiungerlaubnis_geometrieArrayRelationShip
+            ?.befreiungerlaubnis_geometrieArrayRelationShip[0]
             ?.gutachten_vorhanden,
       })
     );
