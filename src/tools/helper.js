@@ -12,7 +12,7 @@ export const compare = (a, b) => {
   return (
     isFinite(b) - isFinite(a) ||
     a - b ||
-    (a.length === b.length && a.toString().localeCompare(b)) ||
-    a.length - b.length
+    (a?.length === b?.length && a.toString().localeCompare(b)) ||
+    a?.length - b?.length
   );
 };
