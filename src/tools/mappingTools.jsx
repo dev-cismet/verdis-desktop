@@ -258,7 +258,7 @@ export const kassenzeichenGeometrienStyle = (feature) => {
 
 export const frontenStyle = (feature) => {
   let linecolor = getColorFromFrontKey(
-    feature.properties.lage_sr_satzung.strassenreinigung.key
+    feature?.properties?.lage_sr_satzung?.strassenreinigung?.key
   );
   let opacity = 0.6;
   let weight = 10;
