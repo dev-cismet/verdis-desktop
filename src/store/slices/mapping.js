@@ -23,6 +23,20 @@ const slice = createSlice({
       state.generalGeometryCollection = action.payload;
       return state;
     },
+    setGeneralGeometrySelected(state, action) {
+      const { id } = action.payload;
+      state.generalGeometryCollection.forEach((item) => {
+        item.selected = false;
+      });
+
+      const selectedObject = state.generalGeometryCollection.find(
+        (item) => item.properties.id === id
+      );
+      if (selectedObject) {
+        selectedObject.selected = true;
+      }
+      return state;
+    },
     setBefreiungErlaubnisCollection(state, action) {
       state.befreiungErlaubnisCollection = action.payload;
       return state;
@@ -43,6 +57,7 @@ export const {
   setFlaechenCollection,
   setFrontenCollection,
   setGeneralGeometryCollection,
+  setGeneralGeometrySelected,
   setBefreiungErlaubnisCollection,
   clear,
 } = slice.actions;
