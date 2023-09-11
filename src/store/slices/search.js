@@ -5,8 +5,10 @@ const initialState = {
   aenderungsAnfrage: {},
   flaechenId: null,
   frontenId: null,
+  seepageId: null,
   front: {},
   flaeche: {},
+  seepage: {},
   previousSearches: [],
 };
 
@@ -30,12 +32,20 @@ const slice = createSlice({
       state.frontenId = action.payload;
       return state;
     },
+    storeSeepageId(state, action) {
+      state.seepageId = action.payload;
+      return state;
+    },
     storeFront(state, action) {
       state.front = action.payload;
       return state;
     },
     storeFlaeche(state, action) {
       state.flaeche = action.payload;
+      return state;
+    },
+    storeSeepage(state, action) {
+      state.seepage = action.payload;
       return state;
     },
     resetStates(state) {
@@ -70,8 +80,10 @@ export const {
   storeAenderungsAnfrage,
   storeFlaechenId,
   storeFrontenId,
+  storeSeepageId,
   storeFront,
   storeFlaeche,
+  storeSeepage,
   resetStates,
   addSearch,
 } = slice.actions;
@@ -92,12 +104,20 @@ export const getFrontenId = (state) => {
   return state.search.frontenId;
 };
 
+export const getSeepageId = (state) => {
+  return state.search.seepageId;
+};
+
 export const getFront = (state) => {
   return state.search.front;
 };
 
 export const getFlaeche = (state) => {
   return state.search.flaeche;
+};
+
+export const getSeepage = (state) => {
+  return state.search.seepage;
 };
 
 export const getPreviousSearches = (state) => {

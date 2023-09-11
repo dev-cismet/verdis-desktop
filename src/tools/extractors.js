@@ -271,6 +271,7 @@ export const exemptionExtractor = (kassenzeichen) => {
           befreiungErlaubnis?.befreiungerlaubnisObject
             ?.befreiungerlaubnis_geometrieArrayRelationShip[0]
             ?.gutachten_vorhanden,
+        id: befreiungErlaubnis?.id,
       })
     );
 

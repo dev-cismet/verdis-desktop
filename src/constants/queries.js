@@ -180,8 +180,8 @@ query Kassenzeichen($kassenzeichen: Int) {
       kkavorhanden
       evg
       befreiungenunderlaubnisseArray {
+        id
         befreiungerlaubnisObject {
-          id
           aktenzeichen
           antrag_vom
           gueltig_bis

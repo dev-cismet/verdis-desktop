@@ -11,8 +11,13 @@ import {
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
 import SubNav from "../components/seepagePermits/SubNav";
-import { useSelector } from "react-redux";
-import { getKassenzeichen } from "../store/slices/search";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getKassenzeichen,
+  getSeepageId,
+  storeSeepage,
+  storeSeepageId,
+} from "../store/slices/search";
 import { getBefreiungErlaubnisCollection } from "../store/slices/mapping";
 
 const Page = ({
@@ -29,6 +34,8 @@ const Page = ({
       padding: "10px",
     };
   }
+  const dispatch = useDispatch();
+  const seepageId = useSelector(getSeepageId);
 
   const cardStylePermits = { width: "100%", height: "50%", minHeight: 0 };
   const cardStyleDetails = { width: "100%", height: "100%", minHeight: 0 };
@@ -88,7 +95,7 @@ const Page = ({
                 sorter: (a, b) => compare(a.seepage, b.seepage),
               },
               {
-                title: "G-Verth",
+                title: "G-Verh",
                 dataIndex: "gVerth",
                 key: "gVerth",
                 sorter: (a, b) => compare(a.gVerth, b.gVerth),
@@ -97,6 +104,11 @@ const Page = ({
                 ),
               },
             ]}
+            id={seepageId}
+            onRowClick={(record) => (
+              dispatch(storeSeepage(record)),
+              dispatch(storeSeepageId(record.id))
+            )}
             extractor={exemptionExtractor}
           />
           <div className="flex gap-2 h-[50%]">
