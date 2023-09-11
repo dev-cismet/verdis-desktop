@@ -3,6 +3,7 @@ import { getKassenzeichen } from "../../store/slices/search";
 import CustomCard from "./Card";
 import { Table } from "antd";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
+import "./table.css";
 
 const mockExtractor = (kassenzeichen) => {
   return [];
@@ -44,7 +45,9 @@ const TableCard = ({
           };
         }}
         rowClassName={(record) =>
-          `${id ? record.id === id && "bg-primary/20" : ""} cursor-pointer`
+          `${
+            id ? record.id === id && "bg-primary/20" : ""
+          } cursor-pointer column-transparent`
         }
       />
     </CustomCard>

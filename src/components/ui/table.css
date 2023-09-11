@@ -1,0 +1,3 @@
+.column-transparent > td.ant-table-column-sort {
+  background-color: transparent;
+}
