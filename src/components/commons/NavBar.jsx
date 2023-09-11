@@ -1,27 +1,24 @@
 import { AutoComplete, Avatar, Button, Dropdown, Input, Switch } from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBroom,
+  faCloudRain,
+  faEarthAmericas,
+  faHouse,
+  faTag,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   ClockCircleOutlined,
   CommentOutlined,
   ExclamationCircleOutlined,
-  GatewayOutlined,
-  GlobalOutlined,
-  HomeOutlined,
-  LinkOutlined,
   LoadingOutlined,
-  PullRequestOutlined,
   QuestionCircleOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
 import {
@@ -57,7 +54,7 @@ import {
   getVersickerungsGenFeatureCollection,
 } from "../../tools/featureFactories";
 
-const mockExtractor = (input) => {
+const navLinks = () => {
   const showSurfaceDetails = useSelector(getShowSurfaceDetails);
   const showFrontDetails = useSelector(getShowFrontDetails);
   const showSeepageDetails = useSelector(getShowSeepageDetails);
@@ -66,48 +63,40 @@ const mockExtractor = (input) => {
     {
       title: "Übersicht",
       href: "/",
-      icon: <HomeOutlined className="text-2xl" />,
+      icon: <FontAwesomeIcon icon={faHouse} className="h-6" />,
     },
     {
       title: "Versiegelte Flächen",
       href: showSurfaceDetails
         ? "/versiegelteFlaechen/details"
         : "/versiegelteFlaechen",
-      icon: <GatewayOutlined className="text-2xl" />,
+      icon: <FontAwesomeIcon icon={faCloudRain} className="h-6" />,
     },
     {
       title: "Straßenreinigung",
       href: showFrontDetails
         ? "/strassenreinigung/details"
         : "/strassenreinigung",
-      icon: <PullRequestOutlined className="text-2xl" />,
+      icon: <FontAwesomeIcon icon={faBroom} className="h-6" />,
     },
     {
       title: "Info",
       href: "/info",
-      icon: <GlobalOutlined className="text-2xl" />,
+      icon: <FontAwesomeIcon icon={faTag} className="h-6" />,
     },
     {
       title: "Versickerungsgenehmigungen",
       href: showSeepageDetails
         ? "/versickerungsgenehmigungen/details"
         : "/versickerungsgenehmigungen",
-      icon: <LinkOutlined className="text-2xl" />,
+      icon: <FontAwesomeIcon icon={faEarthAmericas} className="h-6" />,
     },
   ];
 };
 
-const NavBar = ({
-  dataIn,
-  extractor = mockExtractor,
-  width = "100%",
-  height = 73,
-  style,
-  inStory,
-}) => {
+const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const mockData = extractor(dataIn);
+  const links = navLinks();
   const location = useLocation();
   const readOnly = useSelector(getReadOnly);
   const showChat = useSelector(getShowChat);
@@ -223,7 +212,7 @@ const NavBar = ({
     >
       <div className="md:flex hidden items-center gap-3">
         <img src={Logo} alt="Logo" className="h-10" />
-        {mockData.map((link, i) => (
+        {links.map((link, i) => (
           <Link to={link.href + `?${urlParams}`} key={`navLink_${i}`}>
             <Button
               type="text"
@@ -234,7 +223,16 @@ const NavBar = ({
                   : ""
               } font-semibold no-underline`}
             >
-              <div className="xl:hidden block">{link.icon}</div>
+              <div
+                className={`xl:hidden block ${
+                  (location.pathname.includes(link.href) && i > 0) ||
+                  (link.href === "/" && location.pathname === "/")
+                    ? "text-primary"
+                    : ""
+                }`}
+              >
+                {link.icon}
+              </div>
               <div className="hidden xl:block">{link.title}</div>
             </Button>
           </Link>
