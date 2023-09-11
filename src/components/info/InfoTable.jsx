@@ -22,7 +22,7 @@ const Row = ({ title, id }) => {
   return (
     <>
       <div
-        className={`flex items-center w-full gap-3 px-2 py-1 text-base cursor-pointer ${
+        className={`flex items-center w-full gap-3 px-2 py-1 text-base cursor-pointer hover:bg-zinc-100 ${
           currentGeometry.selected ? "bg-primary/20" : ""
         }`}
         onClick={() => dispatch(setGeneralGeometrySelected({ id: id }))}
@@ -33,7 +33,7 @@ const Row = ({ title, id }) => {
         ></div>
         <span>{title}</span>
       </div>
-      <hr className="h-px bg-zinc-200 border-0 my-1" />
+      <hr className="h-px bg-zinc-200 border-0 my-0" />
     </>
   );
 };
