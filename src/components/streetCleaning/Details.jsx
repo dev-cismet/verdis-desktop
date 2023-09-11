@@ -43,7 +43,6 @@ const Details = ({
             <Select className="w-full" size="small" value={front?.straße} />
           }
         />
-        <hr className="h-px bg-gray-100 border-0" />
         <DetailsRow
           title="Lage"
           customInput={
@@ -65,7 +64,6 @@ const Details = ({
           customInput={<TextArea className="w-full" value={front?.bemerkung} />}
         />
         <DetailsRow title="Veranlagung" value={front?.veranlagung} />
-        <hr className="h-px bg-gray-100 border-0" />
         <div className="w-full flex justify-center items-center">
           <Checkbox
             className="w-full font-medium text-sm"
