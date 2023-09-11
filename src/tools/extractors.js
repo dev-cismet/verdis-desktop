@@ -252,6 +252,8 @@ export const exemptionExtractor = (kassenzeichen) => {
           befreiungErlaubnis?.befreiungerlaubnisObject
             ?.befreiungerlaubnis_nutzung?.name +
           ")",
+        aktenzeichen:
+          befreiungErlaubnis?.befreiungerlaubnisObject?.aktenzeichen,
         seepageFrom: befreiungErlaubnis?.befreiungerlaubnisObject?.antrag_vom,
         seepageUntil: befreiungErlaubnis?.befreiungerlaubnisObject?.gueltig_bis,
         useCase:
@@ -267,57 +269,21 @@ export const exemptionExtractor = (kassenzeichen) => {
         seepage:
           befreiungErlaubnis?.befreiungerlaubnisObject
             ?.befreiungerlaubnis_geometrieArrayRelationShip[0]?.durchfluss,
-        gVerth:
+        gVerh:
           befreiungErlaubnis?.befreiungerlaubnisObject
             ?.befreiungerlaubnis_geometrieArrayRelationShip[0]
             ?.gutachten_vorhanden,
+        bemerkung:
+          befreiungErlaubnis?.befreiungerlaubnisObject
+            ?.befreiungerlaubnis_geometrieArrayRelationShip[0]?.bemerkung,
+        gewaessername:
+          befreiungErlaubnis?.befreiungerlaubnisObject
+            ?.befreiungerlaubnis_geometrieArrayRelationShip[0]?.gewaessername,
         id: befreiungErlaubnis?.id,
       })
     );
 
   return data;
-};
-
-export const seepageDetailsExtractor = (input) => {
-  return [
-    {
-      title: "Aktenzeichen",
-    },
-    {
-      title: "Antrag vom",
-    },
-    {
-      title: "Gültig bis",
-    },
-    {
-      title: "Nutzung",
-      select: true,
-    },
-    {
-      title: "Typ",
-      select: true,
-      seperator: true,
-    },
-    {
-      title: "Q[l/s]",
-      select: true,
-    },
-    {
-      title: "G-Verh",
-      checkbox: true,
-    },
-    {
-      title: "Bemerkung",
-      textArea: true,
-    },
-    {
-      title: "Reinigung",
-      seperator: true,
-    },
-    {
-      title: "Kf[m/s]",
-    },
-  ];
 };
 
 export const frontsExtractor = (kassenzeichen) => {

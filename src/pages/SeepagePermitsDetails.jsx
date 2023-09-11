@@ -3,11 +3,7 @@ import Map from "../components/commons/Map";
 import { Checkbox } from "antd";
 import Chat from "../components/commons/Chat";
 import Details from "../components/seepagePermits/Details";
-import {
-  exemptionExtractor,
-  mappingExtractor,
-  seepageDetailsExtractor,
-} from "../tools/extractors";
+import { exemptionExtractor, mappingExtractor } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
 import SubNav from "../components/seepagePermits/SubNav";
@@ -96,9 +92,9 @@ const Page = ({
               },
               {
                 title: "G-Verh",
-                dataIndex: "gVerth",
-                key: "gVerth",
-                sorter: (a, b) => compare(a.gVerth, b.gVerth),
+                dataIndex: "gVerh",
+                key: "gVerh",
+                sorter: (a, b) => compare(a.gVerh, b.gVerh),
                 render: (gVerth) => (
                   <Checkbox checked={gVerth} className="flex justify-center" />
                 ),
@@ -127,7 +123,6 @@ const Page = ({
               width={cardStyleDetails.width}
               height={cardStyleDetails.height}
               style={cardStyleDetails}
-              extractor={seepageDetailsExtractor}
             />
           </div>
         </div>

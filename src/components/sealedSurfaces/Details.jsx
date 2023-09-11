@@ -5,7 +5,7 @@ import { getFlaeche } from "../../store/slices/search";
 import dayjs from "dayjs";
 import TextArea from "antd/es/input/TextArea";
 
-const DetailsRow = ({ title, value, width, customInput }) => {
+export const DetailsRow = ({ title, value, width, customInput }) => {
   return (
     <div className={"flex justify-between gap-2"}>
       <div className="text-sm font-medium w-1/2">{title}:</div>

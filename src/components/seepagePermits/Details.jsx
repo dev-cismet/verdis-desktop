@@ -1,57 +1,12 @@
-import { Checkbox, Input, Select } from "antd";
+import { Checkbox, Select } from "antd";
 import CustomCard from "../ui/Card";
+import { DetailsRow } from "../sealedSurfaces/Details";
+import TextArea from "antd/es/input/TextArea";
+import { useSelector } from "react-redux";
+import { getSeepage } from "../../store/slices/search";
 
-const mockExtractor = (input) => {
-  return [
-    {
-      title: "Aktenzeichen",
-    },
-    {
-      title: "Antrag vom",
-    },
-    {
-      title: "Gültig bis",
-    },
-    {
-      title: "Nutzung",
-      select: true,
-    },
-    {
-      title: "Typ",
-      select: true,
-    },
-    {
-      title: "Q[l/s]",
-      select: true,
-    },
-    {
-      title: "G-Verh",
-      checkbox: true,
-    },
-    {
-      title: "Bemerkung",
-      textArea: true,
-    },
-    {
-      title: "Reinigung",
-      seperator: true,
-    },
-    {
-      title: "Kf[m/s]",
-    },
-  ];
-};
-
-const Row = ({ title, textArea, select, checkbox }) => {
-  return (
-    <div className={`flex gap-2 ${textArea && "h-full"}`}>
-      <span className="md:w-1/5 w-1/3">{title}:</span>
-      {textArea && <Input.TextArea className="w-full h-full" />}
-      {select && <Select className="w-full" />}
-      {checkbox && <Checkbox className="w-full flex justify-start" />}
-      {!textArea && !select && !checkbox && <Input className="w-full" />}
-    </div>
-  );
+const mockExtractor = (kassenzeichen) => {
+  return [];
 };
 
 const Details = ({
@@ -61,19 +16,43 @@ const Details = ({
   height = 600,
   style,
 }) => {
-  const data = extractor(dataIn);
+  const data = useSelector(getSeepage);
+  console.log(data);
+
   return (
     <CustomCard style={{ ...style, width, height }} title="Details">
       <div className="flex flex-col gap-2 h-full">
-        {data.map((row, i) => (
-          <Row
-            key={`seepage_details_${i}`}
-            title={row.title}
-            textArea={row.textArea}
-            select={row.select}
-            checkbox={row.checkbox}
-          />
-        ))}
+        <DetailsRow title="Aktenzeichen" value={data?.aktenzeichen} />
+        <DetailsRow title="Antrag vom" value={data?.seepageFrom} />
+        <DetailsRow title="Gültig bis" value={data?.seepageUntil} />
+        <DetailsRow
+          title="Nutzung"
+          customInput={
+            <Select className="w-full" size="small" value={data?.useCase} />
+          }
+        />
+        <DetailsRow
+          title="Tzp"
+          customInput={
+            <Select className="w-full" size="small" value={data?.type} />
+          }
+        />
+        <DetailsRow title="Q [l/s]" value={data?.seepage} />
+        <DetailsRow
+          title="G-Verh."
+          customInput={<Checkbox checked={data?.gVerh} />}
+        />
+        <DetailsRow
+          title="Bemerkung"
+          size="small"
+          customInput={<TextArea className="w-full" value={data?.bemerkung} />}
+        />
+        <DetailsRow title="Gewässername" value={data?.gewaessername} />
+        <DetailsRow
+          title="Querverweise"
+          size="small"
+          customInput={<TextArea className="w-full" />}
+        />
       </div>
     </CustomCard>
   );
