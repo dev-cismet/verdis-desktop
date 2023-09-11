@@ -6,7 +6,7 @@ import InfoBar from "../components/commons/InfoBar";
 import { useSelector } from "react-redux";
 import { getKassenzeichen } from "../store/slices/search";
 import { getGeneralGeometryCollection } from "../store/slices/mapping";
-import { mappingExtractor } from "../tools/extractors";
+import { geometryExtractor, mappingExtractor } from "../tools/extractors";
 
 const Page = ({
   width = "100%",
@@ -40,6 +40,7 @@ const Page = ({
               width={cardStyle.width}
               height={cardStyle.height}
               style={cardStyle}
+              extractor={geometryExtractor}
             />
             <InfoTable
               width={cardStyle.width}

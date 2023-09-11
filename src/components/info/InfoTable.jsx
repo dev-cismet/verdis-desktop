@@ -7,11 +7,8 @@ import {
   setGeneralGeometrySelected,
 } from "../../store/slices/mapping";
 
-const extractor = (kassenzeichen) => {
-  return kassenzeichen?.kassenzeichen_geometrienArray?.map((geometry) => ({
-    title: geometry.kassenzeichen_geometrieObject.name,
-    id: geometry.id,
-  }));
+const mockExtractor = (kassenzeichen) => {
+  return [];
 };
 
 const Row = ({ title, id }) => {
@@ -36,7 +33,7 @@ const Row = ({ title, id }) => {
         ></div>
         <span>{title}</span>
       </div>
-      <hr className="h-px bg-zinc-200 border-0" />
+      <hr className="h-px bg-zinc-200 border-0 my-1" />
     </>
   );
 };
@@ -47,6 +44,7 @@ const Geometrics = ({
   style,
   title = "Geometrien",
   dataIn,
+  extractor = mockExtractor,
 }) => {
   const kassenzeichen = useSelector(getKassenzeichen);
   const data = extractor(dataIn ? dataIn : kassenzeichen);

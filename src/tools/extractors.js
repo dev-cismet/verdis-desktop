@@ -347,6 +347,13 @@ export const frontsExtractor = (kassenzeichen) => {
   return data;
 };
 
+export const geometryExtractor = (kassenzeichen) => {
+  return kassenzeichen?.kassenzeichen_geometrienArray?.map((geometry) => ({
+    title: geometry.kassenzeichen_geometrieObject.name,
+    id: geometry.id,
+  }));
+};
+
 export const mappingExtractor = ({
   kassenzeichen,
   flaechenArray,
