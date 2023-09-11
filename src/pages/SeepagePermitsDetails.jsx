@@ -5,7 +5,7 @@ import Chat from "../components/commons/Chat";
 import Details from "../components/seepagePermits/Details";
 import { exemptionExtractor, mappingExtractor } from "../tools/extractors";
 import TableCard from "../components/ui/TableCard";
-import { compare } from "../tools/helper";
+import { compare, formatDate } from "../tools/helper";
 import SubNav from "../components/seepagePermits/SubNav";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -65,12 +65,14 @@ const Page = ({
                 dataIndex: "seepageFrom",
                 key: "seepageFrom",
                 sorter: (a, b) => compare(a.seepageFrom, b.seepageFrom),
+                render: (date) => <>{formatDate(date)}</>,
               },
               {
                 title: "gültig bis",
                 dataIndex: "seepageUntil",
                 key: "seepageUntil",
                 sorter: (a, b) => compare(a.seepageUntil, b.seepageUntil),
+                render: (date) => <>{formatDate(date)}</>,
               },
               {
                 title: "Nutzung",

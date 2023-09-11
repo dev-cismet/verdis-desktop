@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const getNonce = () => {
   const today = new Date();
   const dd = String(today.getDate()).padStart(2, "0");
@@ -15,4 +17,12 @@ export const compare = (a, b) => {
     (a?.length === b?.length && a.toString().localeCompare(b)) ||
     a?.length - b?.length
   );
+};
+
+export const formatDate = (date) => {
+  if (date) {
+    return dayjs(date).format("DD.MM.YYYY");
+  } else {
+    return null;
+  }
 };

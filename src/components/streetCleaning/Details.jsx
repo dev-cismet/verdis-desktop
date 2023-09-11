@@ -3,6 +3,7 @@ import CustomCard from "../ui/Card";
 import { useSelector } from "react-redux";
 import { getFront } from "../../store/slices/search";
 import TextArea from "antd/es/input/TextArea";
+import { formatDate } from "../../tools/helper";
 
 const mockExtractor = (input) => {
   return [];
@@ -36,7 +37,10 @@ const Details = ({
         <DetailsRow title="Länge (Grafik)" value={front?.laengeGrafik} />
         <DetailsRow title="Länge (Korrektur)" value={front?.laengeKorrektur} />
         <DetailsRow title="Bearbeitet durch" value={front?.bearbeitetDurch} />
-        <DetailsRow title="Erfassungsdatum" value={front?.erfassungsdatum} />
+        <DetailsRow
+          title="Erfassungsdatum"
+          value={formatDate(front?.erfassungsdatum)}
+        />
         <DetailsRow
           title="Straße"
           customInput={

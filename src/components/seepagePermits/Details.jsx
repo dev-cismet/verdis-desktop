@@ -4,6 +4,7 @@ import { DetailsRow } from "../sealedSurfaces/Details";
 import TextArea from "antd/es/input/TextArea";
 import { useSelector } from "react-redux";
 import { getSeepage } from "../../store/slices/search";
+import { formatDate } from "../../tools/helper";
 
 const mockExtractor = (kassenzeichen) => {
   return [];
@@ -17,14 +18,13 @@ const Details = ({
   style,
 }) => {
   const data = useSelector(getSeepage);
-  console.log(data);
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Details">
       <div className="flex flex-col gap-2 h-full">
         <DetailsRow title="Aktenzeichen" value={data?.aktenzeichen} />
-        <DetailsRow title="Antrag vom" value={data?.seepageFrom} />
-        <DetailsRow title="Gültig bis" value={data?.seepageUntil} />
+        <DetailsRow title="Antrag vom" value={formatDate(data?.seepageFrom)} />
+        <DetailsRow title="Gültig bis" value={formatDate(data?.seepageUntil)} />
         <DetailsRow
           title="Nutzung"
           customInput={

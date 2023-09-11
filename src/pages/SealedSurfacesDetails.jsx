@@ -11,14 +11,9 @@ import {
   storeFlaeche,
   storeFlaechenId,
 } from "../store/slices/search";
-import { compare } from "../tools/helper";
+import { compare, formatDate } from "../tools/helper";
 import SubNav from "../components/sealedSurfaces/SubNav";
-import dayjs from "dayjs";
 import { getFlaechenCollection } from "../store/slices/mapping";
-import {
-  createStyler,
-  getMarkerStyleFromFeatureConsideringSelection,
-} from "../tools/mappingTools";
 
 const Page = ({
   width = "100%",
@@ -92,7 +87,7 @@ const Page = ({
                 dataIndex: "datumErfassung",
                 key: "datumErfassung",
                 sorter: (a, b) => compare(a.datumErfassung, b.datumErfassung),
-                render: (date) => <>{dayjs(date).format("DD.MM.YYYY")}</>,
+                render: (date) => <>{formatDate(date)}</>,
               },
             ]}
             id={flaechenId}
