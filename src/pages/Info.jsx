@@ -47,28 +47,6 @@ const Page = ({
               height={cardStyle.height}
               style={cardStyle}
               title="Alkis Flurstücke"
-              dataIn={[
-                {
-                  title: "217362-28332/0(PRl)",
-                  status: "online",
-                },
-                {
-                  title: "317362-28332/0(PRl)",
-                  status: "online",
-                },
-                {
-                  title: "517362-28332/0(PRl)",
-                  status: "pending",
-                },
-                {
-                  title: "617362-28332/0(PRl)",
-                  status: "pending",
-                },
-                {
-                  title: "717362-28332/0(PRl)",
-                  status: "offline",
-                },
-              ]}
             />
           </div>
 
