@@ -49,10 +49,12 @@ const slice = createSlice({
       return state;
     },
     resetStates(state) {
-      (state.front = {}),
-        (state.frontenId = null),
-        (state.flaeche = {}),
-        (state.flaechenId = null);
+      state.front = {};
+      state.frontenId = null;
+      state.flaeche = {};
+      state.flaechenId = null;
+      state.seepage = {};
+      state.seepageId = null;
     },
     addSearch(state, action) {
       if (state.previousSearches.length >= 8) {
