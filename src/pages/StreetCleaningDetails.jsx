@@ -13,7 +13,10 @@ import {
 } from "../store/slices/search";
 import { useDispatch, useSelector } from "react-redux";
 import SubNav from "../components/streetCleaning/SubNav";
-import { getFrontenCollection } from "../store/slices/mapping";
+import {
+  getFrontenCollection,
+  setFrontenSelected,
+} from "../store/slices/mapping";
 import { setShowFrontDetails } from "../store/slices/settings";
 
 const Page = ({
@@ -78,7 +81,9 @@ const Page = ({
             ]}
             id={frontenId}
             onRowClick={(record) => (
-              dispatch(storeFront(record)), dispatch(storeFrontenId(record.id))
+              dispatch(storeFront(record)),
+              dispatch(storeFrontenId(record.id)),
+              dispatch(setFrontenSelected({ id: record.id }))
             )}
             extractor={frontsExtractor}
           />

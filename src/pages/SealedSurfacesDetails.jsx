@@ -13,7 +13,10 @@ import {
 } from "../store/slices/search";
 import { compare, formatDate } from "../tools/helper";
 import SubNav from "../components/sealedSurfaces/SubNav";
-import { getFlaechenCollection } from "../store/slices/mapping";
+import {
+  getFlaechenCollection,
+  setFlaechenSelected,
+} from "../store/slices/mapping";
 import { setShowSurfaceDetails } from "../store/slices/settings";
 
 const Page = ({
@@ -98,7 +101,8 @@ const Page = ({
             id={flaechenId}
             onRowClick={(record) => (
               dispatch(storeFlaeche(record)),
-              dispatch(storeFlaechenId(record.id))
+              dispatch(storeFlaechenId(record.id)),
+              dispatch(setFlaechenSelected({ id: record.id }))
             )}
             extractor={areasDetailsExtractor}
           />

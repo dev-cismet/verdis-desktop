@@ -37,6 +37,34 @@ const slice = createSlice({
       }
       return state;
     },
+    setFlaechenSelected(state, action) {
+      const { id } = action.payload;
+      state.flaechenCollection.forEach((item) => {
+        item.selected = false;
+      });
+
+      const selectedObject = state.flaechenCollection.find(
+        (item) => item.properties.id === `flaeche.${id}`
+      );
+      if (selectedObject) {
+        selectedObject.selected = true;
+      }
+      return state;
+    },
+    setFrontenSelected(state, action) {
+      const { id } = action.payload;
+      state.frontenCollection.forEach((item) => {
+        item.selected = false;
+      });
+
+      const selectedObject = state.frontenCollection.find(
+        (item) => item.properties.id === id
+      );
+      if (selectedObject) {
+        selectedObject.selected = true;
+      }
+      return state;
+    },
     setBefreiungErlaubnisCollection(state, action) {
       state.befreiungErlaubnisCollection = action.payload;
       return state;
@@ -58,6 +86,8 @@ export const {
   setFrontenCollection,
   setGeneralGeometryCollection,
   setGeneralGeometrySelected,
+  setFlaechenSelected,
+  setFrontenSelected,
   setBefreiungErlaubnisCollection,
   clear,
 } = slice.actions;

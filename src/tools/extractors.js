@@ -294,7 +294,7 @@ export const frontsExtractor = (kassenzeichen) => {
       nummer: front?.nummer,
       laengeGrafik: frontInfo?.laenge_grafik,
       klasse: frontInfo?.lage_sr_satzung?.strassenreinigung?.key,
-      id: front?.id,
+      id: frontInfo?.id,
       laengeKorrektur: frontInfo?.laenge_korrektur,
       bearbeitetDurch: front?.bearbeitet_durch,
       erfassungsdatum: front?.erfassungsdatum,
