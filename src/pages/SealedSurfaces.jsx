@@ -10,9 +10,17 @@ import {
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
 import SubNav from "../components/sealedSurfaces/SubNav";
-import { useSelector } from "react-redux";
-import { getKassenzeichen } from "../store/slices/search";
-import { getFlaechenCollection } from "../store/slices/mapping";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getFlaechenId,
+  getKassenzeichen,
+  storeFlaeche,
+  storeFlaechenId,
+} from "../store/slices/search";
+import {
+  getFlaechenCollection,
+  setFlaechenSelected,
+} from "../store/slices/mapping";
 import {
   createStyler,
   getMarkerStyleFromFeatureConsideringSelection,
@@ -24,8 +32,10 @@ const Page = ({
   inStory = false,
   showChat = false,
 }) => {
+  const dispatch = useDispatch();
   const kassenzeichen = useSelector(getKassenzeichen);
   const flaechenArray = useSelector(getFlaechenCollection);
+  const flaechenId = useSelector(getFlaechenId);
 
   let storyStyle = {};
   if (inStory) {
@@ -80,6 +90,12 @@ const Page = ({
                   render: (area) => <div>{area} m²</div>,
                 },
               ]}
+              id={flaechenId}
+              onRowClick={(record) => (
+                dispatch(storeFlaeche(record)),
+                dispatch(storeFlaechenId(record.id)),
+                dispatch(setFlaechenSelected({ id: record.id }))
+              )}
               extractor={areasExtractor}
             />
             <Sums

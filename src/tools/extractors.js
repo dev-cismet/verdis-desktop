@@ -138,6 +138,7 @@ export const summaryExtractor = (kassenzeichen) => {
 export const areasExtractor = (kassenzeichen) => {
   const data = kassenzeichen?.flaechenArray?.map((row) => ({
     name: row?.flaecheObject?.flaechenbezeichnung,
+    id: row?.flaecheObject?.id,
     size: row?.flaecheObject?.flaecheninfoObject?.groesse_korrektur,
     type: row?.flaecheObject?.flaecheninfoObject?.flaechenbeschreibung
       ?.beschreibung,

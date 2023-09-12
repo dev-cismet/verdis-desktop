@@ -11,9 +11,17 @@ import {
 import TableCard from "../components/ui/TableCard";
 import { compare } from "../tools/helper";
 import SubNav from "../components/streetCleaning/SubNav";
-import { useSelector } from "react-redux";
-import { getFrontenCollection } from "../store/slices/mapping";
-import { getKassenzeichen } from "../store/slices/search";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getFrontenCollection,
+  setFrontenSelected,
+} from "../store/slices/mapping";
+import {
+  getFrontenId,
+  getKassenzeichen,
+  storeFront,
+  storeFrontenId,
+} from "../store/slices/search";
 
 const Page = ({
   width = "100%",
@@ -36,9 +44,12 @@ const Page = ({
     height: "100%",
     minHeight: 0,
   };
+  const dispatch = useDispatch();
   const mapHeight = height - 100;
   const kassenzeichen = useSelector(getKassenzeichen);
   const frontenArray = useSelector(getFrontenCollection);
+  const frontenId = useSelector(getFrontenId);
+
   return (
     <div
       style={{ ...storyStyle, width, height }}
@@ -74,6 +85,12 @@ const Page = ({
                   sorter: (a, b) => compare(a.klasse, b.klasse),
                 },
               ]}
+              id={frontenId}
+              onRowClick={(record) => (
+                dispatch(storeFront(record)),
+                dispatch(storeFrontenId(record.id)),
+                dispatch(setFrontenSelected({ id: record.id }))
+              )}
               extractor={frontsExtractor}
             />
             <LegalNotice
