@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Map from "../components/commons/Map";
 import { Checkbox } from "antd";
 import Chat from "../components/commons/Chat";
@@ -15,6 +15,7 @@ import {
   storeSeepageId,
 } from "../store/slices/search";
 import { getBefreiungErlaubnisCollection } from "../store/slices/mapping";
+import { setShowSeepageDetails } from "../store/slices/settings";
 
 const Page = ({
   width = "100%",
@@ -40,6 +41,11 @@ const Page = ({
   const befreiungErlaubnisseArray = useSelector(
     getBefreiungErlaubnisCollection
   );
+
+  useEffect(() => {
+    dispatch(setShowSeepageDetails(true));
+  }, []);
+
   return (
     <div
       style={{ ...storyStyle, width, height }}

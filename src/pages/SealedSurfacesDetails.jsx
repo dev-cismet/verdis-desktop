@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Map from "../components/commons/Map";
 import Details from "../components/sealedSurfaces/Details";
 import Chat from "../components/commons/Chat";
@@ -14,6 +14,7 @@ import {
 import { compare, formatDate } from "../tools/helper";
 import SubNav from "../components/sealedSurfaces/SubNav";
 import { getFlaechenCollection } from "../store/slices/mapping";
+import { setShowSurfaceDetails } from "../store/slices/settings";
 
 const Page = ({
   width = "100%",
@@ -36,6 +37,10 @@ const Page = ({
   const cardStyleDetails = { width: "100%", height: "50%", minHeight: 0 };
   const kassenzeichen = useSelector(getKassenzeichen);
   const flaechenArray = useSelector(getFlaechenCollection);
+
+  useEffect(() => {
+    dispatch(setShowSurfaceDetails(true));
+  }, []);
 
   return (
     <div

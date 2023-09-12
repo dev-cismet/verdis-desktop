@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Map from "../components/commons/Map";
 import Chat from "../components/commons/Chat";
 import Details from "../components/streetCleaning/Details";
@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import SubNav from "../components/streetCleaning/SubNav";
 import { getFrontenCollection } from "../store/slices/mapping";
+import { setShowFrontDetails } from "../store/slices/settings";
 
 const Page = ({
   width = "100%",
@@ -36,6 +37,11 @@ const Page = ({
   const cardStyleDetails = { width: "100%", height: "50%", minHeight: 0 };
   const kassenzeichen = useSelector(getKassenzeichen);
   const frontenArray = useSelector(getFrontenCollection);
+
+  useEffect(() => {
+    dispatch(setShowFrontDetails(true));
+  }, []);
+
   return (
     <div
       style={{ ...storyStyle, width, height }}
