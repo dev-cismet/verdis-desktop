@@ -68,9 +68,10 @@ const Page = ({
               },
               {
                 title: "Größe m²",
-                dataIndex: "groesseGrafik",
-                key: "groesseGrafik",
-                sorter: (a, b) => compare(a.groesseGrafik, b.groesseGrafik),
+                dataIndex: "groesseKorrektor",
+                key: "groesseKorrektor",
+                sorter: (a, b) =>
+                  compare(a.groesseKorrektor, b.groesseKorrektor),
               },
               {
                 title: "Flächenart",

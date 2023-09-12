@@ -3,7 +3,7 @@ import ChangeRequests from "../components/sealedSurfaces/ChangeRequests";
 import Sums from "../components/sealedSurfaces/Sums";
 import Chat from "../components/commons/Chat";
 import {
-  areasExtractor,
+  areasDetailsExtractor,
   mappingExtractor,
   sumsExtractor,
 } from "../tools/extractors";
@@ -84,9 +84,10 @@ const Page = ({
                 },
                 {
                   title: "Größe",
-                  dataIndex: "size",
-                  key: "size",
-                  sorter: (a, b) => compare(a.size, b.size),
+                  dataIndex: "groesseKorrektor",
+                  key: "groesseKorrektor",
+                  sorter: (a, b) =>
+                    compare(a.groesseKorrektor, b.groesseKorrektor),
                   render: (area) => <div>{area} m²</div>,
                 },
               ]}
@@ -96,7 +97,7 @@ const Page = ({
                 dispatch(storeFlaechenId(record.id)),
                 dispatch(setFlaechenSelected({ id: record.id }))
               )}
-              extractor={areasExtractor}
+              extractor={areasDetailsExtractor}
             />
             <Sums
               width={cardStyleSum.width}
