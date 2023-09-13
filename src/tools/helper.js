@@ -11,6 +11,13 @@ export const getNonce = () => {
 };
 
 export const compare = (a, b) => {
+  if (a === undefined || a === null) {
+    a = "";
+  }
+  if (b === undefined || a === null) {
+    b = "";
+  }
+
   return (
     isFinite(b) - isFinite(a) ||
     a - b ||
