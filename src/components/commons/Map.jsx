@@ -19,6 +19,7 @@ import { storeFlaechenId, storeFrontenId } from "../../store/slices/search";
 import {
   setFlaechenSelected,
   setFrontenSelected,
+  setGeneralGeometrySelected,
 } from "../../store/slices/mapping";
 import { useDispatch } from "react-redux";
 
@@ -185,6 +186,12 @@ const Map = ({
                   case "front": {
                     dispatch(storeFrontenId(feature.properties.id));
                     dispatch(setFrontenSelected({ id: feature.properties.id }));
+                    break;
+                  }
+                  case "general": {
+                    dispatch(
+                      setGeneralGeometrySelected({ id: feature.properties.id })
+                    );
                     break;
                   }
                   default: {
