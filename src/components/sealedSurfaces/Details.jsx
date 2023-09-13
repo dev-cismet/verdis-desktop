@@ -1,9 +1,10 @@
 import { Input, Select } from "antd";
 import CustomCard from "../ui/Card";
 import { useSelector } from "react-redux";
-import { getFlaeche } from "../../store/slices/search";
+import { getFlaechenId, getKassenzeichen } from "../../store/slices/search";
 import TextArea from "antd/es/input/TextArea";
 import { formatDate } from "../../tools/helper";
+import { useEffect, useState } from "react";
 
 export const DetailsRow = ({ title, value, width, customInput }) => {
   return (
@@ -27,8 +28,16 @@ const Details = ({
   height = 200,
   style,
 }) => {
-  const mockData = extractor(dataIn);
-  const flaeche = useSelector(getFlaeche);
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const selectedId = useSelector(getFlaechenId);
+  const flaechen = extractor(kassenzeichen);
+  const [flaeche, setFlaeche] = useState({});
+
+  useEffect(() => {
+    if (flaechen) {
+      setFlaeche(flaechen.find((value) => value.id === selectedId));
+    }
+  }, [selectedId]);
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Allgemein">

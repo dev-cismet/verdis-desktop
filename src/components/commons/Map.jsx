@@ -15,6 +15,9 @@ import {
   getBoundsForFeatureArray,
   getCenterAndZoomForBounds,
 } from "../../tools/mappingTools";
+import { storeFlaechenId } from "../../store/slices/search";
+import { setFlaechenSelected } from "../../store/slices/mapping";
+import { useDispatch } from "react-redux";
 
 const mockExtractor = (input) => {
   return {
@@ -31,6 +34,7 @@ const Map = ({
   height = 500,
 }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [urlParams, setUrlParams] = useSearchParams();
 
   const data = extractor(dataIn);
@@ -168,7 +172,17 @@ const Map = ({
             featureClickHandler={
               data.featureClickHandler ||
               ((e) => {
-                console.log("no featureClickHandler set", e.target.feature);
+                const feature = e.target.feature;
+                switch (feature.featureType) {
+                  case "flaeche": {
+                    dispatch(storeFlaechenId(feature.id));
+                    dispatch(setFlaechenSelected({ id: feature.id }));
+                    break;
+                  }
+                  default: {
+                    console.log("no featureClickHandler set", e.target.feature);
+                  }
+                }
               })
             }
           />

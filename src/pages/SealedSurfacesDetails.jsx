@@ -112,6 +112,7 @@ const Page = ({
               width={cardStyleDetails.width}
               height={cardStyleDetails.height}
               style={cardStyleDetails}
+              extractor={areasDetailsExtractor}
             />
             <Map
               key="sealedSurfacesDetails.map"
