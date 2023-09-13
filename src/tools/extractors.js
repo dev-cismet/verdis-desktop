@@ -291,7 +291,8 @@ export const frontsExtractor = (kassenzeichen) => {
       straße: frontInfo?.strasseObject?.name,
       lage:
         frontInfo?.strasseObject?.name +
-        ` (${frontInfo?.lage_sr_satzung?.strassenreinigung?.key})`,
+        (frontInfo?.lage_sr_satzung?.strassenreinigung?.key !== undefined &&
+          ` (${frontInfo?.lage_sr_satzung?.strassenreinigung?.key})`),
       straßenReinigung: frontInfo?.lage_sr_satzung?.strassenreinigung?.name,
       bemerkung: frontInfo?.lage_sr_satzung?.sr_bem,
       veranlagung: frontInfo?.sr_veranlagung,
