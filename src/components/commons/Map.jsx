@@ -15,8 +15,11 @@ import {
   getBoundsForFeatureArray,
   getCenterAndZoomForBounds,
 } from "../../tools/mappingTools";
-import { storeFlaechenId } from "../../store/slices/search";
-import { setFlaechenSelected } from "../../store/slices/mapping";
+import { storeFlaechenId, storeFrontenId } from "../../store/slices/search";
+import {
+  setFlaechenSelected,
+  setFrontenSelected,
+} from "../../store/slices/mapping";
 import { useDispatch } from "react-redux";
 
 const mockExtractor = (input) => {
@@ -177,6 +180,11 @@ const Map = ({
                   case "flaeche": {
                     dispatch(storeFlaechenId(feature.id));
                     dispatch(setFlaechenSelected({ id: feature.id }));
+                    break;
+                  }
+                  case "front": {
+                    dispatch(storeFrontenId(feature.properties.id));
+                    dispatch(setFrontenSelected({ id: feature.properties.id }));
                     break;
                   }
                   default: {

@@ -92,6 +92,7 @@ const Page = ({
               width={cardStyleDetails.width}
               height={cardStyleDetails.height}
               style={cardStyleDetails}
+              extractor={frontsExtractor}
             />
 
             <Map

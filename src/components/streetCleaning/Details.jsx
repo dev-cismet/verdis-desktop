@@ -1,9 +1,10 @@
 import { Checkbox, Input, Select } from "antd";
 import CustomCard from "../ui/Card";
 import { useSelector } from "react-redux";
-import { getFront } from "../../store/slices/search";
+import { getFrontenId, getKassenzeichen } from "../../store/slices/search";
 import TextArea from "antd/es/input/TextArea";
 import { formatDate } from "../../tools/helper";
+import { useEffect, useState } from "react";
 
 const mockExtractor = (input) => {
   return [];
@@ -27,8 +28,16 @@ const Details = ({
   height = 200,
   style,
 }) => {
-  const mockData = extractor(dataIn);
-  const front = useSelector(getFront);
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const selectedId = useSelector(getFrontenId);
+  const fronten = extractor(kassenzeichen);
+  const [front, setFront] = useState({});
+
+  useEffect(() => {
+    if (fronten) {
+      setFront(fronten.find((value) => value.id === selectedId));
+    }
+  }, [selectedId]);
 
   return (
     <CustomCard style={{ ...style, width, height }} title="Details">
