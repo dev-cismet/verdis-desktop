@@ -1,28 +1,18 @@
-import {
-  AutoComplete,
-  Avatar,
-  Button,
-  Dropdown,
-  Input,
-  Switch,
-  Tooltip,
-} from "antd";
+import { AutoComplete, Avatar, Button, Dropdown, Input, Tooltip } from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBroom,
   faCloudRain,
   faEarthAmericas,
-  faHouse,
   faTag,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   ClockCircleOutlined,
   CommentOutlined,
-  ExclamationCircleOutlined,
   LoadingOutlined,
-  QuestionCircleOutlined,
+  LogoutOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
@@ -42,12 +32,10 @@ import {
   storeKassenzeichen,
 } from "../../store/slices/search";
 import {
-  getReadOnly,
   getShowChat,
   getShowFrontDetails,
   getShowSeepageDetails,
   getShowSurfaceDetails,
-  setReadOnly,
   setShowChat,
 } from "../../store/slices/settings";
 import { ENDPOINT, query } from "../../constants/verdis";
@@ -107,7 +95,6 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const navigate = useNavigate();
   const links = navLinks();
   const location = useLocation();
-  const readOnly = useSelector(getReadOnly);
   const showChat = useSelector(getShowChat);
   const jwt = useSelector(getJWT);
   const prevSearches = useSelector(getPreviousSearches);
@@ -115,25 +102,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const [urlParams, setUrlParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
 
-  const items = [
-    {
-      label: <a href="/settings">Einstellungen</a>,
-      key: "0",
-    },
-    {
-      label: (
-        <Switch
-          onClick={() => dispatch(setReadOnly(!readOnly))}
-          checked={!readOnly}
-        />
-      ),
-      key: "1",
-    },
-    {
-      label: <Button onClick={() => logout()}>Ausloggen</Button>,
-      key: "2",
-    },
-  ];
+  const items = [];
 
   let storyStyle = {};
   if (inStory) {
@@ -292,16 +261,13 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
         </AutoComplete>
       </div>
       <div className="flex items-center gap-3">
-        <ExclamationCircleOutlined
-          className="text-2xl cursor-pointer"
-          onClick={() => {
-            setUrlParams({ xxx: "yyy", kassenzeichen: 60145620 });
-          }}
-        />
-        <QuestionCircleOutlined className="text-2xl cursor-pointer" />
         <CommentOutlined
           className="text-2xl cursor-pointer"
           onClick={() => dispatch(setShowChat(!showChat))}
+        />
+        <LogoutOutlined
+          className="text-2xl cursor-pointer"
+          onClick={() => logout()}
         />
         <Dropdown trigger={["click"]} menu={{ items }} placement="bottomRight">
           <Avatar
