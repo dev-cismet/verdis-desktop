@@ -123,7 +123,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
           Authorization: `Bearer ${jwt}`,
         }
       ),
-    enabled: !!searchQuery,
+    enabled: !!searchQuery && !isNaN(+searchQuery),
     refetchOnWindowFocus: false,
     retry: false,
   });
@@ -252,7 +252,10 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
               )
             }
             onPressEnter={(e) => setSearchQuery(inputValue)}
-            status={data?.kassenzeichen?.length === 0 && "error"}
+            status={
+              (data?.kassenzeichen?.length === 0 || isNaN(+searchQuery)) &&
+              "error"
+            }
             name="kassenzeichen"
           />
         </AutoComplete>
