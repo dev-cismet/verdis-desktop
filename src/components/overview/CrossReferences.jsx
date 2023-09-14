@@ -1,30 +1,19 @@
+import { Link, useNavigate } from "react-router-dom";
 import CustomCard from "../ui/Card";
 
 const mockExtractor = (input) => {
   return [
     {
-      value: 223458,
+      kassenzeichen: 68119510,
+      bez: "1",
     },
     {
-      value: 467452,
+      kassenzeichen: 60055167,
+      bez: "A",
     },
     {
-      value: 123456,
-    },
-    {
-      value: 245623,
-    },
-    {
-      value: 458094,
-    },
-    {
-      value: 587834,
-    },
-    {
-      value: 987576,
-    },
-    {
-      value: 426485,
+      kassenzeichen: 62803044,
+      bez: "3",
     },
   ];
 };
@@ -37,11 +26,21 @@ const CrossReferences = ({
   style,
 }) => {
   const data = extractor(dataIn);
+  const navigate = useNavigate();
+
   return (
     <CustomCard style={{ ...style, width, height }} title="Querverweise">
       <div className="flex flex-col gap-1 items-center justify-center text-sm">
         {data.map((row, i) => (
-          <span key={`crossReferences_${i}`}>{row.value}</span>
+          <Link
+            key={`crossReferences_${i}`}
+            className="flex w-full justify-center items-center py-1 hover:bg-zinc-100 cursor-pointer"
+            to={`/versiegelteFlaechen?kassenzeichen=${row.kassenzeichen}&bez=${row.bez}`}
+          >
+            <span className="text-black">
+              {row.kassenzeichen}:{row.bez}
+            </span>
+          </Link>
         ))}
       </div>
     </CustomCard>
