@@ -1,4 +1,4 @@
-import { AutoComplete, Avatar, Button, Dropdown, Input, Tooltip } from "antd";
+import { AutoComplete, Avatar, Button, Drawer, Input, Tooltip } from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -101,8 +101,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const [inputValue, setInpuValue] = useState("");
   const [urlParams, setUrlParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
-
-  const items = [];
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   let storyStyle = {};
   if (inStory) {
@@ -269,13 +268,18 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
           className="text-2xl cursor-pointer"
           onClick={() => logout()}
         />
-        <Dropdown trigger={["click"]} menu={{ items }} placement="bottomRight">
-          <Avatar
-            size="large"
-            icon={<FontAwesomeIcon icon={faUser} />}
-            className="cursor-pointer"
-          />
-        </Dropdown>
+        <Avatar
+          size="large"
+          icon={<FontAwesomeIcon icon={faUser} />}
+          className="cursor-pointer"
+          onClick={() => setDrawerOpen(true)}
+        />
+        <Drawer
+          title="Einstellungen"
+          placement="right"
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+        ></Drawer>
       </div>
     </header>
   );
