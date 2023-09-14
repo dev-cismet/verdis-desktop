@@ -19,8 +19,8 @@ const ChatHeader = () => {
           className="w-10 h-10"
         />
         <div className="flex flex-col w-full">
-          <div className="font-semibold text-lg">David Glogaza</div>
-          <div className="text-sm font-normal">Active</div>
+          <div className="font-semibold text-lg">Admin</div>
+          <div className="text-sm font-normal">Aktiv</div>
         </div>
         <MoreOutlined className="text-xl cursor-pointer" />
       </div>
@@ -44,19 +44,15 @@ const ChatActions = () => {
 const mockExtractor = (input) => {
   return [
     {
-      message: "Hallo!",
+      message:
+        "Sehr geehrte*r Nutzer*in, hier haben Sie die Möglichkeit Änderungen an Ihren Flächen zu begründen und allgemeine Anmerkungen sowie Belege hinzuzufügen.",
       time: new Date(),
       sender: "David",
     },
     {
-      message: "Hallo!",
+      message: "Dies sind keine echten Nachrichten!",
       time: new Date(),
       sender: "You",
-    },
-    {
-      message: "Ich hab neue Arbeit für dich!",
-      time: new Date(),
-      sender: "David",
     },
   ];
 };
@@ -64,8 +60,8 @@ const mockExtractor = (input) => {
 const Chat = ({
   dataIn,
   extractor = mockExtractor,
-  width = 350,
-  height = 400,
+  width = 450,
+  height = 550,
   style,
 }) => {
   const data = extractor(dataIn);
@@ -94,7 +90,7 @@ const Chat = ({
                 className={`${
                   message.sender.toLowerCase() === "you"
                     ? "bg-primary/10"
-                    : "bg-zinc-200"
+                    : "bg-zinc-200 mr-16"
                 } rounded-md w-fit px-2 py-5 relative`}
               >
                 {message.message}
