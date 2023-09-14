@@ -201,10 +201,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
             <Button
               type="text"
               className={`${
-                (location.pathname.includes(link.href) && i > 0) ||
-                (link.href === "/" && location.pathname === "/")
-                  ? "text-primary"
-                  : ""
+                location.pathname.includes(link.href) ? "text-primary" : ""
               } font-semibold no-underline`}
             >
               <div
