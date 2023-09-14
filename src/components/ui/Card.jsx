@@ -1,6 +1,13 @@
 import { Card } from "antd";
 
-const CustomCard = ({ style, title, children, fullHeight, ...props }) => {
+const CustomCard = ({
+  style,
+  title,
+  extra,
+  children,
+  fullHeight,
+  ...props
+}) => {
   return (
     <Card
       style={style}
@@ -11,6 +18,7 @@ const CustomCard = ({ style, title, children, fullHeight, ...props }) => {
         height: "100%",
       }}
       title={<span className="text-lg">{title}</span>}
+      extra={extra}
       size="small"
       hoverable={false}
       {...props}

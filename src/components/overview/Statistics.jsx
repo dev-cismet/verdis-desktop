@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CustomCard from "../ui/Card";
-import { faHandPointer, faMap } from "@fortawesome/free-regular-svg-icons";
+import { faMap } from "@fortawesome/free-regular-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getAenderungsAnfrage,
@@ -44,7 +44,11 @@ const Statistics = ({
   };
 
   return (
-    <CustomCard style={{ ...style, width, height }} title="Statistik">
+    <CustomCard
+      style={{ ...style, width, height }}
+      title="Statistik"
+      extra={<FontAwesomeIcon icon={faMap} className="pr-[10px]" />}
+    >
       <div className="flex flex-col gap-1 text-sm font-medium">
         {data.map((row, i) => {
           return (
@@ -59,10 +63,6 @@ const Statistics = ({
             >
               <span>{row.value}</span>
               <span className="w-full">{row.title}</span>
-              <FontAwesomeIcon
-                icon={faHandPointer}
-                className="cursor-pointer"
-              />
               <Switch
                 checked={
                   overviewFeatureTypes.indexOf(featureMap[row.title]) !== -1
