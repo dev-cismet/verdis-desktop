@@ -145,6 +145,7 @@ export const areasDetailsExtractor = (kassenzeichen) => {
       groesseKorrektor: flaecheInfo?.groesse_korrektur,
       flaechenArt: flaecheInfo?.flaechenartObject?.art,
       anschlussgrad: flaecheInfo?.anschlussgradObject?.grad_abkuerzung,
+      anschlussgradKomplett: flaecheInfo?.anschlussgradObject?.grad,
       anteil: flaeche?.anteil,
       bemerkung: flaeche?.bemerkung,
       datumErfassung: flaeche?.datum_erfassung,

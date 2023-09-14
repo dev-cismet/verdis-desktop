@@ -62,7 +62,7 @@ const Details = ({
           title="Anschlussgrad"
           customInput={
             <Select
-              value={flaeche?.anschlussgrad}
+              value={flaeche?.anschlussgradKomplett}
               className="w-full"
               size="small"
             />
