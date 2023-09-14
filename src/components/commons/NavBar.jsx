@@ -179,6 +179,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   useEffect(() => {
     if (urlParams.get("kassenzeichen")) {
       setSearchQuery(urlParams.get("kassenzeichen"));
+      setInpuValue(urlParams.get("kassenzeichen"));
     }
   }, [urlParams]);
 
@@ -237,7 +238,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
             )
             .filter((item) => item !== null)}
           className="xl:w-1/2 w-full mx-auto"
-          defaultValue={urlParams.get("kassenzeichen")}
+          value={inputValue}
           onSelect={(value) => setSearchQuery(value)}
           onChange={(value) => setInpuValue(value)}
         >
