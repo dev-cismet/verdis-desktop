@@ -1,4 +1,12 @@
-import { AutoComplete, Avatar, Button, Dropdown, Input, Switch } from "antd";
+import {
+  AutoComplete,
+  Avatar,
+  Button,
+  Dropdown,
+  Input,
+  Switch,
+  Tooltip,
+} from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,7 +26,12 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
 import {
@@ -61,11 +74,6 @@ const navLinks = () => {
 
   return [
     {
-      title: "Übersicht",
-      href: "/",
-      icon: <FontAwesomeIcon icon={faHouse} className="h-6" />,
-    },
-    {
       title: "Versiegelte Flächen",
       href: showSurfaceDetails
         ? "/versiegelteFlaechen/details"
@@ -96,6 +104,7 @@ const navLinks = () => {
 
 const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const links = navLinks();
   const location = useLocation();
   const readOnly = useSelector(getReadOnly);
@@ -211,7 +220,14 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
       style={{ ...style, ...storyStyle, width, height }}
     >
       <div className="md:flex hidden items-center gap-3">
-        <img src={Logo} alt="Logo" className="h-10" />
+        <Tooltip title="Übersicht" placement="bottom">
+          <img
+            src={Logo}
+            alt="Logo"
+            className="h-10 cursor-pointer"
+            onClick={() => navigate("/" + `?${urlParams}`)}
+          />
+        </Tooltip>
         {links.map((link, i) => (
           <Link to={link.href + `?${urlParams}`} key={`navLink_${i}`}>
             <Button
