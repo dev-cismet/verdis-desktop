@@ -80,11 +80,11 @@ const Login = ({
 
   return (
     <div
-      className="flex flex-col gap-8 items-center w-full"
+      className="flex flex-col gap-8 items-center w-full bg-white/5 p-10 rounded-3xl"
       style={{ width, height }}
     >
       {contextHolder}
-      <img src={Logo} alt="Logo" className="w-1/2" />
+      <h1 className="text-zinc-100 font-semibold text-6xl">VerDIS</h1>
 
       <Form className="w-full" form={form} onFinish={login}>
         <div className="flex flex-col gap-6 w-full">
@@ -103,6 +103,7 @@ const Login = ({
             <Input
               placeholder="Nutzername"
               prefix={<FontAwesomeIcon icon={faUser} color="#E67843" />}
+              autoFocus
             />
           </Form.Item>
           <Form.Item
