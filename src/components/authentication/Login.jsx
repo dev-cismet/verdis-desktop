@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input, message, Form } from "antd";
+import { Button, Input, message, Form } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import Logo from "/logo.svg";
@@ -119,12 +119,6 @@ const Login = ({
               prefix={<FontAwesomeIcon icon={faLock} color="#E67843" />}
             />
           </Form.Item>
-          <div className="flex justify-between items-center">
-            <Checkbox>Angemeldet bleiben</Checkbox>
-            <a href="/forgot-password" className="text-primary no-underline">
-              Passwort vergessen?
-            </a>
-          </div>
           <Button
             type="primary"
             size="large"
