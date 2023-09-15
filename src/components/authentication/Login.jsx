@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input, message, Form } from "antd";
+import { Button, Input, message, Form } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import Logo from "/logo.svg";
@@ -28,6 +28,7 @@ const Login = ({
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+  const search = location.state?.from?.search || "";
   const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
@@ -53,7 +54,7 @@ const Login = ({
               dispatch(storeJWT(jwt));
               dispatch(storeLogin(user));
               dispatch(setLoginRequested(false));
-              navigate(from, { replace: true });
+              navigate(from + search, { replace: true });
             }, 500);
           });
         } else {
@@ -79,11 +80,11 @@ const Login = ({
 
   return (
     <div
-      className="flex flex-col gap-8 items-center w-full"
+      className="flex flex-col gap-8 items-center w-full bg-white/5 p-10 rounded-3xl"
       style={{ width, height }}
     >
       {contextHolder}
-      <img src={Logo} alt="Logo" className="w-1/2" />
+      <h1 className="text-zinc-100 font-semibold text-6xl">VerDIS</h1>
 
       <Form className="w-full" form={form} onFinish={login}>
         <div className="flex flex-col gap-6 w-full">
@@ -102,6 +103,7 @@ const Login = ({
             <Input
               placeholder="Nutzername"
               prefix={<FontAwesomeIcon icon={faUser} color="#E67843" />}
+              autoFocus
             />
           </Form.Item>
           <Form.Item
@@ -118,12 +120,6 @@ const Login = ({
               prefix={<FontAwesomeIcon icon={faLock} color="#E67843" />}
             />
           </Form.Item>
-          <div className="flex justify-between items-center">
-            <Checkbox>Angemeldet bleiben</Checkbox>
-            <a href="/forgot-password" className="text-primary no-underline">
-              Passwort vergessen?
-            </a>
-          </div>
           <Button
             type="primary"
             size="large"

@@ -9,6 +9,9 @@ export default {
       screens: {
         "3xl": "2560px",
       },
+      backgroundImage: {
+        rain: "url('/images/background.jpg')",
+      },
     },
   },
   plugins: [],

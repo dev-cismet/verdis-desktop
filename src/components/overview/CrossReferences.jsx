@@ -36,7 +36,7 @@ const CrossReferences = ({
             className="flex w-full justify-center items-center py-1 hover:bg-zinc-100 cursor-pointer"
             to={`/versiegelteFlaechen?kassenzeichen=${row.kassenzeichen}&bez=${row.bez}`}
           >
-            <span className="text-black">
+            <span className="text-black underline">
               {row.kassenzeichen}:{row.bez}
             </span>
           </Link>

@@ -47,7 +47,7 @@ const Statistics = ({
     <CustomCard
       style={{ ...style, width, height }}
       title="Statistik"
-      extra={<FontAwesomeIcon icon={faMap} className="pr-[10px]" />}
+      extra={<FontAwesomeIcon icon={faMap} className="pr-2" />}
     >
       <div className="flex flex-col gap-1 text-sm font-medium">
         {data.map((row, i) => {
