@@ -28,6 +28,7 @@ const Login = ({
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+  const search = location.state?.from?.search || "";
   const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
@@ -53,7 +54,7 @@ const Login = ({
               dispatch(storeJWT(jwt));
               dispatch(storeLogin(user));
               dispatch(setLoginRequested(false));
-              navigate(from, { replace: true });
+              navigate(from + search, { replace: true });
             }, 500);
           });
         } else {

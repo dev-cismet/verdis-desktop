@@ -136,7 +136,11 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
 
   useEffect(() => {
     if (error && !isFetching) {
-      logout();
+      const trimmedQuery = searchQuery.trim();
+      setUrlParams({ kassenzeichen: trimmedQuery });
+      setTimeout(() => {
+        logout();
+      }, 10);
     }
   }, [error]);
 
