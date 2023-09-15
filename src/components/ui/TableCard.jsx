@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux";
-import { getKassenzeichen } from "../../store/slices/search";
+import { getIsLoading, getKassenzeichen } from "../../store/slices/search";
 import CustomCard from "./Card";
 import { Table } from "antd";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 import "./table.css";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const mockExtractor = (kassenzeichen) => {
   return [];
@@ -20,7 +22,19 @@ const TableCard = ({
   extractor = mockExtractor,
 }) => {
   const kassenzeichen = useSelector(getKassenzeichen);
+  const isLoading = useSelector(getIsLoading);
   const data = extractor(kassenzeichen);
+  const [urlParams, setUrlParams] = useSearchParams();
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (data && urlParams.get("bez") && !isLoading) {
+        onRowClick(data.find((value) => value.name === urlParams.get("bez")));
+        urlParams.delete("bez");
+        setUrlParams(urlParams);
+      }
+    }, 100);
+  }, [data, isLoading]);
 
   return (
     <CustomCard style={{ ...style, width, height }} title={title}>

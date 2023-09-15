@@ -28,6 +28,7 @@ import {
   addSearch,
   getPreviousSearches,
   resetStates,
+  setIsLoading,
   storeAenderungsAnfrage,
   storeKassenzeichen,
 } from "../../store/slices/search";
@@ -186,6 +187,10 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
       setInpuValue(urlParams.get("kassenzeichen"));
     }
   }, [urlParams]);
+
+  useEffect(() => {
+    isFetching ? dispatch(setIsLoading(true)) : dispatch(setIsLoading(false));
+  }, [isFetching]);
 
   return (
     <header

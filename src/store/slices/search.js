@@ -10,6 +10,7 @@ const initialState = {
   flaeche: {},
   seepage: {},
   previousSearches: [],
+  isLoading: false,
 };
 
 const slice = createSlice({
@@ -56,6 +57,10 @@ const slice = createSlice({
       state.seepage = {};
       state.seepageId = null;
     },
+    setIsLoading(state, action) {
+      state.isLoading = action.payload;
+      return state;
+    },
     addSearch(state, action) {
       if (state.previousSearches.length >= 8) {
         const updatedSearches = state.previousSearches.slice(
@@ -87,6 +92,7 @@ export const {
   storeFlaeche,
   storeSeepage,
   resetStates,
+  setIsLoading,
   addSearch,
 } = slice.actions;
 
@@ -124,4 +130,8 @@ export const getSeepage = (state) => {
 
 export const getPreviousSearches = (state) => {
   return state.search.previousSearches;
+};
+
+export const getIsLoading = (state) => {
+  return state.search.isLoading;
 };
