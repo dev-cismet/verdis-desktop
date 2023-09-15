@@ -76,13 +76,19 @@ const searchConfig = {
   whitelist: ["previousSearches"],
 };
 
+const uiConfig = {
+  key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.config",
+  storage: localForage,
+  whitelist: ["overviewFeatureTypes"],
+};
+
 export default configureStore({
   reducer: {
     auth: persistReducer(authConfig, authSlice.reducer),
     search: persistReducer(searchConfig, searchSlice.reducer),
     settings: settingsSlice.reducer,
     mapping: mappingSlice.reducer,
-    ui: uiSlice.reducer,
+    ui: persistReducer(uiConfig, uiSlice.reducer),
   },
   devTools: devToolsEnabled === true && inProduction === false,
   middleware,
