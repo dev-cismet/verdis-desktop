@@ -1,4 +1,12 @@
-import { AutoComplete, Avatar, Button, Drawer, Input, Tooltip } from "antd";
+import {
+  AutoComplete,
+  Avatar,
+  Button,
+  Drawer,
+  Input,
+  Switch,
+  Tooltip,
+} from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -37,7 +45,9 @@ import {
   getShowFrontDetails,
   getShowSeepageDetails,
   getShowSurfaceDetails,
+  getSyncKassenzeichen,
   setShowChat,
+  setSyncKassenzeichen,
 } from "../../store/slices/settings";
 import { ENDPOINT, query } from "../../constants/verdis";
 import { useQuery } from "@tanstack/react-query";
@@ -99,6 +109,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const showChat = useSelector(getShowChat);
   const jwt = useSelector(getJWT);
   const prevSearches = useSelector(getPreviousSearches);
+  const syncKassenzeichen = useSelector(getSyncKassenzeichen);
   const [inputValue, setInpuValue] = useState("");
   const [urlParams, setUrlParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
@@ -155,6 +166,15 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
       }
       dispatch(addSearch(trimmedQuery));
       dispatch(resetStates());
+
+      if (syncKassenzeichen) {
+        fetch(
+          "http://localhost:18000/gotoKassenzeichen?kassenzeichen=" +
+            trimmedQuery
+        ).catch((error) => {
+          //  i expect an error here
+        });
+      }
 
       //create the featureCollections
 
@@ -289,7 +309,24 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
           placement="right"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
-        ></Drawer>
+          size="large"
+        >
+          <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-2">
+              <h3>Allgemein</h3>
+              <div
+                className="flex items-center justify-between hover:bg-zinc-100 p-1 cursor-pointer"
+                onClick={() =>
+                  dispatch(setSyncKassenzeichen(!syncKassenzeichen))
+                }
+              >
+                <span>Kassenzeichen mit Java Anwendung synchronisieren</span>
+                <Switch className="w-fit" checked={syncKassenzeichen} />
+              </div>
+            </div>
+            <h3>Karte</h3>
+          </div>
+        </Drawer>
       </div>
     </header>
   );

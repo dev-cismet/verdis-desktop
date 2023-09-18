@@ -6,6 +6,7 @@ const initialState = {
   showSurfaceDetails: false,
   showFrontDetails: false,
   showSeepageDetails: false,
+  syncKassenzeichen: false,
 };
 
 const slice = createSlice({
@@ -32,6 +33,10 @@ const slice = createSlice({
       state.showSeepageDetails = action.payload;
       return state;
     },
+    setSyncKassenzeichen(state, action) {
+      state.syncKassenzeichen = action.payload;
+      return state;
+    },
   },
 });
 
@@ -43,6 +48,7 @@ export const {
   setShowSurfaceDetails,
   setShowFrontDetails,
   setShowSeepageDetails,
+  setSyncKassenzeichen,
 } = slice.actions;
 
 export const getReadOnly = (state) => {
@@ -63,4 +69,8 @@ export const getShowFrontDetails = (state) => {
 
 export const getShowSeepageDetails = (state) => {
   return state.settings.showSeepageDetails;
+};
+
+export const getSyncKassenzeichen = (state) => {
+  return state.settings.syncKassenzeichen;
 };
