@@ -320,6 +320,7 @@ export const mappingExtractor = ({
   generalGeomArray,
   befreiungErlaubnisseArray,
   shownFeatureTypes,
+  ondblclick,
 }) => {
   if (kassenzeichen !== undefined && JSON.stringify(kassenzeichen) !== "{}") {
     const featureArray = [];
@@ -355,12 +356,14 @@ export const mappingExtractor = ({
       styler: createStyler(false, featureArray),
       markerStyle: getMarkerStyleFromFeatureConsideringSelection,
       showMarkerCollection: false,
+      ondblclick,
     };
   }
 
   return {
     homeCenter: [51.272570027476256, 7.19963690266013],
     homeZoom: 16,
+    ondblclick,
     featureCollection: undefined,
   };
 };

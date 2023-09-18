@@ -27,13 +27,11 @@ const TableCard = ({
   const [urlParams, setUrlParams] = useSearchParams();
 
   useEffect(() => {
-    setTimeout(() => {
-      if (data && urlParams.get("bez") && !isLoading) {
-        onRowClick(data.find((value) => value.name === urlParams.get("bez")));
-        urlParams.delete("bez");
-        setUrlParams(urlParams);
-      }
-    }, 100);
+    if (data && urlParams.get("bez") && !isLoading) {
+      onRowClick(data.find((value) => value.name === urlParams.get("bez")));
+      urlParams.delete("bez");
+      setUrlParams(urlParams);
+    }
   }, [data, isLoading]);
 
   return (

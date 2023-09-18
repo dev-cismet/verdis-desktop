@@ -9,3 +9,6 @@ export const STORAGE_PREFIX = "1";
 export const query = gql`
   ${queries.kassenzeichenD}
 `;
+export const pointquery = gql`
+  ${queries.kassenzeichenForPoint}
+`;

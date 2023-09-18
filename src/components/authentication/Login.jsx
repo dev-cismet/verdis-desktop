@@ -79,12 +79,9 @@ const Login = ({
   }, [password, user]);
 
   return (
-    <div
-      className="flex flex-col gap-8 items-center w-full bg-white/5 p-10 rounded-3xl"
-      style={{ width, height }}
-    >
+    <div className="flex flex-col gap-8 items-center bg-white/30 z-20 p-10 h-fit lg:w-1/3 w-2/3 rounded-3xl">
       {contextHolder}
-      <h1 className="text-zinc-100 font-semibold text-6xl">VerDIS</h1>
+      <h1 className="text-white/80 font-semibold text-6xl">VerDIS Desktop</h1>
 
       <Form className="w-full" form={form} onFinish={login}>
         <div className="flex flex-col gap-6 w-full">

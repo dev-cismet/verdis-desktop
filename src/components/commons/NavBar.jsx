@@ -1,4 +1,12 @@
-import { AutoComplete, Avatar, Button, Drawer, Input, Tooltip } from "antd";
+import {
+  AutoComplete,
+  Avatar,
+  Button,
+  Drawer,
+  Input,
+  Switch,
+  Tooltip,
+} from "antd";
 import Logo from "/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -25,36 +33,20 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
 import {
-  addSearch,
   getPreviousSearches,
   resetStates,
   setIsLoading,
-  storeAenderungsAnfrage,
-  storeKassenzeichen,
 } from "../../store/slices/search";
 import {
   getShowChat,
   getShowFrontDetails,
   getShowSeepageDetails,
   getShowSurfaceDetails,
+  getSyncKassenzeichen,
   setShowChat,
+  setSyncKassenzeichen,
 } from "../../store/slices/settings";
-import { ENDPOINT, query } from "../../constants/verdis";
-import { useQuery } from "@tanstack/react-query";
-import request from "graphql-request";
-import {
-  setBefreiungErlaubnisCollection,
-  setFlaechenCollection,
-  setFrontenCollection,
-  setGeneralGeometryCollection,
-} from "../../store/slices/mapping";
-
-import {
-  getFlaechenFeatureCollection,
-  getFrontenFeatureCollection,
-  getGeneralGeomfeatureCollection,
-  getVersickerungsGenFeatureCollection,
-} from "../../tools/featureFactories";
+import { useKassenzeichenSearch } from "../../hooks/useKassenzeichenSearch";
 
 const navLinks = () => {
   const showSurfaceDetails = useSelector(getShowSurfaceDetails);
@@ -99,10 +91,12 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const showChat = useSelector(getShowChat);
   const jwt = useSelector(getJWT);
   const prevSearches = useSelector(getPreviousSearches);
+  const syncKassenzeichen = useSelector(getSyncKassenzeichen);
   const [inputValue, setInpuValue] = useState("");
   const [urlParams, setUrlParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { data, isFetching, error } = useKassenzeichenSearch(searchQuery);
 
   let storyStyle = {};
   if (inStory) {
@@ -112,22 +106,6 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
       padding: "10px",
     };
   }
-
-  const { data, isFetching, error } = useQuery({
-    queryKey: ["kassenzeichen", searchQuery],
-    queryFn: async () =>
-      request(
-        ENDPOINT,
-        query,
-        { kassenzeichen: searchQuery },
-        {
-          Authorization: `Bearer ${jwt}`,
-        }
-      ),
-    enabled: !!searchQuery && !isNaN(+searchQuery),
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
 
   const logout = () => {
     dispatch(storeJWT(undefined));
@@ -144,42 +122,6 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
       }, 10);
     }
   }, [error]);
-
-  useEffect(() => {
-    if (data?.kassenzeichen?.length > 0) {
-      const trimmedQuery = searchQuery.trim();
-      dispatch(storeKassenzeichen(data.kassenzeichen[0]));
-      dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
-      if (urlParams.get("kassenzeichen") !== trimmedQuery) {
-        setUrlParams({ kassenzeichen: trimmedQuery });
-      }
-      dispatch(addSearch(trimmedQuery));
-      dispatch(resetStates());
-
-      //create the featureCollections
-
-      dispatch(
-        setFlaechenCollection(
-          getFlaechenFeatureCollection(data.kassenzeichen[0])
-        )
-      );
-      dispatch(
-        setFrontenCollection(getFrontenFeatureCollection(data.kassenzeichen[0]))
-      );
-
-      dispatch(
-        setGeneralGeometryCollection(
-          getGeneralGeomfeatureCollection(data.kassenzeichen[0])
-        )
-      );
-
-      dispatch(
-        setBefreiungErlaubnisCollection(
-          getVersickerungsGenFeatureCollection(data.kassenzeichen[0])
-        )
-      );
-    }
-  }, [data]);
 
   useEffect(() => {
     if (urlParams.get("kassenzeichen")) {
@@ -289,7 +231,24 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
           placement="right"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
-        ></Drawer>
+          size="large"
+        >
+          <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-2">
+              <h3>Allgemein</h3>
+              <div
+                className="flex items-center justify-between hover:bg-zinc-100 p-1 cursor-pointer"
+                onClick={() =>
+                  dispatch(setSyncKassenzeichen(!syncKassenzeichen))
+                }
+              >
+                <span>Kassenzeichen mit Java Anwendung synchronisieren</span>
+                <Switch className="w-fit" checked={syncKassenzeichen} />
+              </div>
+            </div>
+            <h3>Karte</h3>
+          </div>
+        </Drawer>
       </div>
     </header>
   );

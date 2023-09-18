@@ -29,6 +29,11 @@ export const getBoundsForFeatureArray = (featureArray) => {
   return getBoundsForFeatureCollection(featureCollection);
 };
 
+export const convertLatLngToXY = (latlng) => {
+  const xy = proj4("EPSG:4326", "EPSG:25832", [latlng.lng, latlng.lat]);
+  return xy;
+};
+
 export const getBoundsForFeatureCollection = (featureCollection) => {
   // Get bbox in EPSG:3857 from Turf.js
   const boundingBox3857 = bbox(featureCollection);
