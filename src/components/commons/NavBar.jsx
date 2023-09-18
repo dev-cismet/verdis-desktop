@@ -33,12 +33,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
 import {
-  addSearch,
   getPreviousSearches,
   resetStates,
   setIsLoading,
-  storeAenderungsAnfrage,
-  storeKassenzeichen,
 } from "../../store/slices/search";
 import {
   getShowChat,
@@ -49,22 +46,7 @@ import {
   setShowChat,
   setSyncKassenzeichen,
 } from "../../store/slices/settings";
-import { ENDPOINT, query } from "../../constants/verdis";
-import { useQuery } from "@tanstack/react-query";
-import request from "graphql-request";
-import {
-  setBefreiungErlaubnisCollection,
-  setFlaechenCollection,
-  setFrontenCollection,
-  setGeneralGeometryCollection,
-} from "../../store/slices/mapping";
-
-import {
-  getFlaechenFeatureCollection,
-  getFrontenFeatureCollection,
-  getGeneralGeomfeatureCollection,
-  getVersickerungsGenFeatureCollection,
-} from "../../tools/featureFactories";
+import { useKassenzeichenSearch } from "../../hooks/useKassenzeichenSearch";
 
 const navLinks = () => {
   const showSurfaceDetails = useSelector(getShowSurfaceDetails);
@@ -114,6 +96,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const [urlParams, setUrlParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { data, isFetching, error } = useKassenzeichenSearch(searchQuery);
 
   let storyStyle = {};
   if (inStory) {
@@ -123,22 +106,6 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
       padding: "10px",
     };
   }
-
-  const { data, isFetching, error } = useQuery({
-    queryKey: ["kassenzeichen", searchQuery],
-    queryFn: async () =>
-      request(
-        ENDPOINT,
-        query,
-        { kassenzeichen: searchQuery },
-        {
-          Authorization: `Bearer ${jwt}`,
-        }
-      ),
-    enabled: !!searchQuery && !isNaN(+searchQuery),
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
 
   const logout = () => {
     dispatch(storeJWT(undefined));
@@ -155,51 +122,6 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
       }, 10);
     }
   }, [error]);
-
-  useEffect(() => {
-    if (data?.kassenzeichen?.length > 0) {
-      const trimmedQuery = searchQuery.trim();
-      dispatch(storeKassenzeichen(data.kassenzeichen[0]));
-      dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
-      if (urlParams.get("kassenzeichen") !== trimmedQuery) {
-        setUrlParams({ kassenzeichen: trimmedQuery });
-      }
-      dispatch(addSearch(trimmedQuery));
-      dispatch(resetStates());
-
-      if (syncKassenzeichen) {
-        fetch(
-          "http://localhost:18000/gotoKassenzeichen?kassenzeichen=" +
-            trimmedQuery
-        ).catch((error) => {
-          //  i expect an error here
-        });
-      }
-
-      //create the featureCollections
-
-      dispatch(
-        setFlaechenCollection(
-          getFlaechenFeatureCollection(data.kassenzeichen[0])
-        )
-      );
-      dispatch(
-        setFrontenCollection(getFrontenFeatureCollection(data.kassenzeichen[0]))
-      );
-
-      dispatch(
-        setGeneralGeometryCollection(
-          getGeneralGeomfeatureCollection(data.kassenzeichen[0])
-        )
-      );
-
-      dispatch(
-        setBefreiungErlaubnisCollection(
-          getVersickerungsGenFeatureCollection(data.kassenzeichen[0])
-        )
-      );
-    }
-  }, [data]);
 
   useEffect(() => {
     if (urlParams.get("kassenzeichen")) {
