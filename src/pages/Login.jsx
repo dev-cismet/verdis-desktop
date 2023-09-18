@@ -1,5 +1,6 @@
 import Login from "../components/authentication/Login";
 import packageJson from "../../package.json";
+import wupperwurm from "../assets/wupperwurm.svg";
 
 const Page = () => {
   return (
@@ -8,7 +9,7 @@ const Page = () => {
         <div className="h-screen absolute w-full backdrop-blur" />
         <Login />
         <img
-          src="/images/wuppertal-white.svg"
+          src={wupperwurm}
           alt="Wupperwurm"
           className="absolute top-6 left-6 w-40"
         />
