@@ -5,6 +5,7 @@ const Page = () => {
   return (
     <div className="h-screen">
       <div className="w-full flex h-full items-center justify-center bg-rain relative bg-cover">
+        <div className="h-screen absolute w-full backdrop-blur" />
         <Login />
         <img
           src="/images/wuppertal-white.svg"
