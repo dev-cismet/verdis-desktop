@@ -5,13 +5,13 @@ const Page = () => {
   return (
     <div className="h-screen">
       <div className="w-full flex h-full items-center justify-center bg-rain relative bg-cover">
-        <Login width="40%" height="50%" />
+        <Login />
         <img
           src="/images/wuppertal-white.svg"
           alt="Wupperwurm"
           className="absolute top-6 left-6 w-40"
         />
-        <div className="absolute top-6 right-6 text-white/80 font-semibold flex flex-col gap-2 items-end">
+        <div className="absolute top-6 right-6 text-white/80 font-semibold flex flex-col gap-2 items-end text-right sm:max-w-none max-w-[200px]">
           <span>Stadt Wuppertal</span>
           <span>Vermessung, Katasteramt und Geodaten</span>
           <span>102.23 Kommunalservice Liegenschaftskataster</span>

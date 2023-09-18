@@ -79,10 +79,7 @@ const Login = ({
   }, [password, user]);
 
   return (
-    <div
-      className="flex flex-col gap-8 items-center w-full bg-white/5 p-10 rounded-3xl"
-      style={{ width, height }}
-    >
+    <div className="flex flex-col gap-8 items-center bg-white/5 p-10 h-fit lg:w-1/3 w-2/3 rounded-3xl">
       {contextHolder}
       <h1 className="text-zinc-100 font-semibold text-6xl">VerDIS</h1>
 
