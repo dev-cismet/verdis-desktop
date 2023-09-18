@@ -1,4 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ENDPOINT, pointquery, query } from "../../constants/verdis";
+import {
+  setBefreiungErlaubnisCollection,
+  setFlaechenCollection,
+  setFrontenCollection,
+  setGeneralGeometryCollection,
+} from "./mapping";
+import {
+  getFlaechenFeatureCollection,
+  getFrontenFeatureCollection,
+  getGeneralGeomfeatureCollection,
+  getVersickerungsGenFeatureCollection,
+} from "../../tools/featureFactories";
 
 const initialState = {
   kassenzeichen: {},
@@ -82,6 +95,156 @@ const slice = createSlice({
 
 export default slice;
 
+export const searchForKassenzeichenWithPoint = (
+  x,
+  y,
+  urlParams,
+  setUrlParams
+) => {
+  return async (dispatch, getState) => {
+    const jwt = getState().auth.jwt;
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        query: pointquery,
+        variables: { x, y },
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        dispatch(
+          searchForKassenzeichen(
+            result.data.kassenzeichen[0].kassenzeichennummer8 + "",
+            urlParams,
+            setUrlParams
+          )
+        );
+        console.log("result", result);
+      })
+      .catch((error) => {
+        console.error(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
+      });
+  };
+};
+
+export const searchForKassenzeichen = (
+  kassenzeichen,
+  urlParams,
+  setUrlParams
+) => {
+  return async (dispatch, getState) => {
+    const jwt = getState().auth.jwt;
+    const syncKassenzeichen = getState().settings.syncKassenzeichen;
+    // useQuery({
+    //   queryFn: async () =>
+    //     request(
+    //       ENDPOINT,
+    //       query,
+    //       { kassenzeichen: kassenzeichen },
+    //       {
+    //         Authorization: `Bearer ${jwt}`,
+    //       }
+    //     ),
+    //   queryKey: ["kassenzeichen", kassenzeichen],
+    //   enabled: !!kassenzeichen && !isNaN(+kassenzeichen),
+    //   refetchOnWindowFocus: false,
+    //   retry: false,
+    //   onSuccess: (data) => {
+    //     console.log("data", data);
+    //   },
+    // });
+    if (!kassenzeichen || isNaN(+kassenzeichen)) {
+      console.error("Invalid kassenzeichen");
+      return;
+    }
+
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        query: query,
+        variables: { kassenzeichen: kassenzeichen },
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        const data = result?.data;
+        console.log("xxx data", data);
+        if (data?.kassenzeichen?.length > 0) {
+          console.log(kassenzeichen);
+          const trimmedQuery = kassenzeichen.trim();
+          dispatch(storeKassenzeichen(data.kassenzeichen[0]));
+          dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
+          if (urlParams.get("kassenzeichen") !== trimmedQuery) {
+            setUrlParams({ kassenzeichen: trimmedQuery });
+          }
+          dispatch(addSearch(trimmedQuery));
+          dispatch(resetStates());
+
+          if (syncKassenzeichen) {
+            fetch(
+              "http://localhost:18000/gotoKassenzeichen?kassenzeichen=" +
+                trimmedQuery
+            ).catch((error) => {
+              //  i expect an error here
+            });
+          }
+
+          //create the featureCollections
+
+          dispatch(
+            setFlaechenCollection(
+              getFlaechenFeatureCollection(data.kassenzeichen[0])
+            )
+          );
+          dispatch(
+            setFrontenCollection(
+              getFrontenFeatureCollection(data.kassenzeichen[0])
+            )
+          );
+
+          dispatch(
+            setGeneralGeometryCollection(
+              getGeneralGeomfeatureCollection(data.kassenzeichen[0])
+            )
+          );
+
+          dispatch(
+            setBefreiungErlaubnisCollection(
+              getVersickerungsGenFeatureCollection(data.kassenzeichen[0])
+            )
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
+      });
+  };
+};
+
 export const {
   storeKassenzeichen,
   storeAenderungsAnfrage,
@@ -95,6 +258,8 @@ export const {
   setIsLoading,
   addSearch,
 } = slice.actions;
+
+slice.actions.searchForKassenzeichen = searchForKassenzeichen;
 
 export const getKassenzeichen = (state) => {
   return state.search.kassenzeichen;

@@ -2,6 +2,35 @@ const queries = {};
 export const geomFactories = {};
 export default queries;
 
+queries.kassenzeichenForPoint = `
+query kassenzeichenForPoint($x: Float!, $y: Float!) {
+  kassenzeichen(
+    where: {
+      flaechenArray: {
+        flaecheObject: {
+          flaecheninfoObject: {
+            geom: {
+              geo_field: {
+                _st_intersects: {
+                  type: "Point"
+                  crs: {
+                    type: "name"
+                    properties: { name: "urn:ogc:def:crs:EPSG::25832" }
+                  }
+                  coordinates: [$x, $y]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ) {
+    id
+    kassenzeichennummer8
+  }
+}`;
+
 queries.kassenzeichenD = `
 query Kassenzeichen($kassenzeichen: Int) {
   kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {

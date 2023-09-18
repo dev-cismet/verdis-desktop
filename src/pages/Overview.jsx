@@ -13,8 +13,12 @@ import {
   summaryExtractor,
   sumsExtractor,
 } from "../tools/extractors";
-import { getKassenzeichen } from "../store/slices/search";
-import { useSelector } from "react-redux";
+import {
+  getKassenzeichen,
+  searchForKassenzeichen,
+  searchForKassenzeichenWithPoint,
+} from "../store/slices/search";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   getBefreiungErlaubnisCollection,
@@ -23,6 +27,8 @@ import {
   getGeneralGeometryCollection,
 } from "../store/slices/mapping";
 import { getOverviewFeatureTypes } from "../store/slices/ui";
+import { convertLatLngToXY } from "../tools/mappingTools";
+import { useSearchParams } from "react-router-dom";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -46,6 +52,9 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   const befreiungErlaubnisseArray = useSelector(
     getBefreiungErlaubnisCollection
   );
+  const dispatch = useDispatch();
+  const [urlParams, setUrlParams] = useSearchParams();
+
   return (
     <div
       style={{ ...storyStyle, width, height }}
@@ -90,6 +99,21 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
                 generalGeomArray,
                 befreiungErlaubnisseArray,
                 shownFeatureTypes: overviewFeatureTypes,
+                ondblclick: (event) => {
+                  console.log(
+                    "xxx event.öatlng",
+                    convertLatLngToXY(event.latlng)
+                  );
+                  const xy = convertLatLngToXY(event.latlng);
+                  dispatch(
+                    searchForKassenzeichenWithPoint(
+                      xy[0],
+                      xy[1],
+                      urlParams,
+                      setUrlParams
+                    )
+                  );
+                },
               }}
               extractor={mappingExtractor}
             />
