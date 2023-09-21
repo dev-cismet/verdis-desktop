@@ -6,7 +6,7 @@ import { useState } from "react";
 const ModalRow = ({ title, children }) => {
   return (
     <div className="flex w-full">
-      <span className="w-1/3">{title}:</span>
+      <span className="w-1/3">{title}</span>
       {children}
     </div>
   );
@@ -71,22 +71,24 @@ const PdfCreator = () => {
             />
           </ModalRow>
           <ModalRow title="Format">
-            <Radio.Group>
+            <Radio.Group className="w-full">
               <Radio value={"optimal"}>optimal</Radio>
               <Radio value={"a4"}>A4</Radio>
               <Radio value={"a3"}>A3</Radio>
             </Radio.Group>
           </ModalRow>
           <ModalRow title="Orientierung">
-            <Radio.Group>
+            <Radio.Group className="w-full">
               <Radio value={"optimal"}>optimal</Radio>
               <Radio value={"hochformat"}>Hochformat</Radio>
               <Radio value={"querformat"}>Querformat</Radio>
             </Radio.Group>
           </ModalRow>
-          <Checkbox className="mx-auto">
-            Abflusswirksamkeiten ausfüllen
-          </Checkbox>
+          <ModalRow>
+            <Checkbox className="w-full">
+              Abflusswirksamkeiten ausfüllen
+            </Checkbox>
+          </ModalRow>
         </div>
       </Modal>
     </>
