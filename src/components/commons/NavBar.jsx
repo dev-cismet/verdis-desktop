@@ -47,6 +47,7 @@ import {
   setSyncKassenzeichen,
 } from "../../store/slices/settings";
 import { useKassenzeichenSearch } from "../../hooks/useKassenzeichenSearch";
+import PdfCreator from "../ui/PdfCreator";
 
 const navLinks = () => {
   const showSurfaceDetails = useSelector(getShowSurfaceDetails);
@@ -212,6 +213,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
         </AutoComplete>
       </div>
       <div className="flex items-center gap-3">
+        <PdfCreator />
         <CommentOutlined
           className="text-2xl cursor-pointer"
           onClick={() => dispatch(setShowChat(!showChat))}
