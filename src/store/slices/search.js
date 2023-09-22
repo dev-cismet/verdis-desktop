@@ -144,7 +144,13 @@ export const searchForKassenzeichenWithPoint = (
   };
 };
 
-export const getFEBByStac = (hints, format, scale, abschlusswirksamkeit) => {
+export const getFEBByStac = (
+  hints,
+  format,
+  scale,
+  orientation,
+  drainEffectiveness
+) => {
   return async (dispatch, getState) => {
     const jwt = getState().auth.jwt;
     const kassenzeichen = getState().search.kassenzeichen.kassenzeichennummer8;
@@ -154,10 +160,15 @@ export const getFEBByStac = (hints, format, scale, abschlusswirksamkeit) => {
       parameters: {
         BODY: "STRING_AS_BYTE_ARRAY",
         TYPE: "FLAECHEN",
-        MAP_FORMAT: "A4",
-        HINTS: "Test",
-        MAP_SCALE: "1000",
-        ABLUSSWIRKSAMKEIT: "TRUE",
+        MAP_FORMAT:
+          format === "optimal"
+            ? "A4"
+            : format + orientation === "optimal"
+            ? ""
+            : orientation,
+        HINTS: hints || "",
+        MAP_SCALE: scale === "optimal" ? "1000" : scale || "1000",
+        ABLUSSWIRKSAMKEIT: drainEffectiveness ? "TRUE" : "FALSE",
       },
     };
     form.append(
