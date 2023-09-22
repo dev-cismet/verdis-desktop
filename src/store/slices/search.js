@@ -177,6 +177,8 @@ export const getFEBByStac = (
     );
     form.append("file", `${kassenzeichen}`);
 
+    dispatch(setIsLoading(true));
+
     fetch(
       "https://verdis-cloud.cismet.de/verdis/api/actions/VERDIS_GRUNDIS.EBReport/tasks?resultingInstanceType=result",
       {
@@ -191,12 +193,14 @@ export const getFEBByStac = (
         if (response.status >= 200 && response.status < 300) {
           return response.json();
         } else {
+          dispatch(setIsLoading(false));
           console.log(
             "Error:" + response.status + " -> " + response.statusText
           );
         }
       })
       .catch((e) => {
+        dispatch(setIsLoading(false));
         console.log(e);
       })
       .then((result) => {
@@ -211,8 +215,10 @@ export const getFEBByStac = (
 
           var blob = new Blob([byteArray], { type: "application/pdf" });
           dispatch(storeFebBlob(blob));
+          dispatch(setIsLoading(false));
         } else {
           console.log(result);
+          dispatch(setIsLoading(false));
         }
       });
   };

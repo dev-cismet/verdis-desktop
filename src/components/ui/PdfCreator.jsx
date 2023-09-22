@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import {
   getFEBByStac,
   getFebBlob,
+  getIsLoading,
   storeFebBlob,
 } from "../../store/slices/search";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +28,7 @@ const PdfCreator = () => {
   const [drainEffectiveness, setDrainEffectiveness] = useState(false);
   const dispatch = useDispatch();
   const febBlob = useSelector(getFebBlob);
+  const isLoading = useSelector(getIsLoading);
 
   useEffect(() => {
     if (febBlob) {
@@ -66,6 +68,7 @@ const PdfCreator = () => {
               )
             }
             type="primary"
+            loading={isLoading}
           >
             Erstelle Report
           </Button>,
