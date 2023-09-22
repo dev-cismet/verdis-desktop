@@ -144,9 +144,10 @@ export const searchForKassenzeichenWithPoint = (
   };
 };
 
-export const getFEBByStac = () => {
+export const getFEBByStac = (hints, format, scale, abschlusswirksamkeit) => {
   return async (dispatch, getState) => {
     const jwt = getState().auth.jwt;
+    const kassenzeichen = getState().search.kassenzeichen.kassenzeichennummer8;
 
     const form = new FormData();
     let taskParameters = {
@@ -163,15 +164,14 @@ export const getFEBByStac = () => {
       "taskparams",
       new Blob([JSON.stringify(taskParameters)], { type: "application/json" })
     );
-    form.append("file", "86039286");
+    form.append("file", `${kassenzeichen}`);
 
     fetch(
       "https://verdis-cloud.cismet.de/verdis/api/actions/VERDIS_GRUNDIS.EBReport/tasks?resultingInstanceType=result",
       {
         method: "POST",
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIyIiwic3ViIjoiYWRtaW4iLCJkb21haW4iOiJWRVJESVNfR1JVTkRJUyIsImh0dHBzOi8vaGFzdXJhLmlvL2p3dC9jbGFpbXMiOnsieC1oYXN1cmEtZGVmYXVsdC1yb2xlIjoidXNlciIsIngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsiZWRpdG9yIiwidXNlciIsIm1vZCJdfX0.W5U1fwYD7ow8_y99avRbPePNoe8_Yb7kuYBjYyqhLovbOLl69PlITS9j10tLk_j11SRX8SgGScMIG5HzUd0t6ll7BYh2KkbXoT338_6DqxJ6iNtHQbISKUm4k7EjjI_PeY9ZZinS7uCU34bKKy3_tKh-iVvAGC9YKrzI2oElz_lDoCgP639k5CNX0BDelHlYXSJujUYmkMTQo6oeqvfIET5tMm689tnXS17gDIC-lKEMUnEwMsZPGhFGVZDR02p58cMLOb5G439p85K1c_3AMQdnLAJMvNYaXg2PCiOpHrF8kvpIvGjaFwvfLCGUG3iTFvoMdX5fpuPA8EUHrelaVQ",
+          Authorization: `Bearer ${jwt}`,
         },
         body: form,
       }
