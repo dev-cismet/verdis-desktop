@@ -1,7 +1,13 @@
 import { FilePdfOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Modal, Radio, Select } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  getFEBByStac,
+  getFebBlob,
+  storeFebBlob,
+} from "../../store/slices/search";
+import { useDispatch, useSelector } from "react-redux";
 
 const ModalRow = ({ title, children }) => {
   return (
@@ -14,6 +20,20 @@ const ModalRow = ({ title, children }) => {
 
 const PdfCreator = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const febBlob = useSelector(getFebBlob);
+
+  useEffect(() => {
+    if (febBlob) {
+      let link = document.createElement("a");
+      link.href = window.URL.createObjectURL(febBlob);
+      link.download = "FEB." + ".STAC." + ".pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      dispatch(storeFebBlob(null));
+    }
+  }, [febBlob]);
 
   return (
     <>
@@ -27,7 +47,9 @@ const PdfCreator = () => {
         onCancel={() => setIsOpen(false)}
         footer={[
           <Button onClick={() => setIsOpen(false)}>Abbrechen</Button>,
-          <Button type="primary">Erstelle Report</Button>,
+          <Button onClick={() => dispatch(getFEBByStac())} type="primary">
+            Erstelle Report
+          </Button>,
         ]}
       >
         <div className="flex flex-col w-full gap-4 py-2">
