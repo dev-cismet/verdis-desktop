@@ -82,11 +82,17 @@ const uiConfig = {
   whitelist: ["overviewFeatureTypes"],
 };
 
+const settingsConfig = {
+  key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.settings",
+  storage: localForage,
+  whitelist: ["syncKassenzeichen"],
+};
+
 export default configureStore({
   reducer: {
     auth: persistReducer(authConfig, authSlice.reducer),
     search: persistReducer(searchConfig, searchSlice.reducer),
-    settings: settingsSlice.reducer,
+    settings: persistReducer(settingsConfig, settingsSlice.reducer),
     mapping: mappingSlice.reducer,
     ui: persistReducer(uiConfig, uiSlice.reducer),
   },

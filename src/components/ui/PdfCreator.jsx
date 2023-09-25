@@ -1,5 +1,5 @@
 import { FilePdfOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Modal, Radio, Select } from "antd";
+import { Button, Checkbox, Input, Modal, Radio, Select } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
 import {
@@ -26,6 +26,7 @@ const PdfCreator = () => {
   const [scale, setScale] = useState("optimal");
   const [orientation, setOrientation] = useState("optimal");
   const [drainEffectiveness, setDrainEffectiveness] = useState(false);
+  const [fileName, setFileName] = useState("feb");
   const dispatch = useDispatch();
   const febBlob = useSelector(getFebBlob);
   const isLoading = useSelector(getIsLoading);
@@ -34,7 +35,7 @@ const PdfCreator = () => {
     if (febBlob) {
       let link = document.createElement("a");
       link.href = window.URL.createObjectURL(febBlob);
-      link.download = "feb.pdf";
+      link.download = `${fileName}.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -75,6 +76,13 @@ const PdfCreator = () => {
         ]}
       >
         <div className="flex flex-col w-full gap-4 py-2">
+          <ModalRow title="Auftragsname">
+            <Input
+              className="w-full"
+              value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+            />
+          </ModalRow>
           <ModalRow title="Hinweise">
             <TextArea
               className="w-full"
