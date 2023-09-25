@@ -31,6 +31,23 @@ query kassenzeichenForPoint($x: Float!, $y: Float!) {
   }
 }`;
 
+queries.alkisLandparcel = `
+query MyQuery($alkisId: String) {
+  alkis_landparcel(where: {alkis_id: {_eq: $alkisId}}) {
+    id
+    flur
+    bezeichnung
+    adressen
+    buchungsblaetter
+    fstck_nenner
+    fstck_zaehler
+    gebaeude
+    gemarkung
+    geometrie
+    groesse
+  }
+}`;
+
 queries.kassenzeichenD = `
 query Kassenzeichen($kassenzeichen: Int) {
   kassenzeichen(where: { kassenzeichennummer8: { _eq: $kassenzeichen } }) {

@@ -24,6 +24,7 @@ const initialState = {
   seepage: {},
   previousSearches: [],
   isLoading: false,
+  febBlob: null,
 };
 
 const slice = createSlice({
@@ -60,6 +61,10 @@ const slice = createSlice({
     },
     storeSeepage(state, action) {
       state.seepage = action.payload;
+      return state;
+    },
+    storeFebBlob(state, action) {
+      state.febBlob = action.payload;
       return state;
     },
     resetStates(state) {
@@ -135,6 +140,86 @@ export const searchForKassenzeichenWithPoint = (
           "There was a problem with the fetch operation:",
           error.message
         );
+      });
+  };
+};
+
+export const getFEBByStac = (
+  hints,
+  format,
+  scale,
+  orientation,
+  drainEffectiveness
+) => {
+  return async (dispatch, getState) => {
+    const jwt = getState().auth.jwt;
+    const kassenzeichen = getState().search.kassenzeichen.kassenzeichennummer8;
+
+    const form = new FormData();
+    let taskParameters = {
+      parameters: {
+        BODY: "STRING_AS_BYTE_ARRAY",
+        TYPE: "FLAECHEN",
+        MAP_FORMAT:
+          format === "optimal"
+            ? "A4"
+            : format + orientation === "optimal"
+            ? ""
+            : orientation,
+        HINTS: hints || "",
+        MAP_SCALE: scale === "optimal" ? "1000" : scale || "1000",
+        ABLUSSWIRKSAMKEIT: drainEffectiveness ? "TRUE" : "FALSE",
+      },
+    };
+    form.append(
+      "taskparams",
+      new Blob([JSON.stringify(taskParameters)], { type: "application/json" })
+    );
+    form.append("file", `${kassenzeichen}`);
+
+    dispatch(setIsLoading(true));
+
+    fetch(
+      "https://verdis-cloud.cismet.de/verdis/api/actions/VERDIS_GRUNDIS.EBReport/tasks?resultingInstanceType=result",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+        body: form,
+      }
+    )
+      .then((response) => {
+        if (response.status >= 200 && response.status < 300) {
+          return response.json();
+        } else {
+          dispatch(setIsLoading(false));
+          console.log(
+            "Error:" + response.status + " -> " + response.statusText
+          );
+        }
+      })
+      .catch((e) => {
+        dispatch(setIsLoading(false));
+        console.log(e);
+      })
+      .then((result) => {
+        if (result && !result.error && result.res !== '{"nothing":"at all"}') {
+          let byteCharacters = atob(result.res);
+          let byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+
+          let byteArray = new Uint8Array(byteNumbers);
+
+          var blob = new Blob([byteArray], { type: "application/pdf" });
+          dispatch(storeFebBlob(blob));
+          dispatch(setIsLoading(false));
+        } else {
+          console.log(result);
+          dispatch(setIsLoading(false));
+        }
       });
   };
 };
@@ -257,6 +342,7 @@ export const {
   resetStates,
   setIsLoading,
   addSearch,
+  storeFebBlob,
 } = slice.actions;
 
 slice.actions.searchForKassenzeichen = searchForKassenzeichen;
@@ -299,4 +385,8 @@ export const getPreviousSearches = (state) => {
 
 export const getIsLoading = (state) => {
   return state.search.isLoading;
+};
+
+export const getFebBlob = (state) => {
+  return state.search.febBlob;
 };
