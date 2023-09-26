@@ -87,18 +87,6 @@ const Map = ({
     return () => window.removeEventListener("resize", setSize);
   }, []);
 
-  useEffect(() => {
-    // const params = paramsToObject(urlParams);
-    // if (params.lat && params.lng && params.zoom) {
-    //   console.log("xxx won't change map view");
-    // } else {
-    //   console.log("xxx data changed", data?.featureCollection);
-    //   if (data?.featureCollection && refRoutedMap?.current) {
-    //     fitFeatureArray(data?.featureCollection, refRoutedMap);
-    //   }
-    // }
-  }, [data?.featureCollection, urlParams]);
-
   let refRoutedMap = useRef(null);
 
   const mapStyle = {
@@ -183,25 +171,45 @@ const Map = ({
               data.featureClickHandler ||
               ((e) => {
                 const feature = e.target.feature;
-                switch (feature.featureType) {
-                  case "flaeche": {
-                    dispatch(storeFlaechenId(feature.id));
-                    dispatch(setFlaechenSelected({ id: feature.id }));
-                    break;
-                  }
-                  case "front": {
-                    dispatch(storeFrontenId(feature.properties.id));
-                    dispatch(setFrontenSelected({ id: feature.properties.id }));
-                    break;
-                  }
-                  case "general": {
-                    dispatch(
-                      setGeneralGeometrySelected({ id: feature.properties.id })
-                    );
-                    break;
-                  }
-                  default: {
-                    console.log("no featureClickHandler set", e.target.feature);
+                if (feature.selected) {
+                  const map = refRoutedMap.current.leafletMap.leafletElement;
+                  const bb = getBoundsForFeatureArray([feature]);
+                  const { center, zoom } = getCenterAndZoomForBounds(map, bb);
+                  setUrlParams((prev) => {
+                    prev.set("zoom", zoom);
+                    prev.set("lat", center.lat);
+                    prev.set("lng", center.lng);
+                    return prev;
+                  });
+                } else {
+                  switch (feature.featureType) {
+                    case "flaeche": {
+                      dispatch(storeFlaechenId(feature.id));
+                      dispatch(setFlaechenSelected({ id: feature.id }));
+
+                      break;
+                    }
+                    case "front": {
+                      dispatch(storeFrontenId(feature.properties.id));
+                      dispatch(
+                        setFrontenSelected({ id: feature.properties.id })
+                      );
+                      break;
+                    }
+                    case "general": {
+                      dispatch(
+                        setGeneralGeometrySelected({
+                          id: feature.properties.id,
+                        })
+                      );
+                      break;
+                    }
+                    default: {
+                      console.log(
+                        "no featureClickHandler set",
+                        e.target.feature
+                      );
+                    }
                   }
                 }
               })
