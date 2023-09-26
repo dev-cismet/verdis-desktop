@@ -1,5 +1,5 @@
 import { FilePdfOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Input, Modal, Radio, Select } from "antd";
+import { Button, Checkbox, Input, Modal, Radio, Select, Tooltip } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
 import {
@@ -48,10 +48,12 @@ const PdfCreator = () => {
 
   return (
     <>
-      <FilePdfOutlined
-        className="text-2xl cursor-pointer"
-        onClick={() => !isEmpty(kassenzeichen) && setIsOpen(true)}
-      />
+      <Tooltip title="Drucken" placement="bottom">
+        <FilePdfOutlined
+          className="text-2xl cursor-pointer"
+          onClick={() => !isEmpty(kassenzeichen) && setIsOpen(true)}
+        />
+      </Tooltip>
       <Modal
         title="Flächenerfassungsbogen - Report Parameter"
         open={isOpen}
