@@ -60,26 +60,42 @@ const navLinks = () => {
       href: showSurfaceDetails
         ? "/versiegelteFlaechen/details"
         : "/versiegelteFlaechen",
-      icon: <FontAwesomeIcon icon={faCloudRain} className="h-6" />,
+      icon: (
+        <Tooltip title="Versiegelte Flächen" placement="bottom">
+          <FontAwesomeIcon icon={faCloudRain} className="h-6" />
+        </Tooltip>
+      ),
     },
     {
       title: "Straßenreinigung",
       href: showFrontDetails
         ? "/strassenreinigung/details"
         : "/strassenreinigung",
-      icon: <FontAwesomeIcon icon={faBroom} className="h-6" />,
+      icon: (
+        <Tooltip title="Straßenreinigung" placement="bottom">
+          <FontAwesomeIcon icon={faBroom} className="h-6" />
+        </Tooltip>
+      ),
     },
     {
       title: "Info",
       href: "/info",
-      icon: <FontAwesomeIcon icon={faTag} className="h-6" />,
+      icon: (
+        <Tooltip title="Info" placement="bottom">
+          <FontAwesomeIcon icon={faTag} className="h-6" />
+        </Tooltip>
+      ),
     },
     {
       title: "Versickerungsgenehmigungen",
       href: showSeepageDetails
         ? "/versickerungsgenehmigungen/details"
         : "/versickerungsgenehmigungen",
-      icon: <FontAwesomeIcon icon={faEarthAmericas} className="h-6" />,
+      icon: (
+        <Tooltip title="Versickerungsgenehmigungen" placement="bottom">
+          <FontAwesomeIcon icon={faEarthAmericas} className="h-6" />
+        </Tooltip>
+      ),
     },
   ];
 };
@@ -214,20 +230,26 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
       </div>
       <div className="flex items-center gap-3">
         <PdfCreator />
-        <CommentOutlined
-          className="text-2xl cursor-pointer"
-          onClick={() => dispatch(setShowChat(!showChat))}
-        />
-        <LogoutOutlined
-          className="text-2xl cursor-pointer"
-          onClick={() => logout()}
-        />
-        <Avatar
-          size="large"
-          icon={<FontAwesomeIcon icon={faUser} />}
-          className="cursor-pointer"
-          onClick={() => setDrawerOpen(true)}
-        />
+        <Tooltip title="Änderungsanfragen" placement="bottom">
+          <CommentOutlined
+            className="text-2xl cursor-pointer"
+            onClick={() => dispatch(setShowChat(!showChat))}
+          />
+        </Tooltip>
+        <Tooltip title="Ausloggen" placement="bottom">
+          <LogoutOutlined
+            className="text-2xl cursor-pointer"
+            onClick={() => logout()}
+          />
+        </Tooltip>
+        <Tooltip title="Einstellungen" placement="bottom">
+          <Avatar
+            size="large"
+            icon={<FontAwesomeIcon icon={faUser} />}
+            className="cursor-pointer"
+            onClick={() => setDrawerOpen(true)}
+          />
+        </Tooltip>
         <Drawer
           title="Einstellungen"
           placement="right"
