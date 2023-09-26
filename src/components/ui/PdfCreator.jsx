@@ -6,9 +6,11 @@ import {
   getFEBByStac,
   getFebBlob,
   getIsLoading,
+  getKassenzeichen,
   storeFebBlob,
 } from "../../store/slices/search";
 import { useDispatch, useSelector } from "react-redux";
+import { isEmpty } from "lodash";
 
 const ModalRow = ({ title, children }) => {
   return (
@@ -30,6 +32,7 @@ const PdfCreator = () => {
   const dispatch = useDispatch();
   const febBlob = useSelector(getFebBlob);
   const isLoading = useSelector(getIsLoading);
+  const kassenzeichen = useSelector(getKassenzeichen);
 
   useEffect(() => {
     if (febBlob) {
@@ -47,7 +50,7 @@ const PdfCreator = () => {
     <>
       <FilePdfOutlined
         className="text-2xl cursor-pointer"
-        onClick={() => setIsOpen(true)}
+        onClick={() => !isEmpty(kassenzeichen) && setIsOpen(true)}
       />
       <Modal
         title="Flächenerfassungsbogen - Report Parameter"
