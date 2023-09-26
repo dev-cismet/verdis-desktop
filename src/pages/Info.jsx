@@ -34,8 +34,8 @@ const Page = ({
     >
       <div className="flex flex-col gap-2 w-full bg-zinc-100 h-full overflow-clip p-2">
         <InfoBar title="Info" className="py-1" />
-        <div className="flex flex-col gap-2 h-full max-h-[calc(100%-40px)]">
-          <div className="flex gap-2 h-[80%]">
+        <div className="flex flex-col gap-2 h-full max-h-[calc(100%-40px)] overflow-clip">
+          <div className="flex gap-2 h-[50%]">
             <InfoTable
               width={cardStyle.width}
               height={cardStyle.height}
@@ -52,7 +52,7 @@ const Page = ({
 
           <Map
             width="100%"
-            height="100%"
+            height="50%"
             dataIn={{
               kassenzeichen,
               generalGeomArray,
