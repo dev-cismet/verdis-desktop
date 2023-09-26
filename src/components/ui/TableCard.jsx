@@ -34,6 +34,14 @@ const TableCard = ({
     }
   }, [data, isLoading]);
 
+  useEffect(() => {
+    if (id) {
+      document
+        .querySelector(".selected")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [id]);
+
   return (
     <CustomCard style={{ ...style, width, height }} title={title}>
       <Table
@@ -58,7 +66,7 @@ const TableCard = ({
         }}
         rowClassName={(record) =>
           `${
-            id ? record.id === id && "bg-primary/20" : ""
+            id ? record.id === id && "bg-primary/20 selected" : ""
           } cursor-pointer column-transparent`
         }
       />
