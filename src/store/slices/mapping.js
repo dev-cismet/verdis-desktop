@@ -1,10 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  fitFeatureArray,
+  getBoundsForFeatureArray,
+  getCenterAndZoomForBounds,
+} from "../../tools/mappingTools";
 
 const initialState = {
   flaechenCollection: undefined,
   frontenCollection: undefined,
   generalGeometryCollection: undefined,
   befreiungErlaubnisCollection: undefined,
+  leafletElement: undefined,
 };
 
 const slice = createSlice({
@@ -25,48 +31,76 @@ const slice = createSlice({
     },
     setGeneralGeometrySelected(state, action) {
       const { id } = action.payload;
-      state.generalGeometryCollection.forEach((item) => {
-        item.selected = false;
-      });
-
       const selectedObject = state.generalGeometryCollection.find(
         (item) => item.properties.id === id
       );
-      if (selectedObject) {
-        selectedObject.selected = true;
+
+      if (selectedObject.selected) {
+        // clicked on an already selected feature and set map to optimally display that feature
+        const bb = getBoundsForFeatureArray([selectedObject]);
+        state.leafletElement?.fitBounds(bb);
+      } else {
+        state.generalGeometryCollection.forEach((item) => {
+          item.selected = false;
+        });
+
+        if (selectedObject) {
+          selectedObject.selected = true;
+        }
       }
+
       return state;
     },
     setFlaechenSelected(state, action) {
       const { id } = action.payload;
-      state.flaechenCollection.forEach((item) => {
-        item.selected = false;
-      });
-
       const selectedObject = state.flaechenCollection.find(
         (item) => item.properties.id === `flaeche.${id}`
       );
-      if (selectedObject) {
-        selectedObject.selected = true;
+
+      if (selectedObject.selected) {
+        // clicked on an already selected feature and set map to optimally display that feature
+        const bb = getBoundsForFeatureArray([selectedObject]);
+        state.leafletElement?.fitBounds(bb);
+      } else {
+        state.flaechenCollection.forEach((item) => {
+          item.selected = false;
+        });
+
+        if (selectedObject) {
+          selectedObject.selected = true;
+        }
       }
+
       return state;
     },
     setFrontenSelected(state, action) {
       const { id } = action.payload;
-      state.frontenCollection.forEach((item) => {
-        item.selected = false;
-      });
-
       const selectedObject = state.frontenCollection.find(
         (item) => item.properties.id === id
       );
-      if (selectedObject) {
-        selectedObject.selected = true;
+
+      if (selectedObject.selected) {
+        // clicked on an already selected feature and set map to optimally display that feature
+        const bb = getBoundsForFeatureArray([selectedObject]);
+        state.leafletElement?.fitBounds(bb);
+      } else {
+        state.frontenCollection.forEach((item) => {
+          item.selected = false;
+        });
+
+        if (selectedObject) {
+          selectedObject.selected = true;
+        }
       }
+
       return state;
     },
     setBefreiungErlaubnisCollection(state, action) {
       state.befreiungErlaubnisCollection = action.payload;
+      return state;
+    },
+    setLeafletElement(state, action) {
+      state.leafletElement = action.payload;
       return state;
     },
     clear(state) {
@@ -89,6 +123,7 @@ export const {
   setFlaechenSelected,
   setFrontenSelected,
   setBefreiungErlaubnisCollection,
+  setLeafletElement,
   clear,
 } = slice.actions;
 

@@ -20,6 +20,7 @@ import {
   setFlaechenSelected,
   setFrontenSelected,
   setGeneralGeometrySelected,
+  setLeafletElement,
 } from "../../store/slices/mapping";
 import { useDispatch } from "react-redux";
 
@@ -99,6 +100,7 @@ const Map = ({
   let fallback = {};
   if (data?.featureCollection && refRoutedMap?.current) {
     const map = refRoutedMap.current.leafletMap.leafletElement;
+    dispatch(setLeafletElement(map));
 
     const bb = getBoundsForFeatureArray(data?.featureCollection);
     const { center, zoom } = getCenterAndZoomForBounds(map, bb);
