@@ -1,12 +1,13 @@
 {
   "name": "verdis-desktop",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.3.3",
   "type": "module",
   "scripts": {
     "start": "vite --host",
     "dev": "vite",
     "build": "vite build",
+    "postversion": "echo Postversionhook && rm -f .version ; rm -f .githash ; rm -f .gitdescribe; sed '/^.*\"version\":.*$/d' package.json > .package.json.without.version && echo $npm_package_version && echo $npm_package_version > .version && git rev-parse HEAD > .githash && echo $(git describe --always --tags) | sed 's/^v//' > .gitdescribe",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
