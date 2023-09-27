@@ -59,9 +59,15 @@ const logger = createLogger({
 
 let middleware;
 if (stateLoggingEnabled === true) {
-  middleware = (getDefaultMiddleware) => getDefaultMiddleware().concat(logger);
+  middleware = (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(logger);
 } else {
-  middleware = (getDefaultMiddleware) => getDefaultMiddleware();
+  middleware = (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    });
 }
 
 const authConfig = {
