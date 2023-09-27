@@ -176,13 +176,7 @@ const Map = ({
                 if (feature.selected) {
                   const map = refRoutedMap.current.leafletMap.leafletElement;
                   const bb = getBoundsForFeatureArray([feature]);
-                  const { center, zoom } = getCenterAndZoomForBounds(map, bb);
-                  setUrlParams((prev) => {
-                    prev.set("zoom", zoom);
-                    prev.set("lat", center.lat);
-                    prev.set("lng", center.lng);
-                    return prev;
-                  });
+                  map.fitBounds(bb);
                 } else {
                   switch (feature.featureType) {
                     case "flaeche": {
