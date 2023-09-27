@@ -38,7 +38,7 @@ const TableCard = ({
     if (id) {
       document
         .querySelector(".selected")
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+        ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   }, [id]);
 
