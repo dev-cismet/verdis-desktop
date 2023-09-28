@@ -35,6 +35,17 @@ queries.geoFields = `
 query geoFields($bbPoly: geometry) {
   kassenzeichen(where: {flaechenArray: {flaecheObject: {flaecheninfoObject: {geom: {geo_field: {_st_intersects: $bbPoly}}}}}}) {
     kassenzeichennummer8
+    flaechenArray {
+      flaecheObject {
+        anteil
+        bemerkung
+        flaecheninfoObject {
+          geom {
+            geo_field
+          }
+        }
+      }
+    }
   }
 }`;
 

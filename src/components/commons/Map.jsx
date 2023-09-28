@@ -12,10 +12,15 @@ import {
 import { TopicMapStylingContext } from "react-cismap/contexts/TopicMapStylingContextProvider";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import {
+  createQueryGeomFromBB,
   getBoundsForFeatureArray,
   getCenterAndZoomForBounds,
 } from "../../tools/mappingTools";
-import { storeFlaechenId, storeFrontenId } from "../../store/slices/search";
+import {
+  searchForGeoFields,
+  storeFlaechenId,
+  storeFrontenId,
+} from "../../store/slices/search";
 import {
   setFlaechenSelected,
   setFrontenSelected,
@@ -154,7 +159,8 @@ const Map = ({
           setUrlParams(newParams);
         }}
         boundingBoxChangedHandler={(boundingBox) => {
-          // console.log("xxx boundingBox Changed", boundingBox);
+          const bbPoly = createQueryGeomFromBB(boundingBox);
+          dispatch(searchForGeoFields(bbPoly));
         }}
         ondblclick={(event) => {
           //if data contains a ondblclick handler, call it
