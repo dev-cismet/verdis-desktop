@@ -5,6 +5,7 @@ import L from "leaflet";
 import ColorHash from "color-hash";
 import { reproject } from "reproject";
 import { projectionData } from "react-cismap/constants/gis";
+import { concat, flatten } from "lodash";
 
 export const LandParcelColors = [
   "#2956B2",
@@ -13,6 +14,46 @@ export const LandParcelColors = [
   "#DCF600",
   "#FF5B00",
 ];
+
+export const createFeatureArray = (data) => {
+  const result = [];
+
+  data.kassenzeichen.forEach((item, index) => {
+    const feature = {
+      type: "Feature",
+      id: index + 1,
+      properties: {
+        kassenzeichen: item.kassenzeichennummer8,
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [],
+      },
+      crs: {
+        type: "name",
+        properties: {
+          name: "urn:ogc:def:crs:EPSG::25832",
+        },
+      },
+    };
+
+    let coordinates = [];
+
+    item.flaechenArray.forEach((flaeche) => {
+      coordinates = concat(
+        coordinates,
+        flatten(
+          flaeche.flaecheObject.flaecheninfoObject.geom.geo_field.coordinates
+        )
+      );
+    });
+
+    feature.geometry.coordinates = [coordinates];
+    result.push(feature);
+  });
+
+  return result;
+};
 
 export const createQueryGeomFromBB = (boundingBox) => {
   const geom = bboxPolygon([
@@ -44,6 +85,7 @@ export const createQueryGeomFromBB = (boundingBox) => {
     },
   };
 
+  console.log(updatedGeom);
   return updatedGeom;
 };
 

@@ -7,6 +7,7 @@ import {
 } from "../../constants/verdis";
 import {
   setBefreiungErlaubnisCollection,
+  setFeatureCollection,
   setFlaechenCollection,
   setFrontenCollection,
   setGeneralGeometryCollection,
@@ -17,6 +18,7 @@ import {
   getGeneralGeomfeatureCollection,
   getVersickerungsGenFeatureCollection,
 } from "../../tools/featureFactories";
+import { createFeatureArray } from "../../tools/mappingTools";
 
 const initialState = {
   kassenzeichen: {},
@@ -126,7 +128,7 @@ export const searchForGeoFields = (bbPoly) => {
         return response.json();
       })
       .then((result) => {
-        console.log("result", result);
+        dispatch(setFeatureCollection(createFeatureArray(result.data)));
       })
       .catch((error) => {
         console.error(
