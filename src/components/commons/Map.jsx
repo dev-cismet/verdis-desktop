@@ -22,12 +22,13 @@ import {
   storeFrontenId,
 } from "../../store/slices/search";
 import {
+  getFeatureCollection,
   setFlaechenSelected,
   setFrontenSelected,
   setGeneralGeometrySelected,
   setLeafletElement,
 } from "../../store/slices/mapping";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const mockExtractor = (input) => {
   return {
@@ -45,6 +46,8 @@ const Map = ({
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const featureCollection = useSelector(getFeatureCollection);
+  const [hoveredKassenzeichen, setHoveredKassenzeichen] = useState("");
   const [urlParams, setUrlParams] = useSearchParams();
 
   const data = extractor(dataIn);
@@ -79,6 +82,19 @@ const Map = ({
 
   const _backgroundLayers = backgroundsFromMode || "rvrGrau@40";
 
+  const myVirtHoverer = (feature) => {
+    const mouseoverHov = (feature, e) => {
+      setHoveredKassenzeichen(feature.properties.kassenzeichen);
+    };
+
+    const mouseoutHov = (feature, e) => {
+      setHoveredKassenzeichen("");
+    };
+
+    return { mouseoverHov, mouseoutHov };
+  };
+  myVirtHoverer.virtual = true;
+
   useEffect(() => {
     setMapWidth(cardRef?.current?.offsetWidth);
     setMapHeight(cardRef?.current?.offsetHeight);
@@ -100,6 +116,7 @@ const Map = ({
     height: mapHeight - 2 * padding - headHeight,
     cursor: "pointer",
     clear: "both",
+    zIndex: 1,
   };
 
   let fallback = {};
@@ -224,7 +241,24 @@ const Map = ({
             }
           />
         )}
+        {featureCollection && (
+          <FeatureCollectionDisplay
+            key={"TestKey"}
+            style={(feature) => {
+              return {
+                color: "#00000000", // stroke
+                fillColor: "#00000000", //fill
+                weight: 0.5,
+              };
+            }}
+            featureCollection={featureCollection}
+            hoverer={myVirtHoverer}
+          />
+        )}
       </RoutedMap>
+      <div className="absolute bottom-[2px] left-[5px] bg-white w-1/3 z-50">
+        Kassenzeichen: {hoveredKassenzeichen}
+      </div>
     </Card>
   );
 };
