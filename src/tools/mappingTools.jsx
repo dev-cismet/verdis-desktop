@@ -1,7 +1,10 @@
 import bbox from "@turf/bbox";
+import bboxPolygon from "@turf/bbox-polygon";
 import proj4 from "proj4";
 import L from "leaflet";
 import ColorHash from "color-hash";
+import { reproject } from "reproject";
+import { projectionData } from "react-cismap/constants/gis";
 
 export const LandParcelColors = [
   "#2956B2",
@@ -10,6 +13,39 @@ export const LandParcelColors = [
   "#DCF600",
   "#FF5B00",
 ];
+
+export const createQueryGeomFromBB = (boundingBox) => {
+  const geom = bboxPolygon([
+    boundingBox.left,
+    boundingBox.top,
+    boundingBox.right,
+    boundingBox.bottom,
+  ]).geometry;
+  geom.crs = {
+    type: "name",
+    properties: {
+      name: "urn:ogc:def:crs:EPSG::25832",
+    },
+  };
+  const reprojectedGeoJSON = reproject(
+    {
+      type: "Feature",
+      geometry: geom,
+      properties: {},
+    },
+    projectionData["3857"].def,
+    projectionData["25832"].def
+  );
+  const updatedGeom = reprojectedGeoJSON.geometry;
+  updatedGeom.crs = {
+    type: "name",
+    properties: {
+      name: "urn:ogc:def:crs:EPSG::25832",
+    },
+  };
+
+  return updatedGeom;
+};
 
 export const fitFeatureArray = (featureArray, mapRef) => {
   const bounds = getBoundsForFeatureArray(featureArray);

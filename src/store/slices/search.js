@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ENDPOINT, pointquery, query } from "../../constants/verdis";
+import {
+  ENDPOINT,
+  geoFieldsQuery,
+  pointquery,
+  query,
+} from "../../constants/verdis";
 import {
   setBefreiungErlaubnisCollection,
   setFlaechenCollection,
@@ -99,6 +104,38 @@ const slice = createSlice({
 });
 
 export default slice;
+
+export const searchForGeoFields = (bbPoly) => {
+  return async (dispatch, getState) => {
+    const jwt = getState().auth.jwt;
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        query: geoFieldsQuery,
+        variables: { bbPoly },
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        console.log("result", result);
+      })
+      .catch((error) => {
+        console.error(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
+      });
+  };
+};
 
 export const searchForKassenzeichenWithPoint = (
   x,

@@ -31,6 +31,13 @@ query kassenzeichenForPoint($x: Float!, $y: Float!) {
   }
 }`;
 
+queries.geoFields = `
+query geoFields($bbPoly: geometry) {
+  kassenzeichen(where: {flaechenArray: {flaecheObject: {flaecheninfoObject: {geom: {geo_field: {_st_intersects: $bbPoly}}}}}}) {
+    kassenzeichennummer8
+  }
+}`;
+
 queries.alkisLandparcel = `
 query MyQuery($alkisId: String) {
   alkis_landparcel(where: {alkis_id: {_eq: $alkisId}}) {

@@ -12,3 +12,7 @@ export const query = gql`
 export const pointquery = gql`
   ${queries.kassenzeichenForPoint}
 `;
+
+export const geoFieldsQuery = gql`
+  ${queries.geoFields}
+`;
