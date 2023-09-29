@@ -22,7 +22,7 @@ export const createFeatureArray = (data) => {
     item.flaechenArray.forEach((flaeche) => {
       const feature = {
         type: "Feature",
-        id: index + 1,
+        id: flaeche.flaecheObject.flaecheninfoObject.id,
         properties: {
           kassenzeichen: item.kassenzeichennummer8,
         },
