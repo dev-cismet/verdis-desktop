@@ -27,6 +27,7 @@ export const createFeatureArray = (data) => {
           kassenzeichen: item.kassenzeichennummer8,
           anschlussgrad:
             flaeche.flaecheObject.flaecheninfoObject.anschlussgradObject.grad,
+          bezeichnung: flaeche.flaecheObject.flaechenbezeichnung,
         },
         geometry: {
           type: "Polygon",

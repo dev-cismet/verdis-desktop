@@ -270,6 +270,7 @@ const Map = ({
       <Toolbar
         kassenzeichen={hoveredKassenzeichen}
         anschlussgrad={hoveredProperties.anschlussgrad}
+        bezeichnung={hoveredProperties.bezeichnung}
       />
     </Card>
   );
