@@ -19,37 +19,35 @@ export const createFeatureArray = (data) => {
   const result = [];
 
   data.kassenzeichen.forEach((item, index) => {
-    const feature = {
-      type: "Feature",
-      id: index + 1,
-      properties: {
-        kassenzeichen: item.kassenzeichennummer8,
-      },
-      geometry: {
-        type: "Polygon",
-        coordinates: [],
-      },
-      crs: {
-        type: "name",
-        properties: {
-          name: "urn:ogc:def:crs:EPSG::25832",
-        },
-      },
-    };
-
-    let coordinates = [];
-
     item.flaechenArray.forEach((flaeche) => {
+      const feature = {
+        type: "Feature",
+        id: index + 1,
+        properties: {
+          kassenzeichen: item.kassenzeichennummer8,
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [],
+        },
+        crs: {
+          type: "name",
+          properties: {
+            name: "urn:ogc:def:crs:EPSG::25832",
+          },
+        },
+      };
+
+      let coordinates = [];
       coordinates = concat(
         coordinates,
         flatten(
           flaeche.flaecheObject.flaecheninfoObject.geom.geo_field.coordinates
         )
       );
+      feature.geometry.coordinates = [coordinates];
+      result.push(feature);
     });
-
-    feature.geometry.coordinates = [coordinates];
-    result.push(feature);
   });
 
   return result;
