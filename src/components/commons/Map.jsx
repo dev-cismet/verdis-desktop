@@ -246,8 +246,8 @@ const Map = ({
             key={"TestKey"}
             style={(feature) => {
               return {
-                color: "#00000000", // stroke
-                fillColor: "#00000000", //fill
+                color: "#00000040", // stroke
+                fillColor: "#00000020", //fill
                 weight: 0.5,
               };
             }}
