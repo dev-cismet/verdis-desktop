@@ -83,7 +83,6 @@ export const createQueryGeomFromBB = (boundingBox) => {
     },
   };
 
-  console.log(updatedGeom);
   return updatedGeom;
 };
 
