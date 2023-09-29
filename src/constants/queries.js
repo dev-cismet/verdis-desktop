@@ -44,6 +44,9 @@ query geoFields($bbPoly: geometry) {
             geo_field
           }
           id
+          anschlussgradObject {
+            grad
+          }
         }
       }
     }
