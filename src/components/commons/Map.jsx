@@ -49,6 +49,7 @@ const Map = ({
   const dispatch = useDispatch();
   const featureCollection = useSelector(getFeatureCollection);
   const [hoveredKassenzeichen, setHoveredKassenzeichen] = useState("");
+  const [hoveredProperties, setHoveredProperties] = useState({});
   const [urlParams, setUrlParams] = useSearchParams();
   const [hoveredFeatureId, setHoveredFeatureId] = useState(undefined);
 
@@ -88,11 +89,13 @@ const Map = ({
     const mouseoverHov = (feature, e) => {
       setHoveredKassenzeichen(feature.properties.kassenzeichen);
       setHoveredFeatureId(feature.id);
+      setHoveredProperties(feature.properties);
     };
 
     const mouseoutHov = (feature, e) => {
       setHoveredKassenzeichen("");
       setHoveredFeatureId(undefined);
+      setHoveredProperties({});
     };
 
     return { mouseoverHov, mouseoutHov };
@@ -264,7 +267,10 @@ const Map = ({
           />
         )}
       </RoutedMap>
-      <Toolbar kassenzeichen={hoveredKassenzeichen} />
+      <Toolbar
+        kassenzeichen={hoveredKassenzeichen}
+        anschlussgrad={hoveredProperties.anschlussgrad}
+      />
     </Card>
   );
 };
