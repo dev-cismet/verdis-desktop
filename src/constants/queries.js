@@ -43,6 +43,7 @@ query geoFields($bbPoly: geometry) {
           geom {
             geo_field
           }
+          id
         }
       }
     }

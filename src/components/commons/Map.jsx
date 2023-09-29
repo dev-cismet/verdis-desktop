@@ -49,6 +49,7 @@ const Map = ({
   const featureCollection = useSelector(getFeatureCollection);
   const [hoveredKassenzeichen, setHoveredKassenzeichen] = useState("");
   const [urlParams, setUrlParams] = useSearchParams();
+  const [hoveredFeatureId, setHoveredFeatureId] = useState(undefined);
 
   const data = extractor(dataIn);
   const padding = 5;
@@ -85,10 +86,12 @@ const Map = ({
   const myVirtHoverer = (feature) => {
     const mouseoverHov = (feature, e) => {
       setHoveredKassenzeichen(feature.properties.kassenzeichen);
+      setHoveredFeatureId(feature.id);
     };
 
     const mouseoutHov = (feature, e) => {
       setHoveredKassenzeichen("");
+      setHoveredFeatureId(undefined);
     };
 
     return { mouseoverHov, mouseoutHov };
@@ -177,7 +180,11 @@ const Map = ({
         }}
         boundingBoxChangedHandler={(boundingBox) => {
           const bbPoly = createQueryGeomFromBB(boundingBox);
-          dispatch(searchForGeoFields(bbPoly));
+          const zoom = refRoutedMap?.current?.leafletMap.viewport.zoom;
+
+          if (zoom >= 18.5) {
+            dispatch(searchForGeoFields(bbPoly));
+          }
         }}
         ondblclick={(event) => {
           //if data contains a ondblclick handler, call it
@@ -246,9 +253,9 @@ const Map = ({
             key={"TestKey"}
             style={(feature) => {
               return {
-                color: "#00000000", // stroke
-                fillColor: "#00000000", //fill
-                weight: 0.5,
+                color: "#00000040", // stroke
+                fillColor: "#00000020", //fill
+                weight: hoveredFeatureId === feature.id ? 2 : 0.5,
               };
             }}
             featureCollection={featureCollection}
