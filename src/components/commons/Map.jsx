@@ -29,6 +29,7 @@ import {
   setLeafletElement,
 } from "../../store/slices/mapping";
 import { useDispatch, useSelector } from "react-redux";
+import Toolbar from "./Toolbar";
 
 const mockExtractor = (input) => {
   return {
@@ -263,9 +264,7 @@ const Map = ({
           />
         )}
       </RoutedMap>
-      <div className="absolute bottom-[2px] left-[5px] bg-white w-1/3 z-50">
-        Kassenzeichen: {hoveredKassenzeichen}
-      </div>
+      <Toolbar kassenzeichen={hoveredKassenzeichen} />
     </Card>
   );
 };
