@@ -177,7 +177,11 @@ const Map = ({
         }}
         boundingBoxChangedHandler={(boundingBox) => {
           const bbPoly = createQueryGeomFromBB(boundingBox);
-          dispatch(searchForGeoFields(bbPoly));
+          const zoom = refRoutedMap?.current?.leafletMap.viewport.zoom;
+
+          if (zoom >= 18.5) {
+            dispatch(searchForGeoFields(bbPoly));
+          }
         }}
         ondblclick={(event) => {
           //if data contains a ondblclick handler, call it
