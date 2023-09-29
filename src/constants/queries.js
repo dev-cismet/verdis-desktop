@@ -37,8 +37,7 @@ query geoFields($bbPoly: geometry) {
     kassenzeichennummer8
     flaechenArray {
       flaecheObject {
-        anteil
-        bemerkung
+        flaechenbezeichnung
         flaecheninfoObject {
           geom {
             geo_field
