@@ -14,10 +14,13 @@ import {
 import { compare, formatDate } from "../tools/helper";
 import SubNav from "../components/sealedSurfaces/SubNav";
 import {
+  getFeatureCollection,
   getFlaechenCollection,
+  setFeatureHovered,
   setFlaechenSelected,
 } from "../store/slices/mapping";
 import { setShowSurfaceDetails } from "../store/slices/settings";
+import { FeatureCollectionDisplay } from "react-cismap";
 
 const Page = ({
   width = "100%",
@@ -40,6 +43,20 @@ const Page = ({
   const cardStyleDetails = { width: "100%", height: "50%", minHeight: 0 };
   const kassenzeichen = useSelector(getKassenzeichen);
   const flaechenArray = useSelector(getFlaechenCollection);
+  const featureCollection = useSelector(getFeatureCollection);
+
+  const myVirtHoverer = (feature) => {
+    const mouseoverHov = (feature, e) => {
+      dispatch(setFeatureHovered({ id: feature.id }));
+    };
+
+    const mouseoutHov = (feature, e) => {
+      dispatch(setFeatureHovered({ id: undefined }));
+    };
+
+    return { mouseoverHov, mouseoutHov };
+  };
+  myVirtHoverer.virtual = true;
 
   useEffect(() => {
     dispatch(setShowSurfaceDetails(true));
@@ -124,7 +141,27 @@ const Page = ({
                 shownFeatureTypes: ["flaeche"],
               }}
               extractor={mappingExtractor}
-            />
+              hoveredFeature={featureCollection?.find(
+                (feature) => feature.hovered === true
+              )}
+            >
+              {featureCollection && (
+                <FeatureCollectionDisplay
+                  key={"FlaechenLayer"}
+                  style={(feature) => {
+                    return {
+                      color: "#00000040", // stroke
+                      fillColor: "#00000020", //fill
+                      weight: feature.hovered ? 2 : 0.5,
+                    };
+                  }}
+                  featureCollection={featureCollection.filter(
+                    (item) => item.featureType === "flaeche"
+                  )}
+                  hoverer={myVirtHoverer}
+                />
+              )}
+            </Map>
           </div>
         </div>
       </div>

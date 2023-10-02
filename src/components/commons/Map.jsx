@@ -45,6 +45,8 @@ const Map = ({
   extractor = mockExtractor,
   width = 400,
   height = 500,
+  children,
+  hoveredFeature,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -84,23 +86,6 @@ const Map = ({
   } catch (e) {}
 
   const _backgroundLayers = backgroundsFromMode || "rvrGrau@40";
-
-  const myVirtHoverer = (feature) => {
-    const mouseoverHov = (feature, e) => {
-      setHoveredKassenzeichen(feature.properties.kassenzeichen);
-      dispatch(setFeatureHovered({ id: feature.id }));
-      setHoveredProperties(feature.properties);
-    };
-
-    const mouseoutHov = (feature, e) => {
-      setHoveredKassenzeichen("");
-      dispatch(setFeatureHovered({ id: undefined }));
-      setHoveredProperties({});
-    };
-
-    return { mouseoverHov, mouseoutHov };
-  };
-  myVirtHoverer.virtual = true;
 
   useEffect(() => {
     setMapWidth(cardRef?.current?.offsetWidth);
@@ -252,37 +237,15 @@ const Map = ({
             }
           />
         )}
-        {featureCollection && (
-          <FeatureCollectionDisplay
-            key={"TestKey"}
-            style={(feature) => {
-              switch (feature.featureType) {
-                case "flaeche": {
-                  return {
-                    color: "#00000040", // stroke
-                    fillColor: "#00000020", //fill
-                    weight: feature.hovered ? 2 : 0.5,
-                  };
-                }
-                case "front": {
-                  return {
-                    color: "#00000040", // stroke
-                    fillColor: "#00000020", //fill
-                    weight: feature.hovered ? 12 : 10,
-                  };
-                }
-              }
-            }}
-            featureCollection={featureCollection}
-            hoverer={myVirtHoverer}
-          />
-        )}
+        {children}
       </RoutedMap>
-      <Toolbar
-        kassenzeichen={hoveredKassenzeichen}
-        anschlussgrad={hoveredProperties.anschlussgrad}
-        bezeichnung={hoveredProperties.bezeichnung}
-      />
+      {hoveredFeature && (
+        <Toolbar
+          kassenzeichen={hoveredFeature.properties.kassenzeichen}
+          anschlussgrad={hoveredFeature.properties.anschlussgrad}
+          bezeichnung={hoveredFeature.properties.bezeichnung}
+        />
+      )}
     </Card>
   );
 };
