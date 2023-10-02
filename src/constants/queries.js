@@ -49,6 +49,17 @@ query geoFields($bbPoly: geometry) {
         }
       }
     }
+    frontenArray {
+      frontObject {
+        frontinfoObject {
+          geom {
+            geo_field
+          }
+          id
+        }
+        nummer
+      }
+    }
   }
 }`;
 
