@@ -74,6 +74,22 @@ const slice = createSlice({
 
       return state;
     },
+    setFeatureHovered(state, action) {
+      const { id } = action.payload;
+      const selectedObject = state.featureCollection.find(
+        (item) => item.id === id
+      );
+
+      state.featureCollection.forEach((item) => {
+        item.hovered = false;
+      });
+
+      if (selectedObject) {
+        selectedObject.hovered = true;
+      }
+
+      return state;
+    },
     setFrontenSelected(state, action) {
       const { id } = action.payload;
       const selectedObject = state.frontenCollection.find(
@@ -126,6 +142,7 @@ export const {
   setGeneralGeometryCollection,
   setGeneralGeometrySelected,
   setFlaechenSelected,
+  setFeatureHovered,
   setFrontenSelected,
   setBefreiungErlaubnisCollection,
   setLeafletElement,

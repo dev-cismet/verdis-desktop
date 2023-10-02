@@ -23,6 +23,7 @@ import {
 } from "../../store/slices/search";
 import {
   getFeatureCollection,
+  setFeatureHovered,
   setFlaechenSelected,
   setFrontenSelected,
   setGeneralGeometrySelected,
@@ -51,7 +52,6 @@ const Map = ({
   const [hoveredKassenzeichen, setHoveredKassenzeichen] = useState("");
   const [hoveredProperties, setHoveredProperties] = useState({});
   const [urlParams, setUrlParams] = useSearchParams();
-  const [hoveredFeatureId, setHoveredFeatureId] = useState(undefined);
 
   const data = extractor(dataIn);
   const padding = 5;
@@ -88,13 +88,13 @@ const Map = ({
   const myVirtHoverer = (feature) => {
     const mouseoverHov = (feature, e) => {
       setHoveredKassenzeichen(feature.properties.kassenzeichen);
-      setHoveredFeatureId(feature.id);
+      dispatch(setFeatureHovered({ id: feature.id }));
       setHoveredProperties(feature.properties);
     };
 
     const mouseoutHov = (feature, e) => {
       setHoveredKassenzeichen("");
-      setHoveredFeatureId(undefined);
+      dispatch(setFeatureHovered({ id: undefined }));
       setHoveredProperties({});
     };
 
@@ -261,14 +261,14 @@ const Map = ({
                   return {
                     color: "#00000040", // stroke
                     fillColor: "#00000020", //fill
-                    weight: hoveredFeatureId === feature.id ? 2 : 0.5,
+                    weight: feature.hovered ? 2 : 0.5,
                   };
                 }
                 case "front": {
                   return {
                     color: "#00000040", // stroke
                     fillColor: "#00000020", //fill
-                    weight: hoveredFeatureId === feature.id ? 12 : 10,
+                    weight: feature.hovered ? 12 : 10,
                   };
                 }
               }
