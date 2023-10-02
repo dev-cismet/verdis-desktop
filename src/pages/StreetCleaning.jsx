@@ -13,7 +13,9 @@ import { compare } from "../tools/helper";
 import SubNav from "../components/streetCleaning/SubNav";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getFeatureCollection,
   getFrontenCollection,
+  setFeatureHovered,
   setFrontenSelected,
 } from "../store/slices/mapping";
 import {
@@ -22,6 +24,7 @@ import {
   storeFront,
   storeFrontenId,
 } from "../store/slices/search";
+import { FeatureCollectionDisplay } from "react-cismap";
 
 const Page = ({
   width = "100%",
@@ -49,6 +52,20 @@ const Page = ({
   const kassenzeichen = useSelector(getKassenzeichen);
   const frontenArray = useSelector(getFrontenCollection);
   const frontenId = useSelector(getFrontenId);
+  const featureCollection = useSelector(getFeatureCollection);
+
+  const myVirtHoverer = (feature) => {
+    const mouseoverHov = (feature, e) => {
+      dispatch(setFeatureHovered({ id: feature.id }));
+    };
+
+    const mouseoutHov = (feature, e) => {
+      dispatch(setFeatureHovered({ id: undefined }));
+    };
+
+    return { mouseoverHov, mouseoutHov };
+  };
+  myVirtHoverer.virtual = true;
 
   return (
     <div
@@ -117,7 +134,27 @@ const Page = ({
               shownFeatureTypes: ["front"],
             }}
             extractor={mappingExtractor}
-          />
+            hoveredFeature={featureCollection?.find(
+              (feature) => feature.hovered === true
+            )}
+          >
+            {featureCollection && (
+              <FeatureCollectionDisplay
+                key={"FrontenLayer"}
+                style={(feature) => {
+                  return {
+                    color: "#00000040", // stroke
+                    fillColor: "#00000020", //fill
+                    weight: feature.hovered ? 12 : 10,
+                  };
+                }}
+                featureCollection={featureCollection.filter(
+                  (item) => item.featureType === "front"
+                )}
+                hoverer={myVirtHoverer}
+              />
+            )}
+          </Map>
         </div>
       </div>
       {showChat && (

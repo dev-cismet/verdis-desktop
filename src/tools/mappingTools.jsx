@@ -22,7 +22,9 @@ export const createFeatureArray = (data) => {
     item.flaechenArray.forEach((flaeche) => {
       const feature = {
         type: "Feature",
+        featureType: "flaeche",
         id: flaeche.flaecheObject.flaecheninfoObject.id,
+        hovered: false,
         properties: {
           kassenzeichen: item.kassenzeichennummer8,
           anschlussgrad:
@@ -47,6 +49,37 @@ export const createFeatureArray = (data) => {
         flatten(
           flaeche.flaecheObject.flaecheninfoObject.geom.geo_field.coordinates
         )
+      );
+      feature.geometry.coordinates = [coordinates];
+      result.push(feature);
+    });
+
+    item.frontenArray.forEach((front) => {
+      const feature = {
+        type: "Feature",
+        featureType: "front",
+        id: front.frontObject.frontinfoObject.id,
+        hovered: false,
+        properties: {
+          kassenzeichen: item.kassenzeichennummer8,
+          bezeichnung: front.frontObject.nummer,
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [],
+        },
+        crs: {
+          type: "name",
+          properties: {
+            name: "urn:ogc:def:crs:EPSG::25832",
+          },
+        },
+      };
+
+      let coordinates = [];
+      coordinates = concat(
+        coordinates,
+        front.frontObject.frontinfoObject.geom.geo_field.coordinates
       );
       feature.geometry.coordinates = [coordinates];
       result.push(feature);
