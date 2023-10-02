@@ -256,11 +256,22 @@ const Map = ({
           <FeatureCollectionDisplay
             key={"TestKey"}
             style={(feature) => {
-              return {
-                color: "#00000040", // stroke
-                fillColor: "#00000020", //fill
-                weight: hoveredFeatureId === feature.id ? 2 : 0.5,
-              };
+              switch (feature.featureType) {
+                case "flaeche": {
+                  return {
+                    color: "#00000040", // stroke
+                    fillColor: "#00000020", //fill
+                    weight: hoveredFeatureId === feature.id ? 2 : 0.5,
+                  };
+                }
+                case "front": {
+                  return {
+                    color: "#00000040", // stroke
+                    fillColor: "#00000020", //fill
+                    weight: hoveredFeatureId === feature.id ? 12 : 10,
+                  };
+                }
+              }
             }}
             featureCollection={featureCollection}
             hoverer={myVirtHoverer}

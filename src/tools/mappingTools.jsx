@@ -22,6 +22,7 @@ export const createFeatureArray = (data) => {
     item.flaechenArray.forEach((flaeche) => {
       const feature = {
         type: "Feature",
+        featureType: "flaeche",
         id: flaeche.flaecheObject.flaecheninfoObject.id,
         properties: {
           kassenzeichen: item.kassenzeichennummer8,
@@ -55,6 +56,7 @@ export const createFeatureArray = (data) => {
     item.frontenArray.forEach((front) => {
       const feature = {
         type: "Feature",
+        featureType: "front",
         id: front.frontObject.frontinfoObject.id,
         properties: {
           kassenzeichen: item.kassenzeichennummer8,
