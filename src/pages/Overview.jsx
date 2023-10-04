@@ -117,7 +117,11 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
               }}
               extractor={mappingExtractor}
             >
-              <FeatureMapLayer featureTypes={overviewFeatureTypes} />
+              <FeatureMapLayer
+                featureTypes={
+                  kassenzeichen ? overviewFeatureTypes : ["flaeche"]
+                }
+              />
             </Map>
           </div>
           <Summary
