@@ -46,13 +46,9 @@ const Map = ({
   width = 400,
   height = 500,
   children,
-  hoveredFeature,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const featureCollection = useSelector(getFeatureCollection);
-  const [hoveredKassenzeichen, setHoveredKassenzeichen] = useState("");
-  const [hoveredProperties, setHoveredProperties] = useState({});
   const [urlParams, setUrlParams] = useSearchParams();
 
   const data = extractor(dataIn);
@@ -239,13 +235,6 @@ const Map = ({
         )}
         {children}
       </RoutedMap>
-      {hoveredFeature && (
-        <Toolbar
-          kassenzeichen={hoveredFeature.properties.kassenzeichen}
-          anschlussgrad={hoveredFeature.properties.anschlussgrad}
-          bezeichnung={hoveredFeature.properties.bezeichnung}
-        />
-      )}
     </Card>
   );
 };
