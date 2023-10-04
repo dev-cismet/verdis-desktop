@@ -25,7 +25,7 @@ export const createFeatureArray = (data) => {
         featureType: "flaeche",
         id: flaeche.flaecheObject.flaecheninfoObject.id,
         hovered: false,
-        weight: 2,
+        weight: 0.5,
         properties: {
           kassenzeichen: item.kassenzeichennummer8,
           anschlussgrad:
