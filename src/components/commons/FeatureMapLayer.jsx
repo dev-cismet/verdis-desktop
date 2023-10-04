@@ -6,7 +6,7 @@ import {
 import { FeatureCollectionDisplay } from "react-cismap";
 import Toolbar from "./Toolbar";
 
-const FeatureMapLayer = ({ featureTypes, weight = 0.5 }) => {
+const FeatureMapLayer = ({ featureTypes }) => {
   const dispatch = useDispatch();
   const featureCollection = useSelector(getFeatureCollection);
   const filteredCollection = featureCollection?.filter((item) =>
@@ -39,7 +39,7 @@ const FeatureMapLayer = ({ featureTypes, weight = 0.5 }) => {
               return {
                 color: "#00000040", // stroke
                 fillColor: "#00000020", //fill
-                weight: feature.hovered ? weight + 2 : weight,
+                weight: feature.hovered ? feature.weight + 2 : feature.weight,
               };
             }}
             featureCollection={filteredCollection}
