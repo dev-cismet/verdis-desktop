@@ -16,6 +16,7 @@ import {
 } from "../store/slices/search";
 import { getBefreiungErlaubnisCollection } from "../store/slices/mapping";
 import { setShowSeepageDetails } from "../store/slices/settings";
+import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 
 const Page = ({
   width = "100%",
@@ -126,7 +127,9 @@ const Page = ({
                 shownFeatureTypes: ["befreiung"],
               }}
               extractor={mappingExtractor}
-            />
+            >
+              <FeatureMapLayer featureTypes={["general"]} />
+            </Map>
             <Details
               width={cardStyleDetails.width}
               height={cardStyleDetails.height}

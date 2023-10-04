@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { getKassenzeichen } from "../store/slices/search";
 import { getGeneralGeometryCollection } from "../store/slices/mapping";
 import { geometryExtractor, mappingExtractor } from "../tools/extractors";
+import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 
 const Page = ({
   width = "100%",
@@ -59,7 +60,9 @@ const Page = ({
               shownFeatureTypes: ["general"],
             }}
             extractor={mappingExtractor}
-          />
+          >
+            <FeatureMapLayer featureTypes={["general"]} />
+          </Map>
         </div>
       </div>
       {showChat && (
