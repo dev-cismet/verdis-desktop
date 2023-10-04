@@ -15,23 +15,20 @@ import {
 } from "../tools/extractors";
 import {
   getKassenzeichen,
-  searchForKassenzeichen,
   searchForKassenzeichenWithPoint,
 } from "../store/slices/search";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
   getBefreiungErlaubnisCollection,
-  getFeatureCollection,
   getFlaechenCollection,
   getFrontenCollection,
   getGeneralGeometryCollection,
-  setFeatureHovered,
 } from "../store/slices/mapping";
 import { getOverviewFeatureTypes } from "../store/slices/ui";
 import { convertLatLngToXY } from "../tools/mappingTools";
 import { useSearchParams } from "react-router-dom";
-import { FeatureCollectionDisplay } from "react-cismap";
+import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -57,20 +54,6 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   );
   const dispatch = useDispatch();
   const [urlParams, setUrlParams] = useSearchParams();
-  const featureCollection = useSelector(getFeatureCollection);
-
-  const myVirtHoverer = (feature) => {
-    const mouseoverHov = (feature, e) => {
-      dispatch(setFeatureHovered({ id: feature.id }));
-    };
-
-    const mouseoutHov = (feature, e) => {
-      dispatch(setFeatureHovered({ id: undefined }));
-    };
-
-    return { mouseoverHov, mouseoutHov };
-  };
-  myVirtHoverer.virtual = true;
 
   return (
     <div
@@ -133,37 +116,8 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
                 },
               }}
               extractor={mappingExtractor}
-              hoveredFeature={featureCollection?.find(
-                (feature) => feature.hovered === true
-              )}
             >
-              {featureCollection && (
-                <FeatureCollectionDisplay
-                  key={"FrontenLayer"}
-                  style={(feature) => {
-                    switch (feature.featureType) {
-                      case "flaeche":
-                        return {
-                          color: "#00000040", // stroke
-                          fillColor: "#00000020", //fill
-                          weight: feature.hovered ? 2 : 0.5,
-                        };
-                      case "front":
-                        return {
-                          color: "#00000040", // stroke
-                          fillColor: "#00000020", //fill
-                          weight: feature.hovered ? 12 : 10,
-                        };
-                    }
-                  }}
-                  featureCollection={featureCollection.filter(
-                    (item) =>
-                      item.featureType === "front" ||
-                      item.featureType === "flaeche"
-                  )}
-                  hoverer={myVirtHoverer}
-                />
-              )}
+              <FeatureMapLayer featureTypes={overviewFeatureTypes} />
             </Map>
           </div>
           <Summary

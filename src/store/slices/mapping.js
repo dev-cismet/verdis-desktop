@@ -76,17 +76,10 @@ const slice = createSlice({
     },
     setFeatureHovered(state, action) {
       const { id } = action.payload;
-      const selectedObject = state.featureCollection.find(
-        (item) => item.id === id
-      );
 
       state.featureCollection.forEach((item) => {
-        item.hovered = false;
+        item.id === id ? (item.hovered = true) : (item.hovered = false);
       });
-
-      if (selectedObject) {
-        selectedObject.hovered = true;
-      }
 
       return state;
     },

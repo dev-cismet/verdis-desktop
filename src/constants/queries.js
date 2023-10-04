@@ -60,6 +60,15 @@ query geoFields($bbPoly: geometry) {
         nummer
       }
     }
+    kassenzeichen_geometrienArray {
+      kassenzeichen_geometrieObject {
+        geom {
+          geo_field
+        }
+        id
+        name
+      }
+    }
   }
 }`;
 

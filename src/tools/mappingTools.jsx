@@ -25,6 +25,7 @@ export const createFeatureArray = (data) => {
         featureType: "flaeche",
         id: flaeche.flaecheObject.flaecheninfoObject.id,
         hovered: false,
+        weight: 0.5,
         properties: {
           kassenzeichen: item.kassenzeichennummer8,
           anschlussgrad:
@@ -60,6 +61,7 @@ export const createFeatureArray = (data) => {
         featureType: "front",
         id: front.frontObject.frontinfoObject.id,
         hovered: false,
+        weight: 10,
         properties: {
           kassenzeichen: item.kassenzeichennummer8,
           bezeichnung: front.frontObject.nummer,
@@ -80,6 +82,40 @@ export const createFeatureArray = (data) => {
       coordinates = concat(
         coordinates,
         front.frontObject.frontinfoObject.geom.geo_field.coordinates
+      );
+      feature.geometry.coordinates = [coordinates];
+      result.push(feature);
+    });
+
+    item.kassenzeichen_geometrienArray.forEach((geometry) => {
+      const feature = {
+        type: "Feature",
+        featureType: "general",
+        id: geometry.kassenzeichen_geometrieObject.id,
+        hovered: false,
+        weight: 0.5,
+        properties: {
+          kassenzeichen: item.kassenzeichennummer8,
+          bezeichnung: geometry.kassenzeichen_geometrieObject.name,
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [],
+        },
+        crs: {
+          type: "name",
+          properties: {
+            name: "urn:ogc:def:crs:EPSG::25832",
+          },
+        },
+      };
+
+      let coordinates = [];
+      coordinates = concat(
+        coordinates,
+        flatten(
+          geometry.kassenzeichen_geometrieObject.geom.geo_field.coordinates
+        )
       );
       feature.geometry.coordinates = [coordinates];
       result.push(feature);

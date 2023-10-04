@@ -18,16 +18,10 @@ import {
   storeFlaechenId,
 } from "../store/slices/search";
 import {
-  getFeatureCollection,
   getFlaechenCollection,
-  setFeatureHovered,
   setFlaechenSelected,
 } from "../store/slices/mapping";
-import {
-  createStyler,
-  getMarkerStyleFromFeatureConsideringSelection,
-} from "../tools/mappingTools";
-import { FeatureCollectionDisplay } from "react-cismap";
+import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 
 const Page = ({
   width = "100%",
@@ -39,20 +33,6 @@ const Page = ({
   const kassenzeichen = useSelector(getKassenzeichen);
   const flaechenArray = useSelector(getFlaechenCollection);
   const flaechenId = useSelector(getFlaechenId);
-  const featureCollection = useSelector(getFeatureCollection);
-
-  const myVirtHoverer = (feature) => {
-    const mouseoverHov = (feature, e) => {
-      dispatch(setFeatureHovered({ id: feature.id }));
-    };
-
-    const mouseoutHov = (feature, e) => {
-      dispatch(setFeatureHovered({ id: undefined }));
-    };
-
-    return { mouseoverHov, mouseoutHov };
-  };
-  myVirtHoverer.virtual = true;
 
   let storyStyle = {};
   if (inStory) {
@@ -140,26 +120,8 @@ const Page = ({
               shownFeatureTypes: ["flaeche"],
             }}
             extractor={mappingExtractor}
-            hoveredFeature={featureCollection?.find(
-              (feature) => feature.hovered === true
-            )}
           >
-            {featureCollection && (
-              <FeatureCollectionDisplay
-                key={"FlaechenLayer"}
-                style={(feature) => {
-                  return {
-                    color: "#00000040", // stroke
-                    fillColor: "#00000020", //fill
-                    weight: feature.hovered ? 2 : 0.5,
-                  };
-                }}
-                featureCollection={featureCollection.filter(
-                  (item) => item.featureType === "flaeche"
-                )}
-                hoverer={myVirtHoverer}
-              />
-            )}
+            <FeatureMapLayer featureTypes={["flaeche"]} />
           </Map>
         </div>
       </div>

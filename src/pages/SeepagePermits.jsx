@@ -12,6 +12,7 @@ import SubNav from "../components/seepagePermits/SubNav";
 import { getKassenzeichen } from "../store/slices/search";
 import { useSelector } from "react-redux";
 import { getBefreiungErlaubnisCollection } from "../store/slices/mapping";
+import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 
 const Page = ({
   width = "100%",
@@ -68,7 +69,9 @@ const Page = ({
               shownFeatureTypes: ["befreiung"],
             }}
             extractor={mappingExtractor}
-          />
+          >
+            <FeatureMapLayer featureTypes={["general"]} />
+          </Map>
         </div>
       </div>
       {showChat && (
