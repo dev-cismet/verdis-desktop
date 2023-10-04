@@ -61,7 +61,7 @@ export const createFeatureArray = (data) => {
         featureType: "front",
         id: front.frontObject.frontinfoObject.id,
         hovered: false,
-        weight: 10,
+        weight: 8,
         properties: {
           kassenzeichen: item.kassenzeichennummer8,
           bezeichnung: front.frontObject.nummer,

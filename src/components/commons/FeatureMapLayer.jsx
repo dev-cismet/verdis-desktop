@@ -1,28 +1,23 @@
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getFeatureCollection,
-  setFeatureHovered,
-} from "../../store/slices/mapping";
+import { useSelector } from "react-redux";
+import { getFeatureCollection } from "../../store/slices/mapping";
 import { FeatureCollectionDisplay } from "react-cismap";
 import Toolbar from "./Toolbar";
+import { useState } from "react";
 
 const FeatureMapLayer = ({ featureTypes }) => {
-  const dispatch = useDispatch();
   const featureCollection = useSelector(getFeatureCollection);
   const filteredCollection = featureCollection?.filter((item) =>
     featureTypes.includes(item.featureType)
   );
-  const hoveredFeature = filteredCollection?.find(
-    (feature) => feature.hovered === true
-  );
+  const [hoveredFeature, setHoveredFeature] = useState(undefined);
 
-  const myVirtHoverer = (feature) => {
-    const mouseoverHov = (feature, e) => {
-      dispatch(setFeatureHovered({ id: feature.id }));
+  const myVirtHoverer = () => {
+    const mouseoverHov = (feature) => {
+      setHoveredFeature(feature);
     };
 
-    const mouseoutHov = (feature, e) => {
-      dispatch(setFeatureHovered({ id: undefined }));
+    const mouseoutHov = () => {
+      setHoveredFeature(undefined);
     };
 
     return { mouseoverHov, mouseoutHov };
@@ -39,7 +34,10 @@ const FeatureMapLayer = ({ featureTypes }) => {
               return {
                 color: "#00000040", // stroke
                 fillColor: "#00000020", //fill
-                weight: feature.hovered ? feature.weight + 2 : feature.weight,
+                weight:
+                  feature?.id === hoveredFeature?.id
+                    ? feature.weight + 2
+                    : feature.weight,
               };
             }}
             featureCollection={filteredCollection}
