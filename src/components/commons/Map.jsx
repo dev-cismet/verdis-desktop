@@ -22,15 +22,13 @@ import {
   storeFrontenId,
 } from "../../store/slices/search";
 import {
-  getFeatureCollection,
-  setFeatureHovered,
   setFlaechenSelected,
   setFrontenSelected,
   setGeneralGeometrySelected,
   setLeafletElement,
 } from "../../store/slices/mapping";
-import { useDispatch, useSelector } from "react-redux";
-import Toolbar from "./Toolbar";
+import { useDispatch } from "react-redux";
+import { ScaleControl } from "react-leaflet";
 
 const mockExtractor = (input) => {
   return {
@@ -107,6 +105,14 @@ const Map = ({
     zIndex: 1,
   };
 
+  const defaults = {
+    maxWidth: 200,
+    metric: true,
+    imperial: false,
+    updateWhenIdle: false,
+    position: "topleft",
+  };
+
   let fallback = {};
   if (data?.featureCollection && refRoutedMap?.current) {
     const map = refRoutedMap.current.leafletMap.leafletElement;
@@ -178,6 +184,7 @@ const Map = ({
           }
         }}
       >
+        <ScaleControl {...defaults} position="topleft" />
         {data.featureCollection && data.featureCollection.length > 0 && (
           <FeatureCollectionDisplay
             featureCollection={data.featureCollection}
