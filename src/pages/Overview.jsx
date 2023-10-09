@@ -29,6 +29,7 @@ import { getOverviewFeatureTypes } from "../store/slices/ui";
 import { convertLatLngToXY } from "../tools/mappingTools";
 import { useSearchParams } from "react-router-dom";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
+import { isEmpty } from "lodash";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -119,7 +120,7 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
             >
               <FeatureMapLayer
                 featureTypes={
-                  kassenzeichen ? overviewFeatureTypes : ["flaeche"]
+                  isEmpty(kassenzeichen) ? ["flaeche"] : overviewFeatureTypes
                 }
               />
             </Map>
