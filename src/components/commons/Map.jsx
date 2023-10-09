@@ -48,6 +48,7 @@ const Map = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [urlParams, setUrlParams] = useSearchParams();
+  const [fallback, setFallback] = useState({});
 
   const data = extractor(dataIn);
   const padding = 5;
@@ -113,17 +114,25 @@ const Map = ({
     position: "topleft",
   };
 
-  let fallback = {};
   if (data?.featureCollection && refRoutedMap?.current) {
     const map = refRoutedMap.current.leafletMap.leafletElement;
     dispatch(setLeafletElement(map));
 
     const bb = getBoundsForFeatureArray(data?.featureCollection);
     const { center, zoom } = getCenterAndZoomForBounds(map, bb);
-    fallback.position = {};
-    fallback.position.lat = center.lat;
-    fallback.position.lng = center.lng;
-    fallback.zoom = zoom;
+    if (
+      fallback?.position?.lat !== center.lat ||
+      fallback?.position?.lng !== center.lng ||
+      fallback?.zoom !== zoom
+    ) {
+      setFallback({
+        position: {
+          lat: center.lat,
+          lng: center.lng,
+        },
+        zoom: zoom,
+      });
+    }
   }
 
   return (
