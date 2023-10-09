@@ -67,7 +67,7 @@ export const createFeatureArray = (data) => {
           bezeichnung: front.frontObject.nummer,
         },
         geometry: {
-          type: "Polygon",
+          type: "LineString",
           coordinates: [],
         },
         crs: {
@@ -83,7 +83,7 @@ export const createFeatureArray = (data) => {
         coordinates,
         front.frontObject.frontinfoObject.geom.geo_field.coordinates
       );
-      feature.geometry.coordinates = [coordinates];
+      feature.geometry.coordinates = coordinates;
       result.push(feature);
     });
 
