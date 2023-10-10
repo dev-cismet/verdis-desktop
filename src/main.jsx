@@ -1,7 +1,7 @@
 import { Button, ConfigProvider, Result } from "antd";
 import "antd/dist/reset.css";
 import locale from "antd/locale/de_DE";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import {
@@ -47,11 +47,18 @@ const NavBarWrapper = () => {
   const readOnly = useSelector(getReadOnly);
   const location = useLocation();
   const showChat = useSelector(getShowChat);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setIsLoading(true);
     dispatch(checkJWTValidation());
+    setIsLoading(false);
   }, []);
+
+  if (isLoading) {
+    return <></>;
+  }
 
   if (!jwt) {
     return <Navigate to="/login" state={{ from: location }} replace />;
