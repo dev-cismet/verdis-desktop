@@ -1,9 +1,9 @@
 import { Button, ConfigProvider, Result } from "antd";
 import "antd/dist/reset.css";
 import locale from "antd/locale/de_DE";
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import {
   Navigate,
   Outlet,
@@ -24,7 +24,7 @@ import SeepagePermitsDetailsPage from "./pages/SeepagePermitsDetails";
 import StreetCleaningPage from "./pages/StreetCleaning";
 import StreetCleaningDetailsPage from "./pages/StreetCleaningDetails";
 import store from "./store";
-import { getJWT } from "./store/slices/auth";
+import { checkJWTValidation, getJWT } from "./store/slices/auth";
 import TopicMapContextProvider from "react-cismap/contexts/TopicMapContextProvider";
 import {
   backgroundConfigurations,
@@ -47,6 +47,11 @@ const NavBarWrapper = () => {
   const readOnly = useSelector(getReadOnly);
   const location = useLocation();
   const showChat = useSelector(getShowChat);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkJWTValidation());
+  }, []);
 
   if (!jwt) {
     return <Navigate to="/login" state={{ from: location }} replace />;

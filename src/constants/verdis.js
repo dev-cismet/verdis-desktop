@@ -16,3 +16,7 @@ export const pointquery = gql`
 export const geoFieldsQuery = gql`
   ${queries.geoFields}
 `;
+
+export const jwtTestQuery = gql`
+  ${queries.jwtTestQuery}
+`;

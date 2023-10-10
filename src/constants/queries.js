@@ -2,6 +2,11 @@ const queries = {};
 export const geomFactories = {};
 export default queries;
 
+queries.jwtTestQuery = `
+query Test {
+  __typename ## Placeholder value
+}`;
+
 queries.kassenzeichenForPoint = `
 query kassenzeichenForPoint($x: Float!, $y: Float!) {
   kassenzeichen(
