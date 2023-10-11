@@ -52,6 +52,7 @@ import {
   getShowCurrentFeatureCollection,
   setShowCurrentFeatureCollection,
 } from "../../store/slices/mapping";
+import Settings from "./Settings";
 
 const navLinks = () => {
   const showSurfaceDetails = useSelector(getShowSurfaceDetails);
@@ -110,12 +111,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const links = navLinks();
   const location = useLocation();
   const showChat = useSelector(getShowChat);
-  const jwt = useSelector(getJWT);
   const prevSearches = useSelector(getPreviousSearches);
-  const syncKassenzeichen = useSelector(getSyncKassenzeichen);
-  const showCurrentFeatureCollection = useSelector(
-    getShowCurrentFeatureCollection
-  );
   const [inputValue, setInpuValue] = useState("");
   const [urlParams, setUrlParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
@@ -264,39 +260,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
           onClose={() => setDrawerOpen(false)}
           size="large"
         >
-          <div className="flex flex-col gap-10">
-            <div className="flex flex-col gap-2">
-              <h3>Allgemein</h3>
-              <div
-                className="flex items-center justify-between hover:bg-zinc-100 p-1 cursor-pointer"
-                onClick={() =>
-                  dispatch(setSyncKassenzeichen(!syncKassenzeichen))
-                }
-              >
-                <span>Kassenzeichen mit Java Anwendung synchronisieren</span>
-                <Switch className="w-fit" checked={syncKassenzeichen} />
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <h3>Karte</h3>
-              <div
-                className="flex items-center justify-between hover:bg-zinc-100 p-1 cursor-pointer"
-                onClick={() =>
-                  dispatch(
-                    setShowCurrentFeatureCollection(
-                      !showCurrentFeatureCollection
-                    )
-                  )
-                }
-              >
-                <span>Vordergrund anzeigen</span>
-                <Switch
-                  className="w-fit"
-                  checked={showCurrentFeatureCollection}
-                />
-              </div>
-            </div>
-          </div>
+          <Settings />
         </Drawer>
       </div>
     </header>
