@@ -1,6 +1,6 @@
 import "react-cismap/topicMaps.css";
 import "leaflet/dist/leaflet.css";
-import { Card } from "antd";
+import { Card, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
 import { flaechen } from "../../stories/_data/rathausKassenzeichenfeatureCollection";
@@ -28,9 +28,14 @@ import {
   setFrontenSelected,
   setGeneralGeometrySelected,
   setLeafletElement,
+  setShowBackground,
+  setShowCurrentFeatureCollection,
 } from "../../store/slices/mapping";
 import { useDispatch, useSelector } from "react-redux";
 import { ScaleControl } from "react-leaflet";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImage as solidImage } from "@fortawesome/free-solid-svg-icons";
+import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
 
 const mockExtractor = (input) => {
   return {
@@ -146,6 +151,44 @@ const Map = ({
       size="small"
       hoverable={false}
       title={<span className="text-lg">Karte</span>}
+      extra={
+        <div className="flex items-center gap-4">
+          <div className="relative flex items-center">
+            <Tooltip title="Hintergrund an/aus">
+              <FontAwesomeIcon
+                icon={solidImage}
+                className="h-6 cursor-pointer"
+                onClick={() => dispatch(setShowBackground(!showBackground))}
+              />
+            </Tooltip>
+            <div
+              className={`w-3 h-3 rounded-full bg-green-500 ${
+                showBackground ? "absolute" : "hidden"
+              } bottom-0 -right-1`}
+            />
+          </div>
+          <div className="relative flex items-center">
+            <Tooltip title="Vordergrund an/aus">
+              <FontAwesomeIcon
+                icon={regularImage}
+                className="h-6 cursor-pointer"
+                onClick={() =>
+                  dispatch(
+                    setShowCurrentFeatureCollection(
+                      !showCurrentFeatureCollection
+                    )
+                  )
+                }
+              />
+            </Tooltip>
+            <div
+              className={`w-3 h-3 rounded-full bg-green-500 ${
+                showCurrentFeatureCollection ? "absolute" : "hidden"
+              } bottom-0 -right-1`}
+            />
+          </div>
+        </div>
+      }
       style={{
         width: width,
         height: height,
