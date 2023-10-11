@@ -30,6 +30,7 @@ import {
 } from "../../store/slices/mapping";
 import { useDispatch, useSelector } from "react-redux";
 import { ScaleControl } from "react-leaflet";
+import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 
 const mockExtractor = (input) => {
   return {
@@ -45,6 +46,7 @@ const Map = ({
   width = 400,
   height = 500,
   children,
+  boundingBoxChangedHandler = () => {},
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -183,11 +185,16 @@ const Map = ({
           setUrlParams(newParams);
         }}
         boundingBoxChangedHandler={(boundingBox) => {
-          const bbPoly = createQueryGeomFromBB(boundingBox);
-          const zoom = refRoutedMap?.current?.leafletMap.viewport.zoom;
-
-          if (zoom >= 18.5) {
-            dispatch(searchForGeoFields(bbPoly));
+          boundingBoxChangedHandler(boundingBox);
+          try {
+            const bbPoly = createQueryGeomFromBB(boundingBox);
+            const area = getArea25832(bbPoly);
+            const maxAreaForSearch = 130000;
+            if (area < maxAreaForSearch) {
+              dispatch(searchForGeoFields(bbPoly));
+            }
+          } catch (e) {
+            console.log("error in boundingBoxChangedHandler", e);
           }
         }}
         ondblclick={(event) => {
