@@ -29,6 +29,7 @@ const PdfCreator = () => {
   const [orientation, setOrientation] = useState("optimal");
   const [drainEffectiveness, setDrainEffectiveness] = useState(false);
   const [fileName, setFileName] = useState("feb");
+  const [showError, setShowError] = useState(false);
   const dispatch = useDispatch();
   const febBlob = useSelector(getFebBlob);
   const isLoading = useSelector(getIsLoading);
@@ -37,10 +38,17 @@ const PdfCreator = () => {
   useEffect(() => {
     if (febBlob) {
       let link = document.createElement("a");
-      link.href = window.URL.createObjectURL(febBlob);
-      link.download = `${fileName}.pdf`;
-      document.body.appendChild(link);
-      link.click();
+      try {
+        link.href = window.URL.createObjectURL(febBlob);
+      } catch {
+        setShowError(true);
+      }
+
+      if (link.href) {
+        link.download = `${fileName}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+      }
       document.body.removeChild(link);
       dispatch(storeFebBlob(null));
     }
@@ -164,6 +172,11 @@ const PdfCreator = () => {
               Abflusswirksamkeiten ausfüllen
             </Checkbox>
           </ModalRow>
+          {showError && (
+            <p className="text-red-400 text-lg">
+              Fehler bei der Erzeugung des Reports
+            </p>
+          )}
         </div>
       </Modal>
     </>
