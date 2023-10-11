@@ -6,8 +6,7 @@ import React from "react";
 import getArea from "@turf/area";
 import { reproject } from "reproject";
 
-import { getMergedFlaeche, getCRsForFeature } from "./kassenzeichenHelper";
-import intersect from "@turf/intersect";
+// import { getMergedFlaeche, getCRsForFeature } from "./kassenzeichenHelper";
 import area from "@turf/area";
 
 export const projectionData = {

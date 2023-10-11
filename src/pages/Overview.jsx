@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Map from "../components/commons/Map";
 import General from "../components/overview/General";
 import Statistics from "../components/overview/Statistics";
@@ -26,10 +26,13 @@ import {
   getGeneralGeometryCollection,
 } from "../store/slices/mapping";
 import { getOverviewFeatureTypes } from "../store/slices/ui";
-import { convertLatLngToXY } from "../tools/mappingTools";
+import { convertLatLngToXY, createFeatureArray } from "../tools/mappingTools";
 import { useSearchParams } from "react-router-dom";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
+import GraphqlLayer from "../components/commons/GraphqlLayer";
 import { isEmpty } from "lodash";
+import { getJWT } from "../store/slices/auth";
+import { ENDPOINT, geoFieldsQuery } from "../constants/verdis";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -45,6 +48,7 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
     width: "100%",
     height: "100%",
   };
+  const [boundingBox, setBoundingBox] = useState(undefined);
   const kassenzeichen = useSelector(getKassenzeichen);
   const flaechenArray = useSelector(getFlaechenCollection);
   const frontenArray = useSelector(getFrontenCollection);
@@ -53,6 +57,8 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   const befreiungErlaubnisseArray = useSelector(
     getBefreiungErlaubnisCollection
   );
+
+  const jwt = useSelector(getJWT);
   const dispatch = useDispatch();
   const [urlParams, setUrlParams] = useSearchParams();
 
@@ -93,6 +99,9 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
               key={"overview.map"}
               width={"calc(100%-40px)"}
               height={"100%"}
+              boundingBoxChangedHandler={(bbox) => {
+                setBoundingBox(bbox);
+              }}
               dataIn={{
                 kassenzeichen,
                 flaechenArray,
@@ -118,10 +127,18 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
               }}
               extractor={mappingExtractor}
             >
-              <FeatureMapLayer
+              {/* <FeatureMapLayer
                 featureTypes={
                   isEmpty(kassenzeichen) ? ["flaeche"] : overviewFeatureTypes
                 }
+              /> */}
+              <GraphqlLayer
+                boundingBox={boundingBox}
+                jwt={jwt}
+                itemQuery={geoFieldsQuery}
+                featureFactory={createFeatureArray}
+                url={ENDPOINT}
+                maxArea={150000}
               />
             </Map>
           </div>
