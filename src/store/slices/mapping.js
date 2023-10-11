@@ -13,6 +13,7 @@ const initialState = {
   leafletElement: undefined,
   featureCollection: undefined,
   showCurrentFeatureCollection: true,
+  showBackground: true,
 };
 
 const slice = createSlice({
@@ -122,6 +123,10 @@ const slice = createSlice({
       state.showCurrentFeatureCollection = action.payload;
       return state;
     },
+    setShowBackground(state, action) {
+      state.showBackground = action.payload;
+      return state;
+    },
     clear(state) {
       state.flaechenCollection = undefined;
       state.frontenCollection = undefined;
@@ -146,6 +151,7 @@ export const {
   setLeafletElement,
   setFeatureCollection,
   setShowCurrentFeatureCollection,
+  setShowBackground,
   clear,
 } = slice.actions;
 
@@ -171,4 +177,8 @@ export const getFeatureCollection = (state) => {
 
 export const getShowCurrentFeatureCollection = (state) => {
   return state.mapping.showCurrentFeatureCollection;
+};
+
+export const getShowBackground = (state) => {
+  return state.mapping.showBackground;
 };

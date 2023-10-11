@@ -4,7 +4,9 @@ import {
   setSyncKassenzeichen,
 } from "../../store/slices/settings";
 import {
+  getShowBackground,
   getShowCurrentFeatureCollection,
+  setShowBackground,
   setShowCurrentFeatureCollection,
 } from "../../store/slices/mapping";
 import { Switch } from "antd";
@@ -27,6 +29,7 @@ const Settings = () => {
   const showCurrentFeatureCollection = useSelector(
     getShowCurrentFeatureCollection
   );
+  const showBackground = useSelector(getShowBackground);
 
   return (
     <div className="flex flex-col gap-10">
@@ -50,6 +53,12 @@ const Settings = () => {
           title="Vordergrund anzeigen"
         >
           <Switch className="w-fit" checked={showCurrentFeatureCollection} />
+        </SettingsRow>
+        <SettingsRow
+          onClick={() => dispatch(setShowBackground(!showBackground))}
+          title="Hintergrund anzeigen"
+        >
+          <Switch className="w-fit" checked={showBackground} />
         </SettingsRow>
       </div>
     </div>
