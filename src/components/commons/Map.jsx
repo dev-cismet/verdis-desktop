@@ -22,6 +22,7 @@ import {
   storeFrontenId,
 } from "../../store/slices/search";
 import {
+  getShowBackground,
   getShowCurrentFeatureCollection,
   setFlaechenSelected,
   setFrontenSelected,
@@ -53,6 +54,7 @@ const Map = ({
   const showCurrentFeatureCollection = useSelector(
     getShowCurrentFeatureCollection
   );
+  const showBackground = useSelector(getShowBackground);
 
   const data = extractor(dataIn);
   const padding = 5;
@@ -157,7 +159,7 @@ const Map = ({
         editable={false}
         style={mapStyle}
         key={"leafletRoutedMap"}
-        backgroundlayers={_backgroundLayers}
+        backgroundlayers={showBackground ? _backgroundLayers : null}
         urlSearchParams={urlSearchParams}
         layers=""
         referenceSystem={MappingConstants.crs3857}
@@ -255,7 +257,7 @@ const Map = ({
               }
             />
           )}
-        {children}
+        {showBackground && children}
       </RoutedMap>
     </Card>
   );
