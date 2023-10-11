@@ -22,12 +22,13 @@ import {
   storeFrontenId,
 } from "../../store/slices/search";
 import {
+  getShowCurrentFeatureCollection,
   setFlaechenSelected,
   setFrontenSelected,
   setGeneralGeometrySelected,
   setLeafletElement,
 } from "../../store/slices/mapping";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ScaleControl } from "react-leaflet";
 
 const mockExtractor = (input) => {
@@ -49,6 +50,9 @@ const Map = ({
   const dispatch = useDispatch();
   const [urlParams, setUrlParams] = useSearchParams();
   const [fallback, setFallback] = useState({});
+  const showCurrentFeatureCollection = useSelector(
+    getShowCurrentFeatureCollection
+  );
 
   const data = extractor(dataIn);
   const padding = 5;
@@ -194,61 +198,63 @@ const Map = ({
         }}
       >
         <ScaleControl {...defaults} position="topleft" />
-        {data.featureCollection && data.featureCollection.length > 0 && (
-          <FeatureCollectionDisplay
-            featureCollection={data.featureCollection}
-            style={data.styler}
-            markerStyle={data.markerStyle}
-            showMarkerCollection={data.showMarkerCollection || false}
-            featureClickHandler={
-              data.featureClickHandler ||
-              ((e) => {
-                const feature = e.target.feature;
-                if (feature.selected) {
-                  const map = refRoutedMap.current.leafletMap.leafletElement;
-                  const bb = getBoundsForFeatureArray([feature]);
-                  const { center, zoom } = getCenterAndZoomForBounds(map, bb);
-                  setUrlParams((prev) => {
-                    prev.set("zoom", zoom);
-                    prev.set("lat", center.lat);
-                    prev.set("lng", center.lng);
-                    return prev;
-                  });
-                } else {
-                  switch (feature.featureType) {
-                    case "flaeche": {
-                      dispatch(storeFlaechenId(feature.id));
-                      dispatch(setFlaechenSelected({ id: feature.id }));
+        {data.featureCollection &&
+          data.featureCollection.length > 0 &&
+          showCurrentFeatureCollection && (
+            <FeatureCollectionDisplay
+              featureCollection={data.featureCollection}
+              style={data.styler}
+              markerStyle={data.markerStyle}
+              showMarkerCollection={data.showMarkerCollection || false}
+              featureClickHandler={
+                data.featureClickHandler ||
+                ((e) => {
+                  const feature = e.target.feature;
+                  if (feature.selected) {
+                    const map = refRoutedMap.current.leafletMap.leafletElement;
+                    const bb = getBoundsForFeatureArray([feature]);
+                    const { center, zoom } = getCenterAndZoomForBounds(map, bb);
+                    setUrlParams((prev) => {
+                      prev.set("zoom", zoom);
+                      prev.set("lat", center.lat);
+                      prev.set("lng", center.lng);
+                      return prev;
+                    });
+                  } else {
+                    switch (feature.featureType) {
+                      case "flaeche": {
+                        dispatch(storeFlaechenId(feature.id));
+                        dispatch(setFlaechenSelected({ id: feature.id }));
 
-                      break;
-                    }
-                    case "front": {
-                      dispatch(storeFrontenId(feature.properties.id));
-                      dispatch(
-                        setFrontenSelected({ id: feature.properties.id })
-                      );
-                      break;
-                    }
-                    case "general": {
-                      dispatch(
-                        setGeneralGeometrySelected({
-                          id: feature.properties.id,
-                        })
-                      );
-                      break;
-                    }
-                    default: {
-                      console.log(
-                        "no featureClickHandler set",
-                        e.target.feature
-                      );
+                        break;
+                      }
+                      case "front": {
+                        dispatch(storeFrontenId(feature.properties.id));
+                        dispatch(
+                          setFrontenSelected({ id: feature.properties.id })
+                        );
+                        break;
+                      }
+                      case "general": {
+                        dispatch(
+                          setGeneralGeometrySelected({
+                            id: feature.properties.id,
+                          })
+                        );
+                        break;
+                      }
+                      default: {
+                        console.log(
+                          "no featureClickHandler set",
+                          e.target.feature
+                        );
+                      }
                     }
                   }
-                }
-              })
-            }
-          />
-        )}
+                })
+              }
+            />
+          )}
         {children}
       </RoutedMap>
     </Card>

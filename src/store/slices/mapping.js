@@ -12,6 +12,7 @@ const initialState = {
   befreiungErlaubnisCollection: undefined,
   leafletElement: undefined,
   featureCollection: undefined,
+  showCurrentFeatureCollection: true,
 };
 
 const slice = createSlice({
@@ -117,6 +118,10 @@ const slice = createSlice({
       state.featureCollection = action.payload;
       return state;
     },
+    setShowCurrentFeatureCollection(state, action) {
+      state.showCurrentFeatureCollection = action.payload;
+      return state;
+    },
     clear(state) {
       state.flaechenCollection = undefined;
       state.frontenCollection = undefined;
@@ -140,6 +145,7 @@ export const {
   setBefreiungErlaubnisCollection,
   setLeafletElement,
   setFeatureCollection,
+  setShowCurrentFeatureCollection,
   clear,
 } = slice.actions;
 
@@ -161,4 +167,8 @@ export const getBefreiungErlaubnisCollection = (state) => {
 
 export const getFeatureCollection = (state) => {
   return state.mapping.featureCollection;
+};
+
+export const getShowCurrentFeatureCollection = (state) => {
+  return state.mapping.showCurrentFeatureCollection;
 };

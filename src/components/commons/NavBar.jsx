@@ -48,6 +48,10 @@ import {
 } from "../../store/slices/settings";
 import { useKassenzeichenSearch } from "../../hooks/useKassenzeichenSearch";
 import PdfCreator from "../ui/PdfCreator";
+import {
+  getShowCurrentFeatureCollection,
+  setShowCurrentFeatureCollection,
+} from "../../store/slices/mapping";
 
 const navLinks = () => {
   const showSurfaceDetails = useSelector(getShowSurfaceDetails);
@@ -109,6 +113,9 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const jwt = useSelector(getJWT);
   const prevSearches = useSelector(getPreviousSearches);
   const syncKassenzeichen = useSelector(getSyncKassenzeichen);
+  const showCurrentFeatureCollection = useSelector(
+    getShowCurrentFeatureCollection
+  );
   const [inputValue, setInpuValue] = useState("");
   const [urlParams, setUrlParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
@@ -270,7 +277,25 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
                 <Switch className="w-fit" checked={syncKassenzeichen} />
               </div>
             </div>
-            <h3>Karte</h3>
+            <div className="flex flex-col gap-2">
+              <h3>Karte</h3>
+              <div
+                className="flex items-center justify-between hover:bg-zinc-100 p-1 cursor-pointer"
+                onClick={() =>
+                  dispatch(
+                    setShowCurrentFeatureCollection(
+                      !showCurrentFeatureCollection
+                    )
+                  )
+                }
+              >
+                <span>Vordergrund anzeigen</span>
+                <Switch
+                  className="w-fit"
+                  checked={showCurrentFeatureCollection}
+                />
+              </div>
+            </div>
           </div>
         </Drawer>
       </div>
