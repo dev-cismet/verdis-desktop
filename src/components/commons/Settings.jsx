@@ -9,6 +9,18 @@ import {
 } from "../../store/slices/mapping";
 import { Switch } from "antd";
 
+const SettingsRow = ({ onClick, title, children }) => {
+  return (
+    <div
+      className="flex items-center justify-between hover:bg-zinc-100 p-1 cursor-pointer"
+      onClick={onClick}
+    >
+      <span>{title}</span>
+      {children}
+    </div>
+  );
+};
+
 const Settings = () => {
   const dispatch = useDispatch();
   const syncKassenzeichen = useSelector(getSyncKassenzeichen);
@@ -20,27 +32,25 @@ const Settings = () => {
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-2">
         <h3>Allgemein</h3>
-        <div
-          className="flex items-center justify-between hover:bg-zinc-100 p-1 cursor-pointer"
+        <SettingsRow
           onClick={() => dispatch(setSyncKassenzeichen(!syncKassenzeichen))}
+          title="Kassenzeichen mit Java Anwendung synchronisieren"
         >
-          <span>Kassenzeichen mit Java Anwendung synchronisieren</span>
           <Switch className="w-fit" checked={syncKassenzeichen} />
-        </div>
+        </SettingsRow>
       </div>
       <div className="flex flex-col gap-2">
         <h3>Karte</h3>
-        <div
-          className="flex items-center justify-between hover:bg-zinc-100 p-1 cursor-pointer"
+        <SettingsRow
           onClick={() =>
             dispatch(
               setShowCurrentFeatureCollection(!showCurrentFeatureCollection)
             )
           }
+          title="Vordergrund anzeigen"
         >
-          <span>Vordergrund anzeigen</span>
           <Switch className="w-fit" checked={showCurrentFeatureCollection} />
-        </div>
+        </SettingsRow>
       </div>
     </div>
   );
