@@ -9,10 +9,16 @@ export const generalExtractor = (kassenzeichen, aenderungsAnfrage) => {
   const bemerkungsObject = kassenzeichen?.bemerkung;
   let formattedBemerkungen;
   if (bemerkungsObject) {
-    const bemerkungen = JSON.parse(bemerkungsObject).bemerkungen.map(
-      (bemerkung) => bemerkung.bemerkung
-    );
-    formattedBemerkungen = bemerkungen.join("\n");
+    try {
+      const bemerkungen = JSON.parse(bemerkungsObject).bemerkungen.map(
+        (bemerkung) => bemerkung.bemerkung
+      );
+      formattedBemerkungen = bemerkungen.join("\n");
+    } catch (error) {
+      console.log("error", error);
+
+      formattedBemerkungen = bemerkungsObject;
+    }
   }
   return {
     date: kassenzeichen?.datum_erfassung
