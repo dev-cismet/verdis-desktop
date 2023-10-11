@@ -1,11 +1,15 @@
 import { useSelector } from "react-redux";
-import { getFeatureCollection } from "../../store/slices/mapping";
+import {
+  getFeatureCollection,
+  getShowCurrentFeatureCollection,
+} from "../../store/slices/mapping";
 import { FeatureCollectionDisplay } from "react-cismap";
 import Toolbar from "./Toolbar";
 import { useState } from "react";
 
 const FeatureMapLayer = ({ featureTypes }) => {
   const featureCollection = useSelector(getFeatureCollection);
+  const showForeGround = useSelector(getShowCurrentFeatureCollection);
   const filteredCollection = featureCollection?.filter((item) =>
     featureTypes.includes(item.featureType)
   );
@@ -29,7 +33,7 @@ const FeatureMapLayer = ({ featureTypes }) => {
       {filteredCollection && (
         <>
           <FeatureCollectionDisplay
-            key={"FlaechenLayer"}
+            key={"FlaechenLayer-" + showForeGround}
             style={(feature) => {
               return {
                 color: "#00000040", // stroke
