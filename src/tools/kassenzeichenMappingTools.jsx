@@ -6,7 +6,7 @@ import React from "react";
 import getArea from "@turf/area";
 import { reproject } from "reproject";
 
-import { getMergedFlaeche, getCRsForFeature } from "./kassenzeichenHelper";
+// import { getMergedFlaeche, getCRsForFeature } from "./kassenzeichenHelper"; // commented out. only neede in the case of editing
 import intersect from "@turf/intersect";
 import area from "@turf/area";
 
