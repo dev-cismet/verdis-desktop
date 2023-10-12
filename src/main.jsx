@@ -27,6 +27,7 @@ import store from "./store";
 import { checkJWTValidation, getJWT } from "./store/slices/auth";
 import TopicMapContextProvider from "react-cismap/contexts/TopicMapContextProvider";
 import {
+  additionalLayerConfiguration,
   backgroundConfigurations,
   backgroundModes,
   extendBaseLayerConf,
@@ -157,6 +158,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               backgroundConfigurations={backgroundConfigurations}
               baseLayerConf={baseLayerConf}
               offlineCacheConfig={offlineConfig}
+              additionalLayerConfiguration={additionalLayerConfiguration}
             >
               <RouterProvider router={router} />
             </TopicMapContextProvider>

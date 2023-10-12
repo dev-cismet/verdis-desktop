@@ -39,6 +39,8 @@ import { ScaleControl } from "react-leaflet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage as solidImage } from "@fortawesome/free-solid-svg-icons";
 import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
+import getLayers from "react-cismap/tools/layerFactory";
+import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
 
 const mockExtractor = (input) => {
   return {
@@ -200,10 +202,58 @@ const Map = ({
             <Tooltip title="Hintergrund an/aus">
               <Button
                 onClick={() => {
-                  setSelectedBackground("mix");
+                  setSelectedBackground("default");
                 }}
               >
                 4
+              </Button>
+            </Tooltip>
+          </div>
+          <div className="relative flex items-center">
+            <Tooltip title="Hintergrund an/aus">
+              <Button
+                onClick={() => {
+                  if (activeAdditionalLayerKeys?.includes("nrwAlkisGebaeude")) {
+                    // remove it from the array
+
+                    setActiveAdditionalLayerKeys(
+                      activeAdditionalLayerKeys.filter(
+                        (item) => item !== "nrwAlkisGebaeude"
+                      )
+                    );
+                  } else {
+                    setActiveAdditionalLayerKeys([
+                      ...(activeAdditionalLayerKeys || []),
+                      "nrwAlkisGebaeude",
+                    ]);
+                  }
+                }}
+              >
+                Gebäude
+              </Button>
+            </Tooltip>
+          </div>
+          <div className="relative flex items-center">
+            <Tooltip title="Hintergrund an/aus">
+              <Button
+                onClick={() => {
+                  if (activeAdditionalLayerKeys?.includes("nrwAlkisFstck")) {
+                    // remove it from the array
+
+                    setActiveAdditionalLayerKeys(
+                      activeAdditionalLayerKeys.filter(
+                        (item) => item !== "nrwAlkisFstck"
+                      )
+                    );
+                  } else {
+                    setActiveAdditionalLayerKeys([
+                      ...(activeAdditionalLayerKeys || []),
+                      "nrwAlkisFstck",
+                    ]);
+                  }
+                }}
+              >
+                Flurstücke
               </Button>
             </Tooltip>
           </div>
@@ -355,7 +405,21 @@ const Map = ({
               }
             />
           )}
+
         {children}
+
+        {activeAdditionalLayerKeys !== undefined &&
+          additionalLayerConfiguration !== undefined &&
+          activeAdditionalLayerKeys?.length > 0 &&
+          activeAdditionalLayerKeys.map((activekey, index) => {
+            const layerConf = additionalLayerConfiguration[activekey];
+            if (layerConf?.layer) {
+              return layerConf.layer;
+            } else if (layerConf?.layerkey) {
+              const layers = getLayers(layerConf.layerkey);
+              return layers;
+            }
+          })}
       </RoutedMap>
     </Card>
   );
