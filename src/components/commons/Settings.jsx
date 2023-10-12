@@ -22,17 +22,52 @@ const SettingsRow = ({ onClick, title, children }) => {
   );
 };
 
+const OptionalLayerRow = ({ title, value }) => {
+  const { activeAdditionalLayerKeys } = useContext(TopicMapStylingContext);
+
+  const { setActiveAdditionalLayerKeys } = useContext(
+    TopicMapStylingDispatchContext
+  );
+
+  const changeActiveAdditionalLayer = (value) => {
+    if (activeAdditionalLayerKeys?.includes(value)) {
+      // remove it from the array
+
+      setActiveAdditionalLayerKeys(
+        activeAdditionalLayerKeys.filter((item) => item !== value)
+      );
+    } else {
+      setActiveAdditionalLayerKeys([
+        ...(activeAdditionalLayerKeys || []),
+        value,
+      ]);
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-4 hover:bg-zinc-100 p-1">
+      <Checkbox
+        checked={activeAdditionalLayerKeys?.includes(value)}
+        onClick={() => changeActiveAdditionalLayer(value)}
+      />
+      <span
+        className="w-1/4 cursor-pointer"
+        onClick={() => changeActiveAdditionalLayer(value)}
+      >
+        {title}
+      </span>
+      <Slider defaultValue={20} disabled={false} className="w-full" />
+    </div>
+  );
+};
+
 const Settings = () => {
   const dispatch = useDispatch();
   const syncKassenzeichen = useSelector(getSyncKassenzeichen);
 
-  const { activeAdditionalLayerKeys, selectedBackground } = useContext(
-    TopicMapStylingContext
-  );
+  const { selectedBackground } = useContext(TopicMapStylingContext);
 
-  const { setActiveAdditionalLayerKeys, setSelectedBackground } = useContext(
-    TopicMapStylingDispatchContext
-  );
+  const { setSelectedBackground } = useContext(TopicMapStylingDispatchContext);
 
   return (
     <div className="flex flex-col gap-10">
@@ -48,56 +83,8 @@ const Settings = () => {
       <div className="flex flex-col gap-2">
         <h3>Karte</h3>
         <h4>Optionale Layer</h4>
-        <div
-          className="flex items-center gap-4 hover:bg-zinc-100 p-1 cursor-pointer"
-          onClick={() => {
-            if (activeAdditionalLayerKeys?.includes("nrwAlkisGebaeude")) {
-              // remove it from the array
-
-              setActiveAdditionalLayerKeys(
-                activeAdditionalLayerKeys.filter(
-                  (item) => item !== "nrwAlkisGebaeude"
-                )
-              );
-            } else {
-              setActiveAdditionalLayerKeys([
-                ...(activeAdditionalLayerKeys || []),
-                "nrwAlkisGebaeude",
-              ]);
-            }
-          }}
-        >
-          <Checkbox
-            checked={activeAdditionalLayerKeys?.includes("nrwAlkisGebaeude")}
-          />
-          <span className="w-1/4">Gebäude</span>
-          <Slider defaultValue={20} disabled={false} className="w-full" />
-        </div>
-        <div
-          className="flex items-center gap-4 hover:bg-zinc-100 p-1 cursor-pointer"
-          onClick={() => {
-            if (activeAdditionalLayerKeys?.includes("nrwAlkisFstck")) {
-              // remove it from the array
-
-              setActiveAdditionalLayerKeys(
-                activeAdditionalLayerKeys.filter(
-                  (item) => item !== "nrwAlkisFstck"
-                )
-              );
-            } else {
-              setActiveAdditionalLayerKeys([
-                ...(activeAdditionalLayerKeys || []),
-                "nrwAlkisFstck",
-              ]);
-            }
-          }}
-        >
-          <Checkbox
-            checked={activeAdditionalLayerKeys?.includes("nrwAlkisFstck")}
-          />
-          <span className="w-1/4">Flurstücke</span>
-          <Slider defaultValue={20} disabled={false} className="w-full" />
-        </div>
+        <OptionalLayerRow title="Gebäude" value="nrwAlkisGebaeude" />
+        <OptionalLayerRow title="Flurstücke" value="nrwAlkisFstck" />
         <h4>Hintergrund</h4>
         <Radio.Group
           onChange={(e) => setSelectedBackground(e.target.value)}
@@ -107,7 +94,7 @@ const Settings = () => {
             <Radio value="default">Standard</Radio>
             <Radio value="stadtplan">Stadtplan</Radio>
             <Radio value="lbk">Lbk</Radio>
-            <Radio value="ortho">Ortho</Radio>
+            <Radio value="ortho">Orthofoto</Radio>
           </div>
         </Radio.Group>
       </div>
