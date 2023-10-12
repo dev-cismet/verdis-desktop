@@ -1,6 +1,6 @@
 import "react-cismap/topicMaps.css";
 import "leaflet/dist/leaflet.css";
-import { Card, Tooltip } from "antd";
+import { Button, Card, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
 import { flaechen } from "../../stories/_data/rathausKassenzeichenfeatureCollection";
@@ -9,7 +9,10 @@ import {
   MappingConstants,
   RoutedMap,
 } from "react-cismap";
-import { TopicMapStylingContext } from "react-cismap/contexts/TopicMapStylingContextProvider";
+import {
+  TopicMapStylingContext,
+  TopicMapStylingDispatchContext,
+} from "react-cismap/contexts/TopicMapStylingContextProvider";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import {
   createQueryGeomFromBB,
@@ -36,6 +39,8 @@ import { ScaleControl } from "react-leaflet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage as solidImage } from "@fortawesome/free-solid-svg-icons";
 import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
+import getLayers from "react-cismap/tools/layerFactory";
+import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
 
 const mockExtractor = (input) => {
   return {
@@ -75,6 +80,13 @@ const Map = ({
     additionalLayerConfiguration,
     activeAdditionalLayerKeys,
   } = useContext(TopicMapStylingContext);
+
+  const {
+    setSelectedBackground,
+    setNamedMapStyle,
+    setActiveAdditionalLayerKeys,
+  } = useContext(TopicMapStylingDispatchContext);
+
   let backgroundsFromMode;
   const browserlocation = useLocation();
   function paramsToObject(entries) {
@@ -300,7 +312,21 @@ const Map = ({
               }
             />
           )}
+
         {children}
+
+        {activeAdditionalLayerKeys !== undefined &&
+          additionalLayerConfiguration !== undefined &&
+          activeAdditionalLayerKeys?.length > 0 &&
+          activeAdditionalLayerKeys.map((activekey, index) => {
+            const layerConf = additionalLayerConfiguration[activekey];
+            if (layerConf?.layer) {
+              return layerConf.layer;
+            } else if (layerConf?.layerkey) {
+              const layers = getLayers(layerConf.layerkey);
+              return layers;
+            }
+          })}
       </RoutedMap>
     </Card>
   );

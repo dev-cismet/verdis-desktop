@@ -1,3 +1,5 @@
+import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
+
 export const backgrounds = {
   stadtplan: "vectorCityMap",
   lbk: "lbk",
@@ -81,6 +83,11 @@ export const backgroundConfigurations = {
     src: "/images/rain-hazard-map-bg/ortho.png",
     title: "Luftbildkarte",
   },
+  mix: {
+    layerkey: "trueOrtho2022@70|cismetLight",
+    src: "/images/rain-hazard-map-bg/ortho.png",
+    title: "Luftbildkarte",
+  },
   ortho: {
     layerkey: "trueOrtho2022@95",
     src: "/images/rain-hazard-map-bg/ortho.png",
@@ -134,6 +141,52 @@ export const backgroundConfigurations = {
   },
 };
 
+export const additionalLayerConfiguration = {
+  hillshade: {
+    title: "Schummerung",
+    initialActive: false,
+    layerkey: "hillshade@20",
+    pane: "additionalLayers1",
+  },
+
+  nrwAlkisFstck: {
+    title: <span>NRW ALKIS Gebäude</span>,
+    initialActive: false,
+    layer: (
+      <StyledWMSTileLayer
+        key={"nrwAlkisFstck"}
+        url="https://www.wms.nrw.de/geobasis/wms_nw_alkis"
+        layers="adv_alkis_flurstuecke"
+        format="image/png"
+        styles="Farbe"
+        tiled="true"
+        transparent="true"
+        pane="additionalLayers0"
+        maxZoom={19}
+        opacity={0.7}
+      />
+    ),
+  },
+  nrwAlkisGebaeude: {
+    title: <span>NRW ALKIS Gebäude</span>,
+    initialActive: false,
+    layer: (
+      <StyledWMSTileLayer
+        key={"nrwAlkisGebaeude"}
+        url="https://www.wms.nrw.de/geobasis/wms_nw_alkis"
+        layers="adv_alkis_gebaeude"
+        format="image/png"
+        styles="Farbe"
+        tiled="true"
+        transparent="true"
+        pane="additionalLayers1"
+        maxZoom={19}
+        opacity={0.7}
+      />
+    ),
+  },
+};
+
 export const backgroundModes = [
   {
     title: "Stadtplan (bunt)",
@@ -144,6 +197,7 @@ export const backgroundModes = [
 
   { title: "Luftbildkarte", mode: "default", layerKey: "lbk" },
   { title: "Luftbild", mode: "default", layerKey: "ortho" },
+  { title: "mix", mode: "default", layerKey: "mix" },
 ];
 
 export const extendBaseLayerConf = (baseLayerConf) => {
@@ -207,5 +261,6 @@ export const extendBaseLayerConf = (baseLayerConf) => {
       textOpacity: 1,
     };
   }
+
   return baseLayerConf;
 };

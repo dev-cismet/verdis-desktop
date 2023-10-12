@@ -3,13 +3,12 @@ import {
   getSyncKassenzeichen,
   setSyncKassenzeichen,
 } from "../../store/slices/settings";
+import { Checkbox, Radio, Slider, Switch } from "antd";
+import { useContext } from "react";
 import {
-  getShowBackground,
-  getShowCurrentFeatureCollection,
-  setShowBackground,
-  setShowCurrentFeatureCollection,
-} from "../../store/slices/mapping";
-import { Switch } from "antd";
+  TopicMapStylingContext,
+  TopicMapStylingDispatchContext,
+} from "react-cismap/contexts/TopicMapStylingContextProvider";
 
 const SettingsRow = ({ onClick, title, children }) => {
   return (
@@ -23,13 +22,52 @@ const SettingsRow = ({ onClick, title, children }) => {
   );
 };
 
+const OptionalLayerRow = ({ title, value }) => {
+  const { activeAdditionalLayerKeys } = useContext(TopicMapStylingContext);
+
+  const { setActiveAdditionalLayerKeys } = useContext(
+    TopicMapStylingDispatchContext
+  );
+
+  const changeActiveAdditionalLayer = (value) => {
+    if (activeAdditionalLayerKeys?.includes(value)) {
+      // remove it from the array
+
+      setActiveAdditionalLayerKeys(
+        activeAdditionalLayerKeys.filter((item) => item !== value)
+      );
+    } else {
+      setActiveAdditionalLayerKeys([
+        ...(activeAdditionalLayerKeys || []),
+        value,
+      ]);
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-4 hover:bg-zinc-100 p-1">
+      <Checkbox
+        checked={activeAdditionalLayerKeys?.includes(value)}
+        onClick={() => changeActiveAdditionalLayer(value)}
+      />
+      <span
+        className="w-1/4 cursor-pointer"
+        onClick={() => changeActiveAdditionalLayer(value)}
+      >
+        {title}
+      </span>
+      <Slider defaultValue={20} disabled={false} className="w-full" />
+    </div>
+  );
+};
+
 const Settings = () => {
   const dispatch = useDispatch();
   const syncKassenzeichen = useSelector(getSyncKassenzeichen);
-  const showCurrentFeatureCollection = useSelector(
-    getShowCurrentFeatureCollection
-  );
-  const showBackground = useSelector(getShowBackground);
+
+  const { selectedBackground } = useContext(TopicMapStylingContext);
+
+  const { setSelectedBackground } = useContext(TopicMapStylingDispatchContext);
 
   return (
     <div className="flex flex-col gap-10">
@@ -44,22 +82,21 @@ const Settings = () => {
       </div>
       <div className="flex flex-col gap-2">
         <h3>Karte</h3>
-        <SettingsRow
-          onClick={() =>
-            dispatch(
-              setShowCurrentFeatureCollection(!showCurrentFeatureCollection)
-            )
-          }
-          title="Vordergrund anzeigen"
+        <h4>Optionale Layer</h4>
+        <OptionalLayerRow title="Gebäude" value="nrwAlkisGebaeude" />
+        <OptionalLayerRow title="Flurstücke" value="nrwAlkisFstck" />
+        <h4>Hintergrund</h4>
+        <Radio.Group
+          onChange={(e) => setSelectedBackground(e.target.value)}
+          value={selectedBackground}
         >
-          <Switch className="w-fit" checked={showCurrentFeatureCollection} />
-        </SettingsRow>
-        <SettingsRow
-          onClick={() => dispatch(setShowBackground(!showBackground))}
-          title="Hintergrund anzeigen"
-        >
-          <Switch className="w-fit" checked={showBackground} />
-        </SettingsRow>
+          <div className="flex flex-col gap-2">
+            <Radio value="default">Standard</Radio>
+            <Radio value="stadtplan">Stadtplan</Radio>
+            <Radio value="lbk">Lbk</Radio>
+            <Radio value="ortho">Orthofoto</Radio>
+          </div>
+        </Radio.Group>
       </div>
     </div>
   );
