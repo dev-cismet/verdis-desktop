@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import {
   getFeatureCollection,
+  getShowBackground,
   getShowCurrentFeatureCollection,
 } from "../../store/slices/mapping";
 import { FeatureCollectionDisplay } from "react-cismap";
@@ -10,6 +11,7 @@ import { useState } from "react";
 const FeatureMapLayer = ({ featureTypes }) => {
   const featureCollection = useSelector(getFeatureCollection);
   const showForeGround = useSelector(getShowCurrentFeatureCollection);
+  const showBackGround = useSelector(getShowBackground);
   const filteredCollection = featureCollection?.filter((item) =>
     featureTypes.includes(item.featureType)
   );
@@ -36,8 +38,8 @@ const FeatureMapLayer = ({ featureTypes }) => {
             key={"FlaechenLayer-" + showForeGround}
             style={(feature) => {
               return {
-                color: "#00000040", // stroke
-                fillColor: "#00000020", //fill
+                color: showBackGround ? "#00000040" : "#00000000", // stroke
+                fillColor: showBackGround ? "#00000020" : "#00000000", //fill
                 weight:
                   feature?.id === hoveredFeature?.id
                     ? feature.weight + 2
