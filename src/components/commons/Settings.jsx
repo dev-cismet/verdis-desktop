@@ -26,9 +26,11 @@ const Settings = () => {
   const dispatch = useDispatch();
   const syncKassenzeichen = useSelector(getSyncKassenzeichen);
 
-  const { activeAdditionalLayerKeys } = useContext(TopicMapStylingContext);
+  const { activeAdditionalLayerKeys, selectedBackground } = useContext(
+    TopicMapStylingContext
+  );
 
-  const { setActiveAdditionalLayerKeys } = useContext(
+  const { setActiveAdditionalLayerKeys, setSelectedBackground } = useContext(
     TopicMapStylingDispatchContext
   );
 
@@ -97,12 +99,15 @@ const Settings = () => {
             <Slider defaultValue={20} disabled={false} className="w-3/4" />
           </div>
         </SettingsRow>
-        <Radio.Group>
+        <Radio.Group
+          onChange={(e) => setSelectedBackground(e.target.value)}
+          value={selectedBackground}
+        >
           <div className="flex flex-col gap-2">
-            <Radio>1</Radio>
-            <Radio>2</Radio>
-            <Radio>3</Radio>
-            <Radio>4</Radio>
+            <Radio value="stadtplan">Stadtplan</Radio>
+            <Radio value="lbk">Lbk</Radio>
+            <Radio value="ortho">Ortho</Radio>
+            <Radio value="default">Standard</Radio>
           </div>
         </Radio.Group>
       </div>
