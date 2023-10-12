@@ -47,8 +47,9 @@ const Settings = () => {
       </div>
       <div className="flex flex-col gap-2">
         <h3>Karte</h3>
-        <SettingsRow
-          title="Gebäude"
+        <h4>Optionale Layer</h4>
+        <div
+          className="flex items-center gap-4 hover:bg-zinc-100 p-1 cursor-pointer"
           onClick={() => {
             if (activeAdditionalLayerKeys?.includes("nrwAlkisGebaeude")) {
               // remove it from the array
@@ -66,15 +67,14 @@ const Settings = () => {
             }
           }}
         >
-          <div className="w-10/12 flex justify-between items-center">
-            <Checkbox
-              checked={activeAdditionalLayerKeys?.includes("nrwAlkisGebaeude")}
-            />
-            <Slider defaultValue={20} disabled={false} className="w-3/4" />
-          </div>
-        </SettingsRow>
-        <SettingsRow
-          title="Flurstücke"
+          <Checkbox
+            checked={activeAdditionalLayerKeys?.includes("nrwAlkisGebaeude")}
+          />
+          <span className="w-1/4">Gebäude</span>
+          <Slider defaultValue={20} disabled={false} className="w-full" />
+        </div>
+        <div
+          className="flex items-center gap-4 hover:bg-zinc-100 p-1 cursor-pointer"
           onClick={() => {
             if (activeAdditionalLayerKeys?.includes("nrwAlkisFstck")) {
               // remove it from the array
@@ -92,22 +92,22 @@ const Settings = () => {
             }
           }}
         >
-          <div className="w-10/12 flex justify-between items-center">
-            <Checkbox
-              checked={activeAdditionalLayerKeys?.includes("nrwAlkisFstck")}
-            />
-            <Slider defaultValue={20} disabled={false} className="w-3/4" />
-          </div>
-        </SettingsRow>
+          <Checkbox
+            checked={activeAdditionalLayerKeys?.includes("nrwAlkisFstck")}
+          />
+          <span className="w-1/4">Flurstücke</span>
+          <Slider defaultValue={20} disabled={false} className="w-full" />
+        </div>
+        <h4>Hintergrund</h4>
         <Radio.Group
           onChange={(e) => setSelectedBackground(e.target.value)}
           value={selectedBackground}
         >
           <div className="flex flex-col gap-2">
+            <Radio value="default">Standard</Radio>
             <Radio value="stadtplan">Stadtplan</Radio>
             <Radio value="lbk">Lbk</Radio>
             <Radio value="ortho">Ortho</Radio>
-            <Radio value="default">Standard</Radio>
           </div>
         </Radio.Group>
       </div>
