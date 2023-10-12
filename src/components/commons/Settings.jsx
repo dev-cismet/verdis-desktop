@@ -45,7 +45,7 @@ const OptionalLayerRow = ({ title, value }) => {
   };
 
   return (
-    <div className="flex items-center gap-4 hover:bg-zinc-100 p-1">
+    <div className="flex items-center gap-2 hover:bg-zinc-100 p-1">
       <Checkbox
         checked={activeAdditionalLayerKeys?.includes(value)}
         onClick={() => changeActiveAdditionalLayer(value)}
@@ -90,7 +90,7 @@ const Settings = () => {
           onChange={(e) => setSelectedBackground(e.target.value)}
           value={selectedBackground}
         >
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 p-1">
             <Radio value="default">Standard</Radio>
             <Radio value="stadtplan">Stadtplan</Radio>
             <Radio value="lbk">Lbk</Radio>
