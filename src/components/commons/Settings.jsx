@@ -3,13 +3,12 @@ import {
   getSyncKassenzeichen,
   setSyncKassenzeichen,
 } from "../../store/slices/settings";
+import { Checkbox, Radio, Slider, Switch } from "antd";
+import { useContext } from "react";
 import {
-  getShowBackground,
-  getShowCurrentFeatureCollection,
-  setShowBackground,
-  setShowCurrentFeatureCollection,
-} from "../../store/slices/mapping";
-import { Switch } from "antd";
+  TopicMapStylingContext,
+  TopicMapStylingDispatchContext,
+} from "react-cismap/contexts/TopicMapStylingContextProvider";
 
 const SettingsRow = ({ onClick, title, children }) => {
   return (
@@ -26,10 +25,12 @@ const SettingsRow = ({ onClick, title, children }) => {
 const Settings = () => {
   const dispatch = useDispatch();
   const syncKassenzeichen = useSelector(getSyncKassenzeichen);
-  const showCurrentFeatureCollection = useSelector(
-    getShowCurrentFeatureCollection
+
+  const { activeAdditionalLayerKeys } = useContext(TopicMapStylingContext);
+
+  const { setActiveAdditionalLayerKeys } = useContext(
+    TopicMapStylingDispatchContext
   );
-  const showBackground = useSelector(getShowBackground);
 
   return (
     <div className="flex flex-col gap-10">
@@ -45,21 +46,65 @@ const Settings = () => {
       <div className="flex flex-col gap-2">
         <h3>Karte</h3>
         <SettingsRow
-          onClick={() =>
-            dispatch(
-              setShowCurrentFeatureCollection(!showCurrentFeatureCollection)
-            )
-          }
-          title="Vordergrund anzeigen"
+          title="Gebäude"
+          onClick={() => {
+            if (activeAdditionalLayerKeys?.includes("nrwAlkisGebaeude")) {
+              // remove it from the array
+
+              setActiveAdditionalLayerKeys(
+                activeAdditionalLayerKeys.filter(
+                  (item) => item !== "nrwAlkisGebaeude"
+                )
+              );
+            } else {
+              setActiveAdditionalLayerKeys([
+                ...(activeAdditionalLayerKeys || []),
+                "nrwAlkisGebaeude",
+              ]);
+            }
+          }}
         >
-          <Switch className="w-fit" checked={showCurrentFeatureCollection} />
+          <div className="w-10/12 flex justify-between items-center">
+            <Checkbox
+              checked={activeAdditionalLayerKeys?.includes("nrwAlkisGebaeude")}
+            />
+            <Slider defaultValue={20} disabled={false} className="w-3/4" />
+          </div>
         </SettingsRow>
         <SettingsRow
-          onClick={() => dispatch(setShowBackground(!showBackground))}
-          title="Hintergrund anzeigen"
+          title="Flurstücke"
+          onClick={() => {
+            if (activeAdditionalLayerKeys?.includes("nrwAlkisFstck")) {
+              // remove it from the array
+
+              setActiveAdditionalLayerKeys(
+                activeAdditionalLayerKeys.filter(
+                  (item) => item !== "nrwAlkisFstck"
+                )
+              );
+            } else {
+              setActiveAdditionalLayerKeys([
+                ...(activeAdditionalLayerKeys || []),
+                "nrwAlkisFstck",
+              ]);
+            }
+          }}
         >
-          <Switch className="w-fit" checked={showBackground} />
+          <div className="w-10/12 flex justify-between items-center">
+            <Checkbox
+              checked={activeAdditionalLayerKeys?.includes("nrwAlkisFstck")}
+            />
+            <Slider defaultValue={20} disabled={false} className="w-3/4" />
+          </div>
         </SettingsRow>
+        <Radio.Group>
+          <div className="flex flex-col gap-2">
+            <Radio>1</Radio>
+            <Radio>2</Radio>
+            <Radio>3</Radio>
+            <Radio>4</Radio>
+          </div>
+        </Radio.Group>
       </div>
     </div>
   );
