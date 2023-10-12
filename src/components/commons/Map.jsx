@@ -41,6 +41,7 @@ import { faImage as solidImage } from "@fortawesome/free-solid-svg-icons";
 import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
 import getLayers from "react-cismap/tools/layerFactory";
 import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
+import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 
 const mockExtractor = (input) => {
   return {
@@ -56,6 +57,7 @@ const Map = ({
   width = 400,
   height = 500,
   children,
+  boundingBoxChangedHandler = () => {},
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -240,11 +242,16 @@ const Map = ({
           setUrlParams(newParams);
         }}
         boundingBoxChangedHandler={(boundingBox) => {
-          const bbPoly = createQueryGeomFromBB(boundingBox);
-          const zoom = refRoutedMap?.current?.leafletMap.viewport.zoom;
-
-          if (zoom >= 18.5) {
-            dispatch(searchForGeoFields(bbPoly));
+          boundingBoxChangedHandler(boundingBox);
+          try {
+            const bbPoly = createQueryGeomFromBB(boundingBox);
+            const area = getArea25832(bbPoly);
+            const maxAreaForSearch = 130000;
+            if (area < maxAreaForSearch) {
+              dispatch(searchForGeoFields(bbPoly));
+            }
+          } catch (e) {
+            console.log("error in boundingBoxChangedHandler", e);
           }
         }}
         ondblclick={(event) => {
