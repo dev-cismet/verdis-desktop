@@ -300,7 +300,7 @@ const Map = ({
               }
             />
           )}
-        {showBackground && children}
+        {children}
       </RoutedMap>
     </Card>
   );
