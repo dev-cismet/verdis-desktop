@@ -81,6 +81,11 @@ export const backgroundConfigurations = {
     src: "/images/rain-hazard-map-bg/ortho.png",
     title: "Luftbildkarte",
   },
+  mix: {
+    layerkey: "trueOrtho2022@70|cismetLight",
+    src: "/images/rain-hazard-map-bg/ortho.png",
+    title: "Luftbildkarte",
+  },
   ortho: {
     layerkey: "trueOrtho2022@95",
     src: "/images/rain-hazard-map-bg/ortho.png",
@@ -144,6 +149,7 @@ export const backgroundModes = [
 
   { title: "Luftbildkarte", mode: "default", layerKey: "lbk" },
   { title: "Luftbild", mode: "default", layerKey: "ortho" },
+  { title: "mix", mode: "default", layerKey: "mix" },
 ];
 
 export const extendBaseLayerConf = (baseLayerConf) => {

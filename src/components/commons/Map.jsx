@@ -1,6 +1,6 @@
 import "react-cismap/topicMaps.css";
 import "leaflet/dist/leaflet.css";
-import { Card, Tooltip } from "antd";
+import { Button, Card, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
 import { flaechen } from "../../stories/_data/rathausKassenzeichenfeatureCollection";
@@ -9,7 +9,10 @@ import {
   MappingConstants,
   RoutedMap,
 } from "react-cismap";
-import { TopicMapStylingContext } from "react-cismap/contexts/TopicMapStylingContextProvider";
+import {
+  TopicMapStylingContext,
+  TopicMapStylingDispatchContext,
+} from "react-cismap/contexts/TopicMapStylingContextProvider";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import {
   createQueryGeomFromBB,
@@ -75,6 +78,13 @@ const Map = ({
     additionalLayerConfiguration,
     activeAdditionalLayerKeys,
   } = useContext(TopicMapStylingContext);
+
+  const {
+    setSelectedBackground,
+    setNamedMapStyle,
+    setActiveAdditionalLayerKeys,
+  } = useContext(TopicMapStylingDispatchContext);
+
   let backgroundsFromMode;
   const browserlocation = useLocation();
   function paramsToObject(entries) {
@@ -153,6 +163,51 @@ const Map = ({
       title={<span className="text-lg">Karte</span>}
       extra={
         <div className="flex items-center gap-4">
+          <div className="relative flex items-center">
+            <Tooltip title="Hintergrund an/aus">
+              <Button
+                onClick={() => {
+                  setSelectedBackground("stadtplan");
+                }}
+              >
+                1
+              </Button>
+            </Tooltip>
+          </div>
+          <div className="relative flex items-center">
+            <Tooltip title="Hintergrund an/aus">
+              <Button
+                onClick={() => {
+                  setSelectedBackground("lbk");
+                }}
+              >
+                2
+              </Button>
+            </Tooltip>
+          </div>
+          <div className="relative flex items-center">
+            <Tooltip title="Hintergrund an/aus">
+              <Button
+                onClick={() => {
+                  setSelectedBackground("ortho");
+                }}
+              >
+                3
+              </Button>
+            </Tooltip>
+          </div>
+          <div className="relative flex items-center">
+            <Tooltip title="Hintergrund an/aus">
+              <Button
+                onClick={() => {
+                  setSelectedBackground("mix");
+                }}
+              >
+                4
+              </Button>
+            </Tooltip>
+          </div>
+
           <div className="relative flex items-center">
             <Tooltip title="Hintergrund an/aus">
               <FontAwesomeIcon
