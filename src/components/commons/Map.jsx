@@ -27,6 +27,7 @@ import {
 import {
   getShowBackground,
   getShowCurrentFeatureCollection,
+  setFeatureCollection,
   setFlaechenSelected,
   setFrontenSelected,
   setGeneralGeometrySelected,
@@ -249,6 +250,8 @@ const Map = ({
             const maxAreaForSearch = 130000;
             if (area < maxAreaForSearch) {
               dispatch(searchForGeoFields(bbPoly));
+            } else {
+              dispatch(setFeatureCollection(undefined));
             }
           } catch (e) {
             console.log("error in boundingBoxChangedHandler", e);
