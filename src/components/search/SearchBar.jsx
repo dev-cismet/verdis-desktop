@@ -39,7 +39,7 @@ const SearchBar = () => {
       <AutoComplete
         options={prevSearches
           .map((kassenzeichen) =>
-            !isEqual(kassenzeichen, kassenzeichenNummer.toString())
+            !isEqual(kassenzeichen, kassenzeichenNummer?.toString())
               ? {
                   value: kassenzeichen,
                   label: (
