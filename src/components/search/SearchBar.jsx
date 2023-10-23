@@ -5,48 +5,41 @@ import {
 } from "@ant-design/icons";
 import { AutoComplete, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getPreviousSearches, setIsLoading } from "../../store/slices/search";
+import {
+  getIsLoading,
+  getKassenzeichen,
+  getPreviousSearches,
+  searchForKassenzeichen,
+} from "../../store/slices/search";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useKassenzeichenSearch } from "../../hooks/useKassenzeichenSearch";
 import { useSearchParams } from "react-router-dom";
+import { isEqual } from "lodash";
 
 const SearchBar = () => {
   const dispatch = useDispatch();
-  const [searchQuery, setSearchQuery] = useState("");
   const [inputValue, setInpuValue] = useState("");
 
   const [urlParams, setUrlParams] = useSearchParams();
   const prevSearches = useSelector(getPreviousSearches);
-  const { data, isFetching, error } = useKassenzeichenSearch(searchQuery);
+  const isLoading = useSelector(getIsLoading);
+  const kassenzeichen = useSelector(getKassenzeichen);
+  const kassenzeichenNummer = kassenzeichen?.kassenzeichennummer8;
 
   useEffect(() => {
-    if (urlParams.get("kassenzeichen")) {
-      setSearchQuery(urlParams.get("kassenzeichen"));
-      setInpuValue(urlParams.get("kassenzeichen"));
+    const urlKassenzeichen = urlParams.get("kassenzeichen");
+    if (urlKassenzeichen) {
+      dispatch(searchForKassenzeichen(urlKassenzeichen));
+      setInpuValue(urlKassenzeichen);
     }
   }, [urlParams]);
-
-  useEffect(() => {
-    if (error && !isFetching) {
-      const trimmedQuery = searchQuery.trim();
-      setUrlParams({ kassenzeichen: trimmedQuery });
-      setTimeout(() => {
-        logout();
-      }, 10);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    isFetching ? dispatch(setIsLoading(true)) : dispatch(setIsLoading(false));
-  }, [isFetching]);
 
   return (
     <div className="flex relative items-center gap-3 w-full">
       <AutoComplete
         options={prevSearches
           .map((kassenzeichen) =>
-            kassenzeichen !== searchQuery
+            !isEqual(kassenzeichen, kassenzeichenNummer.toString())
               ? {
                   value: kassenzeichen,
                   label: (
@@ -61,23 +54,32 @@ const SearchBar = () => {
           .filter((item) => item !== null)}
         className="xl:w-1/2 w-full mx-auto"
         value={inputValue}
-        onSelect={(value) => setSearchQuery(value)}
+        onSelect={(value) =>
+          dispatch(searchForKassenzeichen(value, urlParams, setUrlParams))
+        }
         onChange={(value) => setInpuValue(value)}
       >
         <Input
           placeholder="Suche..."
           addonAfter={
-            isFetching ? (
+            isLoading ? (
               <LoadingOutlined />
             ) : (
-              <SearchOutlined onClick={() => setSearchQuery(inputValue)} />
+              <SearchOutlined
+                onClick={() =>
+                  dispatch(
+                    searchForKassenzeichen(inputValue, urlParams, setUrlParams)
+                  )
+                }
+              />
             )
           }
-          onPressEnter={(e) => setSearchQuery(inputValue)}
-          status={
-            (data?.kassenzeichen?.length === 0 || isNaN(+searchQuery)) &&
-            "error"
+          onPressEnter={(e) =>
+            dispatch(
+              searchForKassenzeichen(inputValue, urlParams, setUrlParams)
+            )
           }
+          status={(!kassenzeichen || isNaN(+kassenzeichenNummer)) && "error"}
           name="kassenzeichen"
         />
       </AutoComplete>
