@@ -23,7 +23,8 @@ const SettingsRow = ({ onClick, title, children }) => {
 };
 
 const OptionalLayerRow = ({ title, value }) => {
-  const { activeAdditionalLayerKeys } = useContext(TopicMapStylingContext);
+  const { activeAdditionalLayerKeys, additionalLayerConfiguration } =
+    useContext(TopicMapStylingContext);
 
   const { setActiveAdditionalLayerKeys } = useContext(
     TopicMapStylingDispatchContext
@@ -56,7 +57,13 @@ const OptionalLayerRow = ({ title, value }) => {
       >
         {title}
       </span>
-      <Slider defaultValue={20} disabled={false} className="w-full" />
+      <Slider
+        defaultValue={
+          additionalLayerConfiguration[value]?.layer?.props?.opacity * 100
+        }
+        disabled={false}
+        className="w-full"
+      />
     </div>
   );
 };
