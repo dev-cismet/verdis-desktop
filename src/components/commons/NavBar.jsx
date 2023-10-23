@@ -161,12 +161,19 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
     >
       <div className="md:flex hidden items-center gap-3">
         <Tooltip title="Übersicht" placement="bottom">
-          <img
-            src={Logo}
-            alt="Logo"
-            className="h-10 cursor-pointer"
+          <div
+            className="flex gap-2 items-center h-full cursor-pointer"
             onClick={() => navigate("/" + `?${urlParams}`)}
-          />
+          >
+            <img src={Logo} alt="Logo" className="h-10" />
+            <span
+              className={`${
+                location.pathname === "/" ? "text-primary" : ""
+              } font-semibold no-underline pt-1`}
+            >
+              VerDIS
+            </span>
+          </div>
         </Tooltip>
         {links.map((link, i) => (
           <Link to={link.href + `?${urlParams}`} key={`navLink_${i}`}>
