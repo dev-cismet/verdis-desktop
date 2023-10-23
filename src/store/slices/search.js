@@ -271,28 +271,12 @@ export const searchForKassenzeichen = (
   return async (dispatch, getState) => {
     const jwt = getState().auth.jwt;
     const syncKassenzeichen = getState().settings.syncKassenzeichen;
-    // useQuery({
-    //   queryFn: async () =>
-    //     request(
-    //       ENDPOINT,
-    //       query,
-    //       { kassenzeichen: kassenzeichen },
-    //       {
-    //         Authorization: `Bearer ${jwt}`,
-    //       }
-    //     ),
-    //   queryKey: ["kassenzeichen", kassenzeichen],
-    //   enabled: !!kassenzeichen && !isNaN(+kassenzeichen),
-    //   refetchOnWindowFocus: false,
-    //   retry: false,
-    //   onSuccess: (data) => {
-    //     console.log("data", data);
-    //   },
-    // });
     if (!kassenzeichen || isNaN(+kassenzeichen)) {
       console.error("Invalid kassenzeichen");
       return;
     }
+
+    dispatch(setIsLoading(true));
 
     fetch(ENDPOINT, {
       method: "POST",
@@ -307,20 +291,22 @@ export const searchForKassenzeichen = (
     })
       .then((response) => {
         if (!response.ok) {
+          dispatch(setIsLoading(false));
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((result) => {
         const data = result?.data;
-        console.log("xxx data", data);
         if (data?.kassenzeichen?.length > 0) {
-          console.log(kassenzeichen);
           const trimmedQuery = kassenzeichen.trim();
+
           dispatch(storeKassenzeichen(data.kassenzeichen[0]));
           dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
-          if (urlParams.get("kassenzeichen") !== trimmedQuery) {
-            setUrlParams({ kassenzeichen: trimmedQuery });
+          if (urlParams && setUrlParams) {
+            if (urlParams.get("kassenzeichen") !== trimmedQuery) {
+              setUrlParams({ kassenzeichen: trimmedQuery });
+            }
           }
           dispatch(addSearch(trimmedQuery));
           dispatch(resetStates());
@@ -358,6 +344,7 @@ export const searchForKassenzeichen = (
               getVersickerungsGenFeatureCollection(data.kassenzeichen[0])
             )
           );
+          dispatch(setIsLoading(false));
         }
       })
       .catch((error) => {
@@ -365,6 +352,7 @@ export const searchForKassenzeichen = (
           "There was a problem with the fetch operation:",
           error.message
         );
+        dispatch(setIsLoading(false));
       });
   };
 };
