@@ -31,28 +31,18 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getJWT, storeJWT, storeLogin } from "../../store/slices/auth";
-import {
-  getPreviousSearches,
-  resetStates,
-  setIsLoading,
-} from "../../store/slices/search";
+import { storeJWT, storeLogin } from "../../store/slices/auth";
+import { resetStates } from "../../store/slices/search";
 import {
   getShowChat,
   getShowFrontDetails,
   getShowSeepageDetails,
   getShowSurfaceDetails,
-  getSyncKassenzeichen,
   setShowChat,
-  setSyncKassenzeichen,
 } from "../../store/slices/settings";
-import { useKassenzeichenSearch } from "../../hooks/useKassenzeichenSearch";
 import PdfCreator from "../ui/PdfCreator";
-import {
-  getShowCurrentFeatureCollection,
-  setShowCurrentFeatureCollection,
-} from "../../store/slices/mapping";
 import Settings from "./Settings";
+import SearchBar from "../search/SearchBar";
 
 const navLinks = () => {
   const showSurfaceDetails = useSelector(getShowSurfaceDetails);
@@ -111,12 +101,8 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const links = navLinks();
   const location = useLocation();
   const showChat = useSelector(getShowChat);
-  const prevSearches = useSelector(getPreviousSearches);
-  const [inputValue, setInpuValue] = useState("");
   const [urlParams, setUrlParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { data, isFetching, error } = useKassenzeichenSearch(searchQuery);
 
   let storyStyle = {};
   if (inStory) {
@@ -132,27 +118,6 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
     dispatch(storeLogin(undefined));
     dispatch(resetStates());
   };
-
-  useEffect(() => {
-    if (error && !isFetching) {
-      const trimmedQuery = searchQuery.trim();
-      setUrlParams({ kassenzeichen: trimmedQuery });
-      setTimeout(() => {
-        logout();
-      }, 10);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (urlParams.get("kassenzeichen")) {
-      setSearchQuery(urlParams.get("kassenzeichen"));
-      setInpuValue(urlParams.get("kassenzeichen"));
-    }
-  }, [urlParams]);
-
-  useEffect(() => {
-    isFetching ? dispatch(setIsLoading(true)) : dispatch(setIsLoading(false));
-  }, [isFetching]);
 
   return (
     <header
@@ -198,46 +163,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
           </Link>
         ))}
       </div>
-      <div className="flex relative items-center gap-3 w-full">
-        <AutoComplete
-          options={prevSearches
-            .map((kassenzeichen) =>
-              kassenzeichen !== searchQuery
-                ? {
-                    value: kassenzeichen,
-                    label: (
-                      <div className="flex gap-2 items-center">
-                        <ClockCircleOutlined className="text-lg" />
-                        <span className="w-full">{kassenzeichen}</span>
-                      </div>
-                    ),
-                  }
-                : null
-            )
-            .filter((item) => item !== null)}
-          className="xl:w-1/2 w-full mx-auto"
-          value={inputValue}
-          onSelect={(value) => setSearchQuery(value)}
-          onChange={(value) => setInpuValue(value)}
-        >
-          <Input
-            placeholder="Suche..."
-            addonAfter={
-              isFetching ? (
-                <LoadingOutlined />
-              ) : (
-                <SearchOutlined onClick={() => setSearchQuery(inputValue)} />
-              )
-            }
-            onPressEnter={(e) => setSearchQuery(inputValue)}
-            status={
-              (data?.kassenzeichen?.length === 0 || isNaN(+searchQuery)) &&
-              "error"
-            }
-            name="kassenzeichen"
-          />
-        </AutoComplete>
-      </div>
+      <SearchBar />
       <div className="flex items-center gap-3">
         <PdfCreator />
         <Tooltip title="Änderungsanfragen" placement="bottom">
