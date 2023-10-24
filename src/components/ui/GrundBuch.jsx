@@ -23,7 +23,11 @@ const GrundBuch = () => {
       <Tooltip title="Kassenzeichensuche über Buchungsblatt">
         <BuildOutlined
           className="text-2xl cursor-pointer"
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setIsOpen(true);
+            setShowKassenzeichenList(false);
+            setSelectedKassenzeichen("");
+          }}
         />
       </Tooltip>
       <Modal
