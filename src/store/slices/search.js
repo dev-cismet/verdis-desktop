@@ -32,6 +32,7 @@ const initialState = {
   previousSearches: [],
   isLoading: false,
   febBlob: null,
+  errorMessage: null,
 };
 
 const slice = createSlice({
@@ -81,9 +82,14 @@ const slice = createSlice({
       state.flaechenId = null;
       state.seepage = {};
       state.seepageId = null;
+      state.errorMessage = null;
     },
     setIsLoading(state, action) {
       state.isLoading = action.payload;
+      return state;
+    },
+    setErrorMessage(state, action) {
+      state.errorMessage = action.payload;
       return state;
     },
     addSearch(state, action) {
@@ -273,6 +279,8 @@ export const searchForKassenzeichen = (
     const syncKassenzeichen = getState().settings.syncKassenzeichen;
     if (!kassenzeichen || isNaN(+kassenzeichen)) {
       console.error("Invalid kassenzeichen");
+      dispatch(setErrorMessage("Invalid kassenzeichen"));
+      dispatch(setIsLoading(false));
       return;
     }
 
@@ -345,6 +353,9 @@ export const searchForKassenzeichen = (
             )
           );
           dispatch(setIsLoading(false));
+        } else {
+          dispatch(setErrorMessage("Kassenzeichen not found"));
+          dispatch(setIsLoading(false));
         }
       })
       .catch((error) => {
@@ -368,6 +379,7 @@ export const {
   storeSeepage,
   resetStates,
   setIsLoading,
+  setErrorMessage,
   addSearch,
   storeFebBlob,
 } = slice.actions;
@@ -412,6 +424,10 @@ export const getPreviousSearches = (state) => {
 
 export const getIsLoading = (state) => {
   return state.search.isLoading;
+};
+
+export const getErrorMessage = (state) => {
+  return state.search.errorMessage;
 };
 
 export const getFebBlob = (state) => {

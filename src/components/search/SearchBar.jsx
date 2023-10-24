@@ -6,6 +6,7 @@ import {
 import { AutoComplete, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getErrorMessage,
   getIsLoading,
   getKassenzeichen,
   getPreviousSearches,
@@ -24,6 +25,7 @@ const SearchBar = () => {
   const prevSearches = useSelector(getPreviousSearches);
   const isLoading = useSelector(getIsLoading);
   const kassenzeichen = useSelector(getKassenzeichen);
+  const errorMessage = useSelector(getErrorMessage);
   const kassenzeichenNummer = kassenzeichen?.kassenzeichennummer8;
 
   useEffect(() => {
@@ -79,7 +81,7 @@ const SearchBar = () => {
               searchForKassenzeichen(inputValue, urlParams, setUrlParams)
             )
           }
-          status={(!kassenzeichen || isNaN(+kassenzeichenNummer)) && "error"}
+          status={errorMessage && "error"}
           name="kassenzeichen"
         />
       </AutoComplete>
