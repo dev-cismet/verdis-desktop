@@ -1,6 +1,7 @@
 import { BuildOutlined, SnippetsOutlined } from "@ant-design/icons";
 import { Button, Input, Modal, Tooltip } from "antd";
 import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 
 const GrundBuch = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,11 +12,22 @@ const GrundBuch = () => {
     "34567890",
   ]);
   const [selectedKassenzeichen, setSelectedKassenzeichen] = useState("");
+  const [grundBuchNumber, setGrundBuchNumber] = useState("");
 
-  const search = (input) => {
-    if (input) {
-      setShowKassenzeichenList(true);
-    }
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+  } = useForm({
+    defaultValues: {
+      firstNumber: "",
+      secondNumber: "",
+    },
+  });
+  const onSubmit = (data) => {
+    setGrundBuchNumber(data.firstNumber + "-" + data.secondNumber);
+    setShowKassenzeichenList(true);
   };
 
   return (
@@ -27,6 +39,7 @@ const GrundBuch = () => {
             setIsOpen(true);
             setShowKassenzeichenList(false);
             setSelectedKassenzeichen("");
+            clearErrors();
           }}
         />
       </Tooltip>
@@ -38,19 +51,39 @@ const GrundBuch = () => {
           showKassenzeichenList ? (
             <Button className="w-full">Kassenzeichen öffnen</Button>
           ) : (
-            <div className="flex gap-2 items-center">
-              <Input /> {" - "} <Input />{" "}
-              <Button onClick={() => search("12345-12345")}>
-                Kassenzeichen suchen
-              </Button>
-            </div>
+            <>
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex gap-2 items-center"
+              >
+                <Controller
+                  rules={{ required: true }}
+                  name="firstNumber"
+                  control={control}
+                  render={({ field }) => <Input {...field} />}
+                />
+                {" - "}
+                <Controller
+                  rules={{ required: true }}
+                  name="secondNumber"
+                  control={control}
+                  render={({ field }) => <Input {...field} />}
+                />
+                <Button htmlType="submit">Kassenzeichen suchen</Button>
+              </form>
+              {(errors.firstNumber || errors.secondNumber) && (
+                <p className="text-center text-red-500 pt-1 pb-0">
+                  Bitte zwei gültige Zahlen eingeben
+                </p>
+              )}
+            </>
           ),
         ]}
       >
         {showKassenzeichenList ? (
           <div className="flex flex-col gap-2">
             <div className="flex gap-2 items-center w-full justify-between">
-              <span className="text-lg">Grundbuchblatt: 12345-12345</span>
+              <span className="text-lg">Grundbuchblatt: {grundBuchNumber}</span>
               <div className="flex gap-2">
                 <Button disabled={true}>
                   <SnippetsOutlined />
@@ -62,8 +95,9 @@ const GrundBuch = () => {
             </div>
             <p className="w-full text-center">3 Kassenzeichen gefunden</p>
             <div className="flex flex-col border bg-zinc-100 h-52">
-              {kassenzeichenList.map((kassenzeichen) => (
+              {kassenzeichenList.map((kassenzeichen, i) => (
                 <div
+                  key={`foundKassenzeichen_${i}`}
                   onClick={() => setSelectedKassenzeichen(kassenzeichen)}
                   className={`p-1 cursor-pointer ${
                     kassenzeichen === selectedKassenzeichen
