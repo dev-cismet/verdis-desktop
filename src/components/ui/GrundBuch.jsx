@@ -60,14 +60,18 @@ const GrundBuch = () => {
                   rules={{ required: true }}
                   name="firstNumber"
                   control={control}
-                  render={({ field }) => <Input {...field} />}
+                  render={({ field }) => (
+                    <Input {...field} status={errors.firstNumber && "error"} />
+                  )}
                 />
                 {" - "}
                 <Controller
                   rules={{ required: true }}
                   name="secondNumber"
                   control={control}
-                  render={({ field }) => <Input {...field} />}
+                  render={({ field }) => (
+                    <Input {...field} status={errors.secondNumber && "error"} />
+                  )}
                 />
                 <Button htmlType="submit">Kassenzeichen suchen</Button>
               </form>
