@@ -65,8 +65,10 @@ const GrundBuch = () => {
               {kassenzeichenList.map((kassenzeichen) => (
                 <div
                   onClick={() => setSelectedKassenzeichen(kassenzeichen)}
-                  className={`p-1 cursor-pointer hover:bg-zinc-200 ${
-                    kassenzeichen === selectedKassenzeichen && "bg-primary/20"
+                  className={`p-1 cursor-pointer ${
+                    kassenzeichen === selectedKassenzeichen
+                      ? "bg-primary/20"
+                      : "hover:bg-zinc-200"
                   }`}
                 >
                   {kassenzeichen}
