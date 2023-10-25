@@ -1,5 +1,6 @@
 import "react-cismap/topicMaps.css";
 import "leaflet/dist/leaflet.css";
+
 import { Button, Card, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -13,6 +14,8 @@ import {
   TopicMapStylingContext,
   TopicMapStylingDispatchContext,
 } from "react-cismap/contexts/TopicMapStylingContextProvider";
+import GazetteerSearchControl from "react-cismap/GazetteerSearchControl";
+import GazetteerHitDisplay from "react-cismap/GazetteerHitDisplay";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import {
   createQueryGeomFromBB,
@@ -43,7 +46,7 @@ import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
 import getLayers from "react-cismap/tools/layerFactory";
 import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
-
+import { getGazData } from "../../store/slices/gazData";
 const mockExtractor = (input) => {
   return {
     homeCenter: [51.27225612927373, 7.199918031692506],
@@ -67,7 +70,16 @@ const Map = ({
   const showCurrentFeatureCollection = useSelector(
     getShowCurrentFeatureCollection
   );
+  const gazData = useSelector(getGazData);
+
   const showBackground = useSelector(getShowBackground);
+  const [overlayFeature, setOverlayFeature] = useState(null);
+  const [gazetteerHit, setGazetteerHit] = useState(null);
+  const gazetteerHitTrigger = () => {
+    console.log("gazetteerHitTrigger");
+  };
+  const searchControlWidth = 500;
+  const gazetteerSearchPlaceholder = undefined;
 
   const data = extractor(dataIn);
   const padding = 5;
@@ -264,7 +276,32 @@ const Map = ({
           }
         }}
       >
-        <ScaleControl {...defaults} position="topleft" />
+        <ScaleControl {...defaults} position="bottomright" />
+        {overlayFeature && (
+          <ProjSingleGeoJson
+            key={JSON.stringify(overlayFeature)}
+            geoJson={overlayFeature}
+            masked={true}
+            maskingPolygon={maskingPolygon}
+            mapRef={leafletRoutedMapRef}
+          />
+        )}
+        <GazetteerHitDisplay
+          key={"gazHit" + JSON.stringify(gazetteerHit)}
+          gazetteerHit={gazetteerHit}
+        />
+        <GazetteerSearchControl
+          mapRef={refRoutedMap}
+          gazetteerHit={gazetteerHit}
+          setGazetteerHit={setGazetteerHit}
+          gazeteerHitTrigger={gazetteerHitTrigger}
+          overlayFeature={overlayFeature}
+          setOverlayFeature={setOverlayFeature}
+          gazData={gazData}
+          enabled={gazData.length > 0}
+          pixelwidth={300}
+          placeholder={gazetteerSearchPlaceholder}
+        />
         {data.featureCollection &&
           data.featureCollection.length > 0 &&
           showCurrentFeatureCollection && (

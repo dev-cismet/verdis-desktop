@@ -162,7 +162,7 @@ export const additionalLayerConfiguration = {
         tiled="true"
         transparent="true"
         pane="additionalLayers0"
-        maxZoom={19}
+        maxZoom={22}
         opacity={0.7}
       />
     ),
@@ -180,7 +180,7 @@ export const additionalLayerConfiguration = {
         tiled="true"
         transparent="true"
         pane="additionalLayers1"
-        maxZoom={19}
+        maxZoom={22}
         opacity={0.7}
       />
     ),
