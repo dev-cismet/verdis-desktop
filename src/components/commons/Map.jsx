@@ -25,6 +25,7 @@ import {
   storeFrontenId,
 } from "../../store/slices/search";
 import {
+  getAdditionalLayerOpacities,
   getShowBackground,
   getShowCurrentFeatureCollection,
   setFeatureCollection,
@@ -68,6 +69,7 @@ const Map = ({
     getShowCurrentFeatureCollection
   );
   const showBackground = useSelector(getShowBackground);
+  const opacities = useSelector(getAdditionalLayerOpacities);
 
   const data = extractor(dataIn);
   const padding = 5;
@@ -330,8 +332,13 @@ const Map = ({
           activeAdditionalLayerKeys?.length > 0 &&
           activeAdditionalLayerKeys.map((activekey, index) => {
             const layerConf = additionalLayerConfiguration[activekey];
-            if (layerConf?.layer) {
-              return layerConf.layer;
+            if (layerConf?.props) {
+              return (
+                <StyledWMSTileLayer
+                  {...layerConf.props}
+                  opacity={opacities[activekey] || 0.7}
+                />
+              );
             } else if (layerConf?.layerkey) {
               const layers = getLayers(layerConf.layerkey);
               return layers;

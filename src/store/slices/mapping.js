@@ -14,6 +14,10 @@ const initialState = {
   featureCollection: undefined,
   showCurrentFeatureCollection: true,
   showBackground: true,
+  additionalLayerOpacities: {
+    nrwAlkisFstck: 0.7,
+    nrwAlkisGebaeude: 0.7,
+  },
 };
 
 const slice = createSlice({
@@ -127,6 +131,11 @@ const slice = createSlice({
       state.showBackground = action.payload;
       return state;
     },
+    setLayerOpacity(state, action) {
+      const { layer, opacity } = action.payload;
+      state.additionalLayerOpacities[layer] = opacity;
+      return state;
+    },
     clear(state) {
       state.flaechenCollection = undefined;
       state.frontenCollection = undefined;
@@ -152,6 +161,7 @@ export const {
   setFeatureCollection,
   setShowCurrentFeatureCollection,
   setShowBackground,
+  setLayerOpacity,
   clear,
 } = slice.actions;
 
@@ -181,4 +191,8 @@ export const getShowCurrentFeatureCollection = (state) => {
 
 export const getShowBackground = (state) => {
   return state.mapping.showBackground;
+};
+
+export const getAdditionalLayerOpacities = (state) => {
+  return state.mapping.additionalLayerOpacities;
 };
