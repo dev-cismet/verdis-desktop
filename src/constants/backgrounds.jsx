@@ -156,7 +156,7 @@ export const additionalLayerConfiguration = {
     props: {
       key: "nrwAlkisFstck",
       url: "https://www.wms.nrw.de/geobasis/wms_nw_alkis",
-      layers: "adv_alkis_gebaeude",
+      layers: "adv_alkis_flurstuecke",
       format: "image/png",
       styles: "Farbe",
       tiled: "true",
