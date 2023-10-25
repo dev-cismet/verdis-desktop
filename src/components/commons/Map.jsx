@@ -336,7 +336,7 @@ const Map = ({
               return (
                 <StyledWMSTileLayer
                   {...layerConf.props}
-                  opacity={opacities[activekey] || 0.7}
+                  opacity={opacities[activekey].toFixed(2) || 0.7}
                 />
               );
             } else if (layerConf?.layerkey) {
