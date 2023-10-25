@@ -149,41 +149,36 @@ export const additionalLayerConfiguration = {
     pane: "additionalLayers1",
   },
 
+  // opacity in props gets set inside Map.jsx
   nrwAlkisFstck: {
-    title: <span>NRW ALKIS Gebäude</span>,
+    title: <span>NRW ALKIS Flurstücke</span>,
     initialActive: false,
-    layer: (
-      <StyledWMSTileLayer
-        key={"nrwAlkisFstck"}
-        url="https://www.wms.nrw.de/geobasis/wms_nw_alkis"
-        layers="adv_alkis_flurstuecke"
-        format="image/png"
-        styles="Farbe"
-        tiled="true"
-        transparent="true"
-        pane="additionalLayers0"
-        maxZoom={19}
-        opacity={0.7}
-      />
-    ),
+    props: {
+      key: "nrwAlkisFstck",
+      url: "https://www.wms.nrw.de/geobasis/wms_nw_alkis",
+      layers: "adv_alkis_gebaeude",
+      format: "image/png",
+      styles: "Farbe",
+      tiled: "true",
+      transparent: "true",
+      pane: "additionalLayers0",
+      maxZoom: 19,
+    },
   },
   nrwAlkisGebaeude: {
     title: <span>NRW ALKIS Gebäude</span>,
     initialActive: false,
-    layer: (
-      <StyledWMSTileLayer
-        key={"nrwAlkisGebaeude"}
-        url="https://www.wms.nrw.de/geobasis/wms_nw_alkis"
-        layers="adv_alkis_gebaeude"
-        format="image/png"
-        styles="Farbe"
-        tiled="true"
-        transparent="true"
-        pane="additionalLayers1"
-        maxZoom={19}
-        opacity={0.7}
-      />
-    ),
+    props: {
+      key: "nrwAlkisGebaeude",
+      url: "https://www.wms.nrw.de/geobasis/wms_nw_alkis",
+      layers: "adv_alkis_gebaeude",
+      format: "image/png",
+      styles: "Farbe",
+      tiled: "true",
+      transparent: "true",
+      pane: "additionalLayers1",
+      maxZoom: 19,
+    },
   },
 };
 
