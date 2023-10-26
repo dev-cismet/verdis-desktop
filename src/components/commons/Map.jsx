@@ -65,6 +65,7 @@ const Map = ({
   const dispatch = useDispatch();
   const [urlParams, setUrlParams] = useSearchParams();
   const [fallback, setFallback] = useState({});
+  const [showVirtualCityOverlay, setShowVirtualCityOverlay] = useState(false);
   const showCurrentFeatureCollection = useSelector(
     getShowCurrentFeatureCollection
   );
@@ -169,6 +170,12 @@ const Map = ({
       title={<span className="text-lg">Karte</span>}
       extra={
         <div className="flex items-center gap-4">
+          <div
+            className="cursor-pointer"
+            onClick={() => setShowVirtualCityOverlay(!showVirtualCityOverlay)}
+          >
+            Show Overlay
+          </div>
           <div className="relative flex items-center">
             <Tooltip title="Hintergrund an/aus">
               <FontAwesomeIcon
@@ -338,11 +345,13 @@ const Map = ({
               return layers;
             }
           })}
-        <Overlay
-          mapWidth={mapWidth}
-          mapHeight={mapHeight}
-          mapRef={refRoutedMap}
-        />
+        {showVirtualCityOverlay && (
+          <Overlay
+            mapWidth={mapWidth}
+            mapHeight={mapHeight}
+            mapRef={refRoutedMap}
+          />
+        )}
       </RoutedMap>
     </Card>
   );
