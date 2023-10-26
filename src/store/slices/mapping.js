@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  fitFeatureArray,
-  getBoundsForFeatureArray,
-  getCenterAndZoomForBounds,
-} from "../../tools/mappingTools";
+import { getBoundsForFeatureArray } from "../../tools/mappingTools";
 
 const initialState = {
   flaechenCollection: undefined,
@@ -14,6 +10,7 @@ const initialState = {
   featureCollection: undefined,
   showCurrentFeatureCollection: true,
   showBackground: true,
+  toolbarProperties: {},
 };
 
 const slice = createSlice({
@@ -127,6 +124,10 @@ const slice = createSlice({
       state.showBackground = action.payload;
       return state;
     },
+    setToolbarProperties(state, action) {
+      state.toolbarProperties = action.payload;
+      return state;
+    },
     clear(state) {
       state.flaechenCollection = undefined;
       state.frontenCollection = undefined;
@@ -152,6 +153,7 @@ export const {
   setFeatureCollection,
   setShowCurrentFeatureCollection,
   setShowBackground,
+  setToolbarProperties,
   clear,
 } = slice.actions;
 
@@ -181,4 +183,8 @@ export const getShowCurrentFeatureCollection = (state) => {
 
 export const getShowBackground = (state) => {
   return state.mapping.showBackground;
+};
+
+export const getToolbarProperties = (state) => {
+  return state.mapping.toolbarProperties;
 };
