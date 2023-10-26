@@ -37,6 +37,7 @@ import {
   setLeafletElement,
   setShowBackground,
   setShowCurrentFeatureCollection,
+  setToolbarProperties,
 } from "../../store/slices/mapping";
 import { useDispatch, useSelector } from "react-redux";
 import { ScaleControl } from "react-leaflet";
@@ -47,6 +48,7 @@ import getLayers from "react-cismap/tools/layerFactory";
 import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 import { getGazData } from "../../store/slices/gazData";
+import Toolbar from "./Toolbar";
 const mockExtractor = (input) => {
   return {
     homeCenter: [51.27225612927373, 7.199918031692506],
@@ -67,6 +69,7 @@ const Map = ({
   const dispatch = useDispatch();
   const [urlParams, setUrlParams] = useSearchParams();
   const [fallback, setFallback] = useState({});
+  const [infoText, setInfoText] = useState("");
   const showCurrentFeatureCollection = useSelector(
     getShowCurrentFeatureCollection
   );
@@ -84,6 +87,7 @@ const Map = ({
   const data = extractor(dataIn);
   const padding = 5;
   const headHeight = 37;
+  const toolBarHeight = 34;
   const cardRef = useRef(null);
   const [mapWidth, setMapWidth] = useState(0);
   const [mapHeight, setMapHeight] = useState(0);
@@ -137,8 +141,8 @@ const Map = ({
   let refRoutedMap = useRef(null);
 
   const mapStyle = {
-    width: mapWidth - 2 * padding,
-    height: mapHeight - 2 * padding - headHeight,
+    width: mapWidth - 2.5 * padding,
+    height: mapHeight - 2 * padding - headHeight - toolBarHeight,
     cursor: "pointer",
     clear: "both",
     zIndex: 1,
@@ -261,8 +265,13 @@ const Map = ({
             const area = getArea25832(bbPoly);
             const maxAreaForSearch = 130000;
             if (area < maxAreaForSearch) {
+              setInfoText("");
               dispatch(searchForGeoFields(bbPoly));
             } else {
+              setInfoText(
+                "Zur Anzeige aller Flächen und Fronten, bitte eine größere Zoomstufe wählen"
+              );
+              dispatch(setToolbarProperties({}));
               dispatch(setFeatureCollection(undefined));
             }
           } catch (e) {
@@ -375,6 +384,7 @@ const Map = ({
             }
           })}
       </RoutedMap>
+      <Toolbar infoText={infoText} />
     </Card>
   );
 };
