@@ -43,6 +43,7 @@ import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
 import getLayers from "react-cismap/tools/layerFactory";
 import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
+import Overlay from "./Overlay";
 
 const mockExtractor = (input) => {
   return {
@@ -337,6 +338,11 @@ const Map = ({
               return layers;
             }
           })}
+        <Overlay
+          mapWidth={mapWidth}
+          mapHeight={mapHeight}
+          mapRef={refRoutedMap}
+        />
       </RoutedMap>
     </Card>
   );

@@ -20,3 +20,5 @@ export const geoFieldsQuery = gql`
 export const jwtTestQuery = gql`
   ${queries.jwtTestQuery}
 `;
+
+export const vccPasswd = "---";
