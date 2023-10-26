@@ -299,7 +299,7 @@ const Map = ({
           setOverlayFeature={setOverlayFeature}
           gazData={gazData}
           enabled={gazData.length > 0}
-          pixelwidth={300}
+          pixelwidth={500}
           placeholder={gazetteerSearchPlaceholder}
         />
         {data.featureCollection &&
