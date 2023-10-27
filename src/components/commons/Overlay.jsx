@@ -110,8 +110,12 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
         ].map((position, index) => {
           // Calculate angle based on the corner position
           const angle = Math.atan2(
-            position.y === "top" ? -overlayHeight / 2 : overlayHeight / 2,
-            position.x === "left" ? -overlayWidth / 2 : overlayWidth / 2
+            position.y === "top"
+              ? (-overlayHeight - 100) / 2
+              : (overlayHeight + 100) / 2,
+            position.x === "left"
+              ? (-overlayWidth + 100) / 2
+              : (overlayWidth - 100) / 2
           );
           const rotate = angle * (180 / Math.PI) + 90; // Convert to degrees and adjust the initial rotation
 
@@ -120,8 +124,8 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
               key={index}
               style={{
                 position: "absolute",
-                [position.y]: 0,
-                [position.x]: 0,
+                [position.y]: -26,
+                [position.x]: -10,
                 opacity: 0.7,
               }}
             >
