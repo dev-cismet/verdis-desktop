@@ -1,5 +1,8 @@
 import { Button, ConfigProvider, Result } from "antd";
 import "antd/dist/reset.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-bootstrap-typeahead/css/Typeahead.css";
+
 import locale from "antd/locale/de_DE";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
@@ -38,6 +41,7 @@ import { getReadOnly, getShowChat } from "./store/slices/settings";
 import Chat from "./components/commons/Chat";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { persistStore } from "redux-persist";
+import { loadGazeteerEntries } from "./store/slices/gazData";
 
 const baseLayerConf = extendBaseLayerConf({ ...defaultLayerConf });
 
@@ -55,6 +59,7 @@ const NavBarWrapper = () => {
     setIsLoading(true);
     dispatch(checkJWTValidation());
     setIsLoading(false);
+    dispatch(loadGazeteerEntries());
   }, []);
 
   if (isLoading) {

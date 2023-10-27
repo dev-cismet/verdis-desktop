@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  fitFeatureArray,
-  getBoundsForFeatureArray,
-  getCenterAndZoomForBounds,
-} from "../../tools/mappingTools";
+import { getBoundsForFeatureArray } from "../../tools/mappingTools";
 
 const initialState = {
   flaechenCollection: undefined,
@@ -18,6 +14,7 @@ const initialState = {
     nrwAlkisFstck: 0.7,
     nrwAlkisGebaeude: 0.7,
   },
+  toolbarProperties: {},
 };
 
 const slice = createSlice({
@@ -136,6 +133,10 @@ const slice = createSlice({
       state.additionalLayerOpacities[layer] = opacity;
       return state;
     },
+    setToolbarProperties(state, action) {
+      state.toolbarProperties = action.payload;
+      return state;
+    },
     clear(state) {
       state.flaechenCollection = undefined;
       state.frontenCollection = undefined;
@@ -162,6 +163,7 @@ export const {
   setShowCurrentFeatureCollection,
   setShowBackground,
   setLayerOpacity,
+  setToolbarProperties,
   clear,
 } = slice.actions;
 
@@ -195,4 +197,7 @@ export const getShowBackground = (state) => {
 
 export const getAdditionalLayerOpacities = (state) => {
   return state.mapping.additionalLayerOpacities;
+};
+export const getToolbarProperties = (state) => {
+  return state.mapping.toolbarProperties;
 };

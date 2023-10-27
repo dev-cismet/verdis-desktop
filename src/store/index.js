@@ -3,6 +3,7 @@ import authSlice from "./slices/auth";
 import searchSlice from "./slices/search";
 import settingsSlice from "./slices/settings";
 import mappingSlice from "./slices/mapping";
+import gazDataSlice from "./slices/gazData";
 import uiSlice from "./slices/ui";
 import { createLogger } from "redux-logger";
 import { persistReducer } from "redux-persist";
@@ -101,6 +102,7 @@ export default configureStore({
     settings: persistReducer(settingsConfig, settingsSlice.reducer),
     mapping: mappingSlice.reducer,
     ui: persistReducer(uiConfig, uiSlice.reducer),
+    gazetteerData: gazDataSlice.reducer,
   },
   devTools: devToolsEnabled === true && inProduction === false,
   middleware,
