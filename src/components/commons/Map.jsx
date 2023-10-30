@@ -310,7 +310,7 @@ const Map = ({
           setOverlayFeature={setOverlayFeature}
           gazData={gazData}
           enabled={gazData.length > 0}
-          pixelwidth={500}
+          pixelwidth={300}
           placeholder={gazetteerSearchPlaceholder}
         />
         {data.featureCollection &&
