@@ -266,7 +266,7 @@ const Map = ({
             const bbPoly = createQueryGeomFromBB(boundingBox);
             const area = getArea25832(bbPoly);
             const maxAreaForSearch = 130000;
-            if (area < maxAreaForSearch) {
+            if (area < maxAreaForSearch && area !== 0) {
               setInfoText("");
               dispatch(searchForGeoFields(bbPoly));
             } else {
