@@ -5,7 +5,7 @@ const Toolbar = ({ infoText }) => {
   const properties = useSelector(getToolbarProperties);
 
   return (
-    <div className="relative pt-2 bg-white text-lg w-full z-[9999] pointer-events-none flex gap-1">
+    <div className="relative mt-2 bg-white text-lg w-full z-[9999] pointer-events-none flex gap-1">
       {properties.kassenzeichen && (
         <span>
           Kassenzeichen: {properties.kassenzeichen}::
