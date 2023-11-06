@@ -50,6 +50,8 @@ import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 import { getGazData } from "../../store/slices/gazData";
 import Toolbar from "./Toolbar";
+import { SyncOutlined } from "@ant-design/icons";
+import LandParcelChooser from "./LandParcelChooser";
 const mockExtractor = (input) => {
   return {
     homeCenter: [51.27225612927373, 7.199918031692506],
@@ -93,6 +95,7 @@ const Map = ({
   const cardRef = useRef(null);
   const [mapWidth, setMapWidth] = useState(0);
   const [mapHeight, setMapHeight] = useState(0);
+  const [showLandParcelChooser, setShowLandParcelChooser] = useState(false);
   const {
     backgroundModes,
     selectedBackground,
@@ -186,6 +189,10 @@ const Map = ({
       title={<span className="text-lg">Karte</span>}
       extra={
         <div className="flex items-center gap-4">
+          <SyncOutlined
+            className="text-black font-bold text-xl cursor-pointer"
+            onClick={() => setShowLandParcelChooser(!showLandParcelChooser)}
+          />
           <div className="relative flex items-center">
             <Tooltip title="Hintergrund an/aus">
               <FontAwesomeIcon
@@ -297,22 +304,28 @@ const Map = ({
             mapRef={leafletRoutedMapRef}
           />
         )}
-        <GazetteerHitDisplay
-          key={"gazHit" + JSON.stringify(gazetteerHit)}
-          gazetteerHit={gazetteerHit}
-        />
-        <GazetteerSearchControl
-          mapRef={refRoutedMap}
-          gazetteerHit={gazetteerHit}
-          setGazetteerHit={setGazetteerHit}
-          gazeteerHitTrigger={gazetteerHitTrigger}
-          overlayFeature={overlayFeature}
-          setOverlayFeature={setOverlayFeature}
-          gazData={gazData}
-          enabled={gazData.length > 0}
-          pixelwidth={300}
-          placeholder={gazetteerSearchPlaceholder}
-        />
+        {showLandParcelChooser ? (
+          <LandParcelChooser />
+        ) : (
+          <>
+            <GazetteerHitDisplay
+              key={"gazHit" + JSON.stringify(gazetteerHit)}
+              gazetteerHit={gazetteerHit}
+            />
+            <GazetteerSearchControl
+              mapRef={refRoutedMap}
+              gazetteerHit={gazetteerHit}
+              setGazetteerHit={setGazetteerHit}
+              gazeteerHitTrigger={gazetteerHitTrigger}
+              overlayFeature={overlayFeature}
+              setOverlayFeature={setOverlayFeature}
+              gazData={gazData}
+              enabled={gazData.length > 0}
+              pixelwidth={300}
+              placeholder={gazetteerSearchPlaceholder}
+            />
+          </>
+        )}
         {data.featureCollection &&
           data.featureCollection.length > 0 &&
           showCurrentFeatureCollection && (
