@@ -32,6 +32,8 @@ const initialState = {
   flaeche: {},
   seepage: {},
   previousSearches: [],
+  landparcels: [],
+  gemarkungen: [],
   isLoading: false,
   febBlob: null,
   errorMessage: null,
@@ -75,6 +77,14 @@ const slice = createSlice({
     },
     storeFebBlob(state, action) {
       state.febBlob = action.payload;
+      return state;
+    },
+    storeLandparcels(state, action) {
+      state.landparcels = action.payload;
+      return state;
+    },
+    storeGemarkungen(state, action) {
+      state.gemarkungen = action.payload;
       return state;
     },
     resetStates(state) {
@@ -168,7 +178,8 @@ export const getflurstuecke = () => {
         return response.json();
       })
       .then((result) => {
-        console.log(result);
+        dispatch(storeLandparcels(result.data.view_alkis_landparcell));
+        dispatch(storeGemarkungen(result.data.gemarkung));
       })
       .catch((error) => {
         console.error(
@@ -411,6 +422,8 @@ export const {
   storeFront,
   storeFlaeche,
   storeSeepage,
+  storeLandparcels,
+  storeGemarkungen,
   resetStates,
   setIsLoading,
   setErrorMessage,
@@ -454,6 +467,14 @@ export const getSeepage = (state) => {
 
 export const getPreviousSearches = (state) => {
   return state.search.previousSearches;
+};
+
+export const getLandparcels = (state) => {
+  return state.search.landparcels;
+};
+
+export const getGemarkungen = (state) => {
+  return state.search.gemarkungen;
 };
 
 export const getIsLoading = (state) => {
