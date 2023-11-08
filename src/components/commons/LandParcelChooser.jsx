@@ -6,6 +6,7 @@ import proj4 from "proj4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const LandParcelChooser = ({
   setGazetteerHit,
@@ -17,6 +18,8 @@ const LandParcelChooser = ({
   const [selectedGemarkung, setSelectedGemarkung] = useState();
   const [selectedFlur, setSelectedFlur] = useState();
   const [selectedFlurstueckLabel, setSelectedFlurstueckLabel] = useState();
+  const [urlParams, setUrlParams] = useSearchParams();
+
   const gemarkungRef = useRef();
   const flurRef = useRef();
   const flurstueckRef = useRef();
@@ -32,12 +35,16 @@ const LandParcelChooser = ({
       const gemarkung = splitted[0].substring(2);
       const flur = splitted[1];
       const flurstueck = splitted[2];
+      const x = f.pointOnSurfaceX;
+      const y = f.pointOnSurfaceY;
       if (result[gemarkung]) {
         if (result[gemarkung].flure[flur]) {
           result[gemarkung].flure[flur].flurstuecke[flurstueck] = {
             label: flurstueck,
             lfk: f.schluessel_id,
             alkis_id: f.alkis_id,
+            x: x,
+            y: y,
           };
         } else {
           result[gemarkung].flure[flur] = {
@@ -63,6 +70,8 @@ const LandParcelChooser = ({
           label: flurstueck,
           lfk: f.schluessel_id,
           alkis_id: f.alkis_id,
+          x: x,
+          y: y,
         };
       }
     }
@@ -122,6 +131,18 @@ const LandParcelChooser = ({
       selectedFlurstueck.x,
       selectedFlurstueck.y,
     ]);
+
+    const latLng = proj4("EPSG:25832", "EPSG:4326", [
+      selectedFlurstueck.x,
+      selectedFlurstueck.y,
+    ]);
+
+    setUrlParams((prev) => {
+      prev.set("zoom", 18);
+      prev.set("lat", latLng[1]);
+      prev.set("lng", latLng[0]);
+      return prev;
+    });
 
     setOverlayFeature("gazetteerHitTrigger");
 
