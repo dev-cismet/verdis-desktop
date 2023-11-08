@@ -77,6 +77,20 @@ query geoFields($bbPoly: geometry) {
   }
 }`;
 
+queries.flurstuecke = `
+query MyQuery {
+  view_alkis_landparcell {
+    alkis_id
+    pointOnSurface
+    pointOnSurfaceX
+    pointOnSurfaceY
+  }
+  gemarkung {
+    gemarkungsnummer
+    name
+  }
+}`;
+
 queries.alkisLandparcel = `
 query MyQuery($alkisId: String) {
   alkis_landparcel(where: {alkis_id: {_eq: $alkisId}}) {

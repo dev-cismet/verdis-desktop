@@ -10,6 +10,7 @@ import {
   getIsLoading,
   getKassenzeichen,
   getPreviousSearches,
+  getflurstuecke,
   searchForKassenzeichen,
 } from "../../store/slices/search";
 import { useState } from "react";
@@ -35,6 +36,10 @@ const SearchBar = () => {
       setInpuValue(urlKassenzeichen);
     }
   }, [urlParams]);
+
+  useEffect(() => {
+    dispatch(getflurstuecke());
+  }, []);
 
   return (
     <div className="flex relative items-center gap-3 w-full">

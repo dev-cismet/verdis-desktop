@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   ENDPOINT,
+  WUNDA_ENDPOINT,
+  flurStueckQuery,
   geoFieldsQuery,
   pointquery,
   query,
@@ -135,6 +137,38 @@ export const searchForGeoFields = (bbPoly) => {
       })
       .then((result) => {
         dispatch(setFeatureCollection(createFeatureArray(result.data)));
+      })
+      .catch((error) => {
+        console.error(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
+      });
+  };
+};
+
+export const getflurstuecke = () => {
+  return async (dispatch, getState) => {
+    const jwt = getState().auth.jwt;
+    fetch(WUNDA_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        query: flurStueckQuery,
+        variables: null,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        console.log(result);
       })
       .catch((error) => {
         console.error(
