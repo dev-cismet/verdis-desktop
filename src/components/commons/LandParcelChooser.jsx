@@ -32,18 +32,12 @@ const LandParcelChooser = ({
       const gemarkung = splitted[0].substring(2);
       const flur = splitted[1];
       const flurstueck = splitted[2];
-      const pointOnSurface = f.pointOnSurface;
-      const pointOnSurfaceX = f.pointOnSurfaceX;
-      const pointOnSurfaceY = f.pointOnSurfaceY;
       if (result[gemarkung]) {
         if (result[gemarkung].flure[flur]) {
           result[gemarkung].flure[flur].flurstuecke[flurstueck] = {
             label: flurstueck,
             lfk: f.schluessel_id,
             alkis_id: f.alkis_id,
-            pointOnSurface: pointOnSurface,
-            x: pointOnSurfaceX,
-            y: pointOnSurfaceY,
           };
         } else {
           result[gemarkung].flure[flur] = {
@@ -59,9 +53,6 @@ const LandParcelChooser = ({
       } else {
         result[gemarkung] = {
           gemarkung: gemarkungLookup[gemarkung] || gemarkung,
-          pointOnSurface: pointOnSurface,
-          x: pointOnSurfaceX,
-          y: pointOnSurfaceY,
           flure: {},
         };
         result[gemarkung].flure[flur] = {
@@ -125,35 +116,25 @@ const LandParcelChooser = ({
 
   const handleFlurstueckChange = (flurstueckLabel) => {
     setSelectedFlurstueckLabel(flurstueckLabel);
+    const selectedFlurstueck = selectedFlur.flurstuecke[flurstueckLabel];
 
     const updatedCoordinates = proj4("EPSG:25832", "EPSG:3857", [
-      selectedGemarkung.x,
-      selectedGemarkung.y,
+      selectedFlurstueck.x,
+      selectedFlurstueck.y,
     ]);
 
     setOverlayFeature("gazetteerHitTrigger");
 
-    // setGazetteerHit({
-    //   sorter: 94,
-    //   string: "Test",
-    //   glyph: "tags",
-    //   x: Math.round(updatedCoordinates[0] * 100) / 100,
-    //   y: Math.round(updatedCoordinates[1] * 100) / 100,
-    //   more: {
-    //     zl: 18,
-    //   },
-    //   type: "pois",
-    // });
     setGazetteerHit({
       sorter: 37717,
-      string: "Lindenstr. 2",
+      string: "Flurstück",
       glyph: "home",
-      x: 801552.55,
-      y: 6669420.02,
+      x: Math.round(updatedCoordinates[0] * 100) / 100,
+      y: Math.round(updatedCoordinates[1] * 100) / 100,
       more: {
         zl: 18,
       },
-      type: "adressen",
+      type: "pois",
     });
   };
   const handleKeyGemarkung = (e) => {
