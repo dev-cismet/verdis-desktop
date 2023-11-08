@@ -157,6 +157,8 @@ const LandParcelChooser = ({
       },
       type: "pois",
     });
+
+    flurstueckRef.current.blur();
   };
   const handleKeyGemarkung = (e) => {
     if (e.key === "Enter") {
@@ -213,6 +215,7 @@ const LandParcelChooser = ({
         ref={gemarkungRef}
         className="w-40 rounded-l-none"
         placeholder="Gemarkung"
+        autoFocus
         showSearch
         value={selectedGemarkung?.gemarkung || undefined}
         filterOption={(input, option) =>
