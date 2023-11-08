@@ -1,7 +1,7 @@
 import "react-cismap/topicMaps.css";
 import "leaflet/dist/leaflet.css";
 
-import { Button, Card, Tooltip } from "antd";
+import { Card, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
 import { flaechen } from "../../stories/_data/rathausKassenzeichenfeatureCollection";
@@ -53,7 +53,6 @@ import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 import { getGazData } from "../../store/slices/gazData";
 import Toolbar from "./Toolbar";
-import { SyncOutlined } from "@ant-design/icons";
 import LandParcelChooser from "./LandParcelChooser";
 const mockExtractor = (input) => {
   return {
@@ -192,10 +191,6 @@ const Map = ({
       title={<span className="text-lg">Karte</span>}
       extra={
         <div className="flex items-center gap-4">
-          <SyncOutlined
-            className="text-black font-bold text-xl cursor-pointer"
-            onClick={() => setShowLandParcelChooser(!showLandParcelChooser)}
-          />
           <div className="relative flex items-center">
             <Tooltip title="Hintergrund an/aus">
               <FontAwesomeIcon
