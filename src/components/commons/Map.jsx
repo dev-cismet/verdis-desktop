@@ -43,7 +43,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { ScaleControl } from "react-leaflet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage as solidImage } from "@fortawesome/free-solid-svg-icons";
+import {
+  faComment,
+  faImage as solidImage,
+} from "@fortawesome/free-solid-svg-icons";
 import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
 import getLayers from "react-cismap/tools/layerFactory";
 import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
@@ -295,7 +298,7 @@ const Map = ({
         }}
       >
         <ScaleControl {...defaults} position="bottomright" />
-        {overlayFeature && (
+        {/* {overlayFeature && (
           <ProjSingleGeoJson
             key={JSON.stringify(overlayFeature)}
             geoJson={overlayFeature}
@@ -303,15 +306,19 @@ const Map = ({
             maskingPolygon={maskingPolygon}
             mapRef={leafletRoutedMapRef}
           />
-        )}
+        )} */}
+        <GazetteerHitDisplay
+          key={"gazHit" + JSON.stringify(gazetteerHit)}
+          gazetteerHit={gazetteerHit}
+        />
         {showLandParcelChooser ? (
-          <LandParcelChooser />
+          <LandParcelChooser
+            setGazetteerHit={setGazetteerHit}
+            setOverlayFeature={setOverlayFeature}
+            setShowLandParcelChooser={setShowLandParcelChooser}
+          />
         ) : (
           <>
-            <GazetteerHitDisplay
-              key={"gazHit" + JSON.stringify(gazetteerHit)}
-              gazetteerHit={gazetteerHit}
-            />
             <GazetteerSearchControl
               mapRef={refRoutedMap}
               gazetteerHit={gazetteerHit}
@@ -323,6 +330,11 @@ const Map = ({
               enabled={gazData.length > 0}
               pixelwidth={300}
               placeholder={gazetteerSearchPlaceholder}
+              tertiaryAction={() => {
+                setShowLandParcelChooser(true);
+              }}
+              tertiaryActionIcon={faComment}
+              tertiaryActionTooltip="Flurstücksuche"
             />
           </>
         )}
