@@ -195,12 +195,12 @@ const LandParcelChooser = ({
   }
 
   return (
-    <div className="absolute flex gap-1 bottom-[5px] left-[10px] z-[999]">
+    <div className="absolute flex items-center gap-1 bottom-[5px] left-[10px] z-[999]">
       <Tooltip
         title={selectedGemarkung ? "Suche zurücksetzen" : "Gazetteer suche"}
       >
         <button
-          className="border-[#0d6efd] bg-gradient-to-b from-[#ffffff] to-[#e0e0e0] h-[34px] w-[37px] border rounded-[4px]"
+          className="border-[#0d6efd] bg-gradient-to-b from-[#ffffff] to-[#e0e0e0] h-[34px] w-[32px] border rounded-[4px]"
           onClick={() =>
             selectedGemarkung ? resetStates() : setShowLandParcelChooser(false)
           }
@@ -213,7 +213,7 @@ const LandParcelChooser = ({
       </Tooltip>
       <Select
         ref={gemarkungRef}
-        className="w-40 rounded-l-none"
+        className="w-40"
         placeholder="Gemarkung"
         autoFocus
         showSearch
