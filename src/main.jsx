@@ -42,6 +42,7 @@ import Chat from "./components/commons/Chat";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { persistStore } from "redux-persist";
 import { loadGazeteerEntries } from "./store/slices/gazData";
+import { getVirtualCityPassword } from "./store/slices/search";
 
 const baseLayerConf = extendBaseLayerConf({ ...defaultLayerConf });
 
@@ -60,6 +61,7 @@ const NavBarWrapper = () => {
     dispatch(checkJWTValidation());
     setIsLoading(false);
     dispatch(loadGazeteerEntries());
+    dispatch(getVirtualCityPassword());
   }, []);
 
   if (isLoading) {

@@ -36,6 +36,7 @@ const initialState = {
   gemarkungen: [],
   isLoading: false,
   isLoadingGeofields: false,
+  virtualCity: "",
   febBlob: null,
   errorMessage: null,
 };
@@ -86,6 +87,10 @@ const slice = createSlice({
     },
     storeGemarkungen(state, action) {
       state.gemarkungen = action.payload;
+      return state;
+    },
+    storeVirtualCity(state, action) {
+      state.virtualCity = action.payload;
       return state;
     },
     resetStates(state) {
@@ -158,6 +163,36 @@ export const searchForGeoFields = (bbPoly) => {
       })
       .catch((error) => {
         dispatch(setIsLoadingGeofields(false));
+        console.error(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
+      });
+  };
+};
+
+export const getVirtualCityPassword = () => {
+  return async (dispatch, getState) => {
+    const jwt = getState().auth.jwt;
+    fetch(
+      "https://wunda-cloud.cismet.de/wunda/api/configattributes/virtualcitymap_secret",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        dispatch(storeVirtualCity(result.virtualcitymap_secret));
+      })
+      .catch((error) => {
         console.error(
           "There was a problem with the fetch operation:",
           error.message
@@ -434,6 +469,7 @@ export const {
   storeLandparcels,
   storeGemarkungen,
   resetStates,
+  storeVirtualCity,
   setIsLoading,
   setIsLoadingGeofields,
   setErrorMessage,
@@ -501,4 +537,8 @@ export const getErrorMessage = (state) => {
 
 export const getFebBlob = (state) => {
   return state.search.febBlob;
+};
+
+export const getVirtualCity = (state) => {
+  return state.search.virtualCity;
 };

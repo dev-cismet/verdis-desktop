@@ -6,6 +6,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import proj4 from "proj4";
 import { vccPasswd } from "../../constants/verdis";
+import { useSelector } from "react-redux";
+import { getVirtualCity } from "../../store/slices/search";
 
 function getBoundingBoxForLeafletMap(leafletMap) {
   const bounds = leafletMap.leafletElement.getBounds();
@@ -44,7 +46,7 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
     const overlayLeft = (mapWidth - overlayWidth) / 2;
 
     const USER = "wuppertal";
-    const PASSWORD = vccPasswd;
+    const PASSWORD = useSelector(getVirtualCity);
 
     const HEADINGS = [180, 270, 0, 90];
 
@@ -60,6 +62,8 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
     const centerIcon = (
       <FontAwesomeIcon icon={faBullseye} style={{ fontSize: 40 }} />
     );
+
+    console.log(PASSWORD);
 
     return (
       <div className="w-full h-full flex items-center justify-center">
@@ -80,7 +84,7 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              opacity: 0.3,
+              opacity: 0.5,
             }}
           >
             {centerIcon}
@@ -96,7 +100,7 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
           ].map((position, index) => {
             // Calculate angle based on the corner position
             const angle = Math.atan2(
-              position.y === "top" ? -160 : 160,
+              position.y === "top" ? -150 : 150,
               position.x === "left" ? -260 : 260
             );
             const rotate = angle * (180 / Math.PI) + 90; // Convert to degrees and adjust the initial rotation
