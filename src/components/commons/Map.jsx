@@ -200,6 +200,7 @@ const Map = ({
       title={<span className="text-lg">Karte</span>}
       extra={
         <div className="flex items-center gap-4">
+          {isLoadingGeofields && <LoadingOutlined />}
           <div className="relative flex items-center">
             <Tooltip title="Schrägluftbild Overlay an/aus">
               <FontAwesomeIcon
@@ -212,7 +213,6 @@ const Map = ({
             </Tooltip>
             <Dot showDot={showVirtualCityOverlay} />
           </div>
-          {isLoadingGeofields && <LoadingOutlined />}
           <div className="relative flex items-center">
             <Tooltip title="Hintergrund an/aus">
               <FontAwesomeIcon
