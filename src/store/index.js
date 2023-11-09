@@ -95,12 +95,18 @@ const settingsConfig = {
   whitelist: ["syncKassenzeichen"],
 };
 
+const mappingConfig = {
+  key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.mapping",
+  storage: localForage,
+  whitelist: ["additionalLayerOpacities"],
+};
+
 export default configureStore({
   reducer: {
     auth: persistReducer(authConfig, authSlice.reducer),
     search: persistReducer(searchConfig, searchSlice.reducer),
     settings: persistReducer(settingsConfig, settingsSlice.reducer),
-    mapping: mappingSlice.reducer,
+    mapping: persistReducer(mappingConfig, mappingSlice.reducer),
     ui: persistReducer(uiConfig, uiSlice.reducer),
     gazetteerData: gazDataSlice.reducer,
   },
