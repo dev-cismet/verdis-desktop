@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faG, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useRef } from "react";
 import { useSearchParams } from "react-router-dom";
+import "../ui/select.css";
 
 const LandParcelChooser = ({
   setGazetteerHit,
@@ -198,9 +199,12 @@ const LandParcelChooser = ({
     <div className="absolute flex items-center gap-1 bottom-[5px] left-[10px] z-[999]">
       <Tooltip
         title={selectedGemarkung ? "Suche zurücksetzen" : "Gazetteer suche"}
+        align={{
+          offset: [0, -6],
+        }}
       >
         <button
-          className="border-[#0d6efd] bg-gradient-to-b from-[#ffffff] to-[#e0e0e0] h-[34px] w-[32px] border rounded-[4px]"
+          className="border-[#0d6efd] z-[9999] bg-gradient-to-b from-[#ffffff] to-[#e0e0e0] h-[34px] w-[32px] border rounded-l-[4px]"
           onClick={() =>
             selectedGemarkung ? resetStates() : setShowLandParcelChooser(false)
           }
@@ -213,7 +217,7 @@ const LandParcelChooser = ({
       </Tooltip>
       <Select
         ref={gemarkungRef}
-        className="w-40"
+        className="w-40 -ml-[8px]"
         placeholder="Gemarkung"
         autoFocus
         showSearch
