@@ -78,12 +78,9 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
       >
         <div
           style={{
-            position: "absolute",
-            bottom: "0%",
-            left: "0%",
-            fontSize: 15,
             opacity: 0.8,
           }}
+          className="w-full absolute bottom-0 text-center xl:text-lg text-base"
         >
           3D- und Schrägluftbildviewer öffnen
         </div>
@@ -135,6 +132,7 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
               >
                 <FontAwesomeIcon
                   icon={faArrowUp}
+                  className="text-primary/90"
                   style={{
                     fontSize: 80,
                     margin: 10,
