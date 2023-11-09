@@ -63,86 +63,76 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
     );
 
     return (
-      <div
-        style={{
-          position: "relative", // Changed to relative to position icons within the overlay
-          top: overlayTop,
-          left: overlayLeft,
-          width: overlayWidth,
-          height: overlayHeight,
-
-          zIndex: 100000,
-          _pointerEvents: "none",
-        }}
-        className="bg-black/40 text-gray-300"
-      >
+      <div className="w-full h-full flex items-center justify-center">
         <div
           style={{
-            opacity: 0.8,
+            zIndex: 100000,
+            _pointerEvents: "none",
           }}
-          className="w-full absolute bottom-0 text-center xl:text-lg text-base"
+          className="bg-black/40 text-gray-300 relative aspect-video w-60 md:w-[300px] lg:w-[450px] xl:w-[550px]"
         >
-          3D- und Schrägluftbildviewer öffnen
-        </div>
-        {/* Center Icon */}
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            opacity: 0.3,
-          }}
-        >
-          {centerIcon}
-        </div>
+          <div className="w-full absolute bottom-0 text-center lg:text-lg xl:text-xl md:text-base text-sm">
+            3D- und Schrägluftbildviewer öffnen
+          </div>
+          {/* Center Icon */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              opacity: 0.3,
+            }}
+          >
+            {centerIcon}
+          </div>
 
-        {/* Corner Icons */}
+          {/* Corner Icons */}
 
-        {[
-          { y: "top", x: "left" },
-          { y: "top", x: "right" },
-          { y: "bottom", x: "right" },
-          { y: "bottom", x: "left" },
-        ].map((position, index) => {
-          // Calculate angle based on the corner position
-          const angle = Math.atan2(
-            position.y === "top"
-              ? (-overlayHeight - 100) / 2
-              : (overlayHeight + 100) / 2,
-            position.x === "left"
-              ? (-overlayWidth + 100) / 2
-              : (overlayWidth - 100) / 2
-          );
-          const rotate = angle * (180 / Math.PI) + 90; // Convert to degrees and adjust the initial rotation
+          {[
+            { y: "top", x: "left" },
+            { y: "top", x: "right" },
+            { y: "bottom", x: "right" },
+            { y: "bottom", x: "left" },
+          ].map((position, index) => {
+            // Calculate angle based on the corner position
+            const angle = Math.atan2(
+              position.y === "top"
+                ? (-overlayHeight - 100) / 2
+                : (overlayHeight + 100) / 2,
+              position.x === "left"
+                ? (-overlayWidth + 100) / 2
+                : (overlayWidth - 100) / 2
+            );
+            const rotate = angle * (180 / Math.PI) + 90; // Convert to degrees and adjust the initial rotation
 
-          return (
-            <div
-              key={index}
-              style={{
-                position: "absolute",
-                [position.y]: -26,
-                [position.x]: -10,
-                opacity: 0.7,
-              }}
-            >
-              <a
-                href={`https://${USER}:${PASSWORD}@wuppertal.virtualcitymap.de/?startingmap=Oblique%20Map&lang=de&groundPosition=${groundPosX},${groundPosY},0&formerZPosition=${groundPosZ}&distance=${distance}&pitch=-90.00&heading=${HEADINGS[index]}&roll=0.00&cameraPosition=${camPosX},${camPosY},${camPosZ}&epsg=${epsg}`}
-                target="_vcm"
+            return (
+              <div
+                key={index}
+                style={{
+                  position: "absolute",
+                  [position.y]: -26,
+                  [position.x]: -10,
+                  opacity: 0.7,
+                }}
               >
-                <FontAwesomeIcon
-                  icon={faArrowUp}
-                  className="text-primary/90"
-                  style={{
-                    fontSize: 80,
-                    margin: 10,
-                    transform: `rotate(${rotate + 180}deg)`,
-                  }}
-                />
-              </a>
-            </div>
-          );
-        })}
+                <a
+                  href={`https://${USER}:${PASSWORD}@wuppertal.virtualcitymap.de/?startingmap=Oblique%20Map&lang=de&groundPosition=${groundPosX},${groundPosY},0&formerZPosition=${groundPosZ}&distance=${distance}&pitch=-90.00&heading=${HEADINGS[index]}&roll=0.00&cameraPosition=${camPosX},${camPosY},${camPosZ}&epsg=${epsg}`}
+                  target="_vcm"
+                >
+                  <FontAwesomeIcon
+                    icon={faArrowUp}
+                    className="text-primary/90 text-lg md:text-4xl lg:text-6xl xl:text-8xl"
+                    style={{
+                      margin: 10,
+                      transform: `rotate(${rotate + 180}deg)`,
+                    }}
+                  />
+                </a>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   } else {
