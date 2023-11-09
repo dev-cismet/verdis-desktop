@@ -4,7 +4,12 @@ import { getGemarkungen, getLandparcels } from "../../store/slices/search";
 import { useState } from "react";
 import proj4 from "proj4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faG, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faA,
+  faComment,
+  faG,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import "../ui/select.css";
@@ -198,7 +203,7 @@ const LandParcelChooser = ({
   return (
     <div className="absolute flex items-center gap-1 bottom-[5px] left-[10px] z-[999]">
       <Tooltip
-        title={selectedGemarkung ? "Suche zurücksetzen" : "Gazetteer suche"}
+        title={selectedGemarkung ? "Suche zurücksetzen" : "Adressensuche"}
         align={{
           offset: [0, -6],
         }}
@@ -210,7 +215,7 @@ const LandParcelChooser = ({
           }
         >
           <FontAwesomeIcon
-            icon={selectedGemarkung ? faXmark : faG}
+            icon={selectedGemarkung ? faXmark : faA}
             className={`${selectedGemarkung ? "text-xl" : "h-4"} mt-[2px]`}
           />
         </button>
