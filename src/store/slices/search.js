@@ -35,6 +35,7 @@ const initialState = {
   landparcels: [],
   gemarkungen: [],
   isLoading: false,
+  isLoadingGeofields: false,
   febBlob: null,
   errorMessage: null,
 };
@@ -100,6 +101,10 @@ const slice = createSlice({
       state.isLoading = action.payload;
       return state;
     },
+    setIsLoadingGeofields(state, action) {
+      state.isLoadingGeofields = action.payload;
+      return state;
+    },
     setErrorMessage(state, action) {
       state.errorMessage = action.payload;
       return state;
@@ -128,6 +133,7 @@ export default slice;
 export const searchForGeoFields = (bbPoly) => {
   return async (dispatch, getState) => {
     const jwt = getState().auth.jwt;
+    dispatch(setIsLoadingGeofields(true));
     fetch(ENDPOINT, {
       method: "POST",
       headers: {
@@ -141,14 +147,17 @@ export const searchForGeoFields = (bbPoly) => {
     })
       .then((response) => {
         if (!response.ok) {
+          dispatch(setIsLoadingGeofields(false));
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((result) => {
+        dispatch(setIsLoadingGeofields(false));
         dispatch(setFeatureCollection(createFeatureArray(result.data)));
       })
       .catch((error) => {
+        dispatch(setIsLoadingGeofields(false));
         console.error(
           "There was a problem with the fetch operation:",
           error.message
@@ -426,6 +435,7 @@ export const {
   storeGemarkungen,
   resetStates,
   setIsLoading,
+  setIsLoadingGeofields,
   setErrorMessage,
   addSearch,
   storeFebBlob,
@@ -479,6 +489,10 @@ export const getGemarkungen = (state) => {
 
 export const getIsLoading = (state) => {
   return state.search.isLoading;
+};
+
+export const getIsLoadingGeofields = (state) => {
+  return state.search.isLoadingGeofields;
 };
 
 export const getErrorMessage = (state) => {

@@ -23,6 +23,7 @@ import {
   getCenterAndZoomForBounds,
 } from "../../tools/mappingTools";
 import {
+  getIsLoadingGeofields,
   searchForGeoFields,
   storeFlaechenId,
   storeFrontenId,
@@ -55,6 +56,7 @@ import { getGazData } from "../../store/slices/gazData";
 import Toolbar from "./Toolbar";
 import LandParcelChooser from "./LandParcelChooser";
 import Dot from "./Dot";
+import { LoadingOutlined } from "@ant-design/icons";
 const mockExtractor = (input) => {
   return {
     homeCenter: [51.27225612927373, 7.199918031692506],
@@ -83,6 +85,7 @@ const Map = ({
 
   const showBackground = useSelector(getShowBackground);
   const opacities = useSelector(getAdditionalLayerOpacities);
+  const isLoadingGeofields = useSelector(getIsLoadingGeofields);
   const [overlayFeature, setOverlayFeature] = useState(null);
   const [gazetteerHit, setGazetteerHit] = useState(null);
   const gazetteerHitTrigger = () => {
@@ -192,6 +195,7 @@ const Map = ({
       title={<span className="text-lg">Karte</span>}
       extra={
         <div className="flex items-center gap-4">
+          {isLoadingGeofields && <LoadingOutlined />}
           <div className="relative flex items-center">
             <Tooltip title="Hintergrund an/aus">
               <FontAwesomeIcon
