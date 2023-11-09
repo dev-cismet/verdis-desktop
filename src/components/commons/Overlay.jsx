@@ -57,7 +57,6 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
     const camPosY = groundPosY;
     const camPosZ = groundPosZ + distance;
     const epsg = "25832";
-
     const centerIcon = (
       <FontAwesomeIcon icon={faBullseye} style={{ fontSize: 40 }} />
     );
@@ -97,12 +96,8 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
           ].map((position, index) => {
             // Calculate angle based on the corner position
             const angle = Math.atan2(
-              position.y === "top"
-                ? (-overlayHeight - 100) / 2
-                : (overlayHeight + 100) / 2,
-              position.x === "left"
-                ? (-overlayWidth + 100) / 2
-                : (overlayWidth - 100) / 2
+              position.y === "top" ? -160 : 160,
+              position.x === "left" ? -260 : 260
             );
             const rotate = angle * (180 / Math.PI) + 90; // Convert to degrees and adjust the initial rotation
 
@@ -110,11 +105,11 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
               <div
                 key={index}
                 style={{
-                  position: "absolute",
-                  [position.y]: -26,
-                  [position.x]: -10,
+                  [position.y]: 0,
+                  [position.x]: 0,
                   opacity: 0.7,
                 }}
+                className="absolute"
               >
                 <a
                   href={`https://${USER}:${PASSWORD}@wuppertal.virtualcitymap.de/?startingmap=Oblique%20Map&lang=de&groundPosition=${groundPosX},${groundPosY},0&formerZPosition=${groundPosZ}&distance=${distance}&pitch=-90.00&heading=${HEADINGS[index]}&roll=0.00&cameraPosition=${camPosX},${camPosY},${camPosZ}&epsg=${epsg}`}
