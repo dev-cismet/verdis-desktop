@@ -46,6 +46,7 @@ import { ScaleControl } from "react-leaflet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faComment,
+  faF,
   faImage as solidImage,
 } from "@fortawesome/free-solid-svg-icons";
 import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
@@ -325,7 +326,7 @@ const Map = ({
               tertiaryAction={() => {
                 setShowLandParcelChooser(true);
               }}
-              tertiaryActionIcon={faComment}
+              tertiaryActionIcon={faF}
               tertiaryActionTooltip="Flurstücksuche"
             />
           </>

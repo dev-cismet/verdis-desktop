@@ -4,7 +4,7 @@ import { getGemarkungen, getLandparcels } from "../../store/slices/search";
 import { useState } from "react";
 import proj4 from "proj4";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faG, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 
@@ -206,7 +206,7 @@ const LandParcelChooser = ({
           }
         >
           <FontAwesomeIcon
-            icon={selectedGemarkung ? faXmark : faComment}
+            icon={selectedGemarkung ? faXmark : faG}
             className={`${selectedGemarkung ? "text-xl" : "h-4"} mt-[2px]`}
           />
         </button>
