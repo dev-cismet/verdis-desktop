@@ -54,6 +54,7 @@ import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 import { getGazData } from "../../store/slices/gazData";
 import Toolbar from "./Toolbar";
 import LandParcelChooser from "./LandParcelChooser";
+import Dot from "./Dot";
 const mockExtractor = (input) => {
   return {
     homeCenter: [51.27225612927373, 7.199918031692506],
@@ -199,11 +200,7 @@ const Map = ({
                 onClick={() => dispatch(setShowBackground(!showBackground))}
               />
             </Tooltip>
-            <div
-              className={`w-3 h-3 rounded-full bg-green-500 ${
-                showBackground ? "absolute" : "hidden"
-              } bottom-0 -right-1`}
-            />
+            <Dot showDot={showBackground} />
           </div>
           <div className="relative flex items-center">
             <Tooltip title="Vordergrund an/aus">
@@ -219,11 +216,7 @@ const Map = ({
                 }
               />
             </Tooltip>
-            <div
-              className={`w-3 h-3 rounded-full bg-green-500 ${
-                showCurrentFeatureCollection ? "absolute" : "hidden"
-              } bottom-0 -right-1`}
-            />
+            <Dot showDot={showCurrentFeatureCollection} />
           </div>
         </div>
       }
