@@ -71,10 +71,10 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
           width: overlayWidth,
           height: overlayHeight,
 
-          backgroundColor: "#00000020",
           zIndex: 100000,
           _pointerEvents: "none",
         }}
+        className="bg-black/40 text-gray-300"
       >
         <div
           style={{
