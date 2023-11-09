@@ -3,6 +3,7 @@ import authSlice from "./slices/auth";
 import searchSlice from "./slices/search";
 import settingsSlice from "./slices/settings";
 import mappingSlice from "./slices/mapping";
+import gazDataSlice from "./slices/gazData";
 import uiSlice from "./slices/ui";
 import { createLogger } from "redux-logger";
 import { persistReducer } from "redux-persist";
@@ -94,13 +95,20 @@ const settingsConfig = {
   whitelist: ["syncKassenzeichen"],
 };
 
+const mappingConfig = {
+  key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.mapping",
+  storage: localForage,
+  whitelist: ["additionalLayerOpacities"],
+};
+
 export default configureStore({
   reducer: {
     auth: persistReducer(authConfig, authSlice.reducer),
     search: persistReducer(searchConfig, searchSlice.reducer),
     settings: persistReducer(settingsConfig, settingsSlice.reducer),
-    mapping: mappingSlice.reducer,
+    mapping: persistReducer(mappingConfig, mappingSlice.reducer),
     ui: persistReducer(uiConfig, uiSlice.reducer),
+    gazetteerData: gazDataSlice.reducer,
   },
   devTools: devToolsEnabled === true && inProduction === false,
   middleware,

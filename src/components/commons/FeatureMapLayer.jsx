@@ -1,8 +1,9 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getFeatureCollection,
   getShowBackground,
   getShowCurrentFeatureCollection,
+  setToolbarProperties,
 } from "../../store/slices/mapping";
 import { FeatureCollectionDisplay } from "react-cismap";
 import Toolbar from "./Toolbar";
@@ -10,6 +11,7 @@ import { useState } from "react";
 
 const FeatureMapLayer = ({ featureTypes }) => {
   const featureCollection = useSelector(getFeatureCollection);
+  const dispatch = useDispatch();
   const showForeGround = useSelector(getShowCurrentFeatureCollection);
   const showBackGround = useSelector(getShowBackground);
   const filteredCollection = featureCollection?.filter((item) =>
@@ -20,10 +22,12 @@ const FeatureMapLayer = ({ featureTypes }) => {
   const myVirtHoverer = () => {
     const mouseoverHov = (feature) => {
       setHoveredFeature(feature);
+      dispatch(setToolbarProperties(feature.properties));
     };
 
     const mouseoutHov = () => {
       setHoveredFeature(undefined);
+      dispatch(setToolbarProperties({}));
     };
 
     return { mouseoverHov, mouseoutHov };
@@ -48,11 +52,6 @@ const FeatureMapLayer = ({ featureTypes }) => {
             }}
             featureCollection={filteredCollection}
             hoverer={myVirtHoverer}
-          />
-          <Toolbar
-            kassenzeichen={hoveredFeature?.properties?.kassenzeichen}
-            anschlussgrad={hoveredFeature?.properties?.anschlussgrad}
-            bezeichnung={hoveredFeature?.properties?.bezeichnung}
           />
         </>
       )}

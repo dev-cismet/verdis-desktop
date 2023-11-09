@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   ENDPOINT,
+  WUNDA_ENDPOINT,
+  flurStueckQuery,
   geoFieldsQuery,
   pointquery,
   query,
@@ -30,8 +32,12 @@ const initialState = {
   flaeche: {},
   seepage: {},
   previousSearches: [],
+  landparcels: [],
+  gemarkungen: [],
   isLoading: false,
+  isLoadingGeofields: false,
   febBlob: null,
+  errorMessage: null,
 };
 
 const slice = createSlice({
@@ -74,6 +80,14 @@ const slice = createSlice({
       state.febBlob = action.payload;
       return state;
     },
+    storeLandparcels(state, action) {
+      state.landparcels = action.payload;
+      return state;
+    },
+    storeGemarkungen(state, action) {
+      state.gemarkungen = action.payload;
+      return state;
+    },
     resetStates(state) {
       state.front = {};
       state.frontenId = null;
@@ -81,9 +95,18 @@ const slice = createSlice({
       state.flaechenId = null;
       state.seepage = {};
       state.seepageId = null;
+      state.errorMessage = null;
     },
     setIsLoading(state, action) {
       state.isLoading = action.payload;
+      return state;
+    },
+    setIsLoadingGeofields(state, action) {
+      state.isLoadingGeofields = action.payload;
+      return state;
+    },
+    setErrorMessage(state, action) {
+      state.errorMessage = action.payload;
       return state;
     },
     addSearch(state, action) {
@@ -110,6 +133,7 @@ export default slice;
 export const searchForGeoFields = (bbPoly) => {
   return async (dispatch, getState) => {
     const jwt = getState().auth.jwt;
+    dispatch(setIsLoadingGeofields(true));
     fetch(ENDPOINT, {
       method: "POST",
       headers: {
@@ -123,12 +147,48 @@ export const searchForGeoFields = (bbPoly) => {
     })
       .then((response) => {
         if (!response.ok) {
+          dispatch(setIsLoadingGeofields(false));
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((result) => {
+        dispatch(setIsLoadingGeofields(false));
         dispatch(setFeatureCollection(createFeatureArray(result.data)));
+      })
+      .catch((error) => {
+        dispatch(setIsLoadingGeofields(false));
+        console.error(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
+      });
+  };
+};
+
+export const getflurstuecke = () => {
+  return async (dispatch, getState) => {
+    const jwt = getState().auth.jwt;
+    fetch(WUNDA_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        query: flurStueckQuery,
+        variables: null,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        dispatch(storeLandparcels(result.data.view_alkis_landparcell));
+        dispatch(storeGemarkungen(result.data.gemarkung));
       })
       .catch((error) => {
         console.error(
@@ -273,6 +333,8 @@ export const searchForKassenzeichen = (
     const syncKassenzeichen = getState().settings.syncKassenzeichen;
     if (!kassenzeichen || isNaN(+kassenzeichen)) {
       console.error("Invalid kassenzeichen");
+      dispatch(setErrorMessage("Invalid kassenzeichen"));
+      dispatch(setIsLoading(false));
       return;
     }
 
@@ -345,6 +407,9 @@ export const searchForKassenzeichen = (
             )
           );
           dispatch(setIsLoading(false));
+        } else {
+          dispatch(setErrorMessage("Kassenzeichen not found"));
+          dispatch(setIsLoading(false));
         }
       })
       .catch((error) => {
@@ -366,8 +431,12 @@ export const {
   storeFront,
   storeFlaeche,
   storeSeepage,
+  storeLandparcels,
+  storeGemarkungen,
   resetStates,
   setIsLoading,
+  setIsLoadingGeofields,
+  setErrorMessage,
   addSearch,
   storeFebBlob,
 } = slice.actions;
@@ -410,8 +479,24 @@ export const getPreviousSearches = (state) => {
   return state.search.previousSearches;
 };
 
+export const getLandparcels = (state) => {
+  return state.search.landparcels;
+};
+
+export const getGemarkungen = (state) => {
+  return state.search.gemarkungen;
+};
+
 export const getIsLoading = (state) => {
   return state.search.isLoading;
+};
+
+export const getIsLoadingGeofields = (state) => {
+  return state.search.isLoadingGeofields;
+};
+
+export const getErrorMessage = (state) => {
+  return state.search.errorMessage;
 };
 
 export const getFebBlob = (state) => {

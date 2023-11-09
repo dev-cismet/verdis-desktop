@@ -9,6 +9,10 @@ import {
   TopicMapStylingContext,
   TopicMapStylingDispatchContext,
 } from "react-cismap/contexts/TopicMapStylingContextProvider";
+import {
+  getAdditionalLayerOpacities,
+  setLayerOpacity,
+} from "../../store/slices/mapping";
 
 const SettingsRow = ({ onClick, title, children }) => {
   return (
@@ -23,11 +27,15 @@ const SettingsRow = ({ onClick, title, children }) => {
 };
 
 const OptionalLayerRow = ({ title, value }) => {
-  const { activeAdditionalLayerKeys } = useContext(TopicMapStylingContext);
+  const { activeAdditionalLayerKeys, additionalLayerConfiguration } =
+    useContext(TopicMapStylingContext);
 
   const { setActiveAdditionalLayerKeys } = useContext(
     TopicMapStylingDispatchContext
   );
+
+  const dispatch = useDispatch();
+  const opacity = useSelector(getAdditionalLayerOpacities)[value];
 
   const changeActiveAdditionalLayer = (value) => {
     if (activeAdditionalLayerKeys?.includes(value)) {
@@ -56,7 +64,14 @@ const OptionalLayerRow = ({ title, value }) => {
       >
         {title}
       </span>
-      <Slider defaultValue={20} disabled={false} className="w-full" />
+      <Slider
+        defaultValue={opacity * 100}
+        onAfterChange={(opacity) =>
+          dispatch(setLayerOpacity({ layer: value, opacity: opacity / 100 }))
+        }
+        disabled={false}
+        className="w-full"
+      />
     </div>
   );
 };

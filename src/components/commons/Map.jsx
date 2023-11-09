@@ -1,6 +1,7 @@
 import "react-cismap/topicMaps.css";
 import "leaflet/dist/leaflet.css";
-import { Button, Card, Tooltip } from "antd";
+
+import { Card, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
 import { flaechen } from "../../stories/_data/rathausKassenzeichenfeatureCollection";
@@ -13,6 +14,8 @@ import {
   TopicMapStylingContext,
   TopicMapStylingDispatchContext,
 } from "react-cismap/contexts/TopicMapStylingContextProvider";
+import GazetteerSearchControl from "react-cismap/GazetteerSearchControl";
+import GazetteerHitDisplay from "react-cismap/GazetteerHitDisplay";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import {
   createQueryGeomFromBB,
@@ -20,11 +23,13 @@ import {
   getCenterAndZoomForBounds,
 } from "../../tools/mappingTools";
 import {
+  getIsLoadingGeofields,
   searchForGeoFields,
   storeFlaechenId,
   storeFrontenId,
 } from "../../store/slices/search";
 import {
+  getAdditionalLayerOpacities,
   getShowBackground,
   getShowCurrentFeatureCollection,
   setFeatureCollection,
@@ -34,17 +39,27 @@ import {
   setLeafletElement,
   setShowBackground,
   setShowCurrentFeatureCollection,
+  setToolbarProperties,
 } from "../../store/slices/mapping";
 import { useDispatch, useSelector } from "react-redux";
 import { ScaleControl } from "react-leaflet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage as solidImage } from "@fortawesome/free-solid-svg-icons";
+import {
+  faComment,
+  faF,
+  faImage as solidImage,
+} from "@fortawesome/free-solid-svg-icons";
 import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
 import getLayers from "react-cismap/tools/layerFactory";
 import StyledWMSTileLayer from "react-cismap/StyledWMSTileLayer";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 import Overlay from "./Overlay";
 
+import { getGazData } from "../../store/slices/gazData";
+import Toolbar from "./Toolbar";
+import LandParcelChooser from "./LandParcelChooser";
+import Dot from "./Dot";
+import { LoadingOutlined } from "@ant-design/icons";
 const mockExtractor = (input) => {
   return {
     homeCenter: [51.27225612927373, 7.199918031692506],
@@ -66,17 +81,31 @@ const Map = ({
   const [urlParams, setUrlParams] = useSearchParams();
   const [fallback, setFallback] = useState({});
   const [showVirtualCityOverlay, setShowVirtualCityOverlay] = useState(false);
+  const [infoText, setInfoText] = useState("");
   const showCurrentFeatureCollection = useSelector(
     getShowCurrentFeatureCollection
   );
+  const gazData = useSelector(getGazData);
+
   const showBackground = useSelector(getShowBackground);
+  const opacities = useSelector(getAdditionalLayerOpacities);
+  const isLoadingGeofields = useSelector(getIsLoadingGeofields);
+  const [overlayFeature, setOverlayFeature] = useState(null);
+  const [gazetteerHit, setGazetteerHit] = useState(null);
+  const gazetteerHitTrigger = () => {
+    console.log("gazetteerHitTrigger");
+  };
+  const searchControlWidth = 500;
+  const gazetteerSearchPlaceholder = undefined;
 
   const data = extractor(dataIn);
   const padding = 5;
   const headHeight = 37;
+  const toolBarHeight = 34;
   const cardRef = useRef(null);
   const [mapWidth, setMapWidth] = useState(0);
   const [mapHeight, setMapHeight] = useState(0);
+  const [showLandParcelChooser, setShowLandParcelChooser] = useState(false);
   const {
     backgroundModes,
     selectedBackground,
@@ -127,8 +156,8 @@ const Map = ({
   let refRoutedMap = useRef(null);
 
   const mapStyle = {
-    width: mapWidth - 2 * padding,
-    height: mapHeight - 2 * padding - headHeight,
+    width: mapWidth - 2.5 * padding,
+    height: mapHeight - 2 * padding - headHeight - toolBarHeight,
     cursor: "pointer",
     clear: "both",
     zIndex: 1,
@@ -176,6 +205,7 @@ const Map = ({
           >
             Show Overlay
           </div>
+          {isLoadingGeofields && <LoadingOutlined />}
           <div className="relative flex items-center">
             <Tooltip title="Hintergrund an/aus">
               <FontAwesomeIcon
@@ -184,11 +214,7 @@ const Map = ({
                 onClick={() => dispatch(setShowBackground(!showBackground))}
               />
             </Tooltip>
-            <div
-              className={`w-3 h-3 rounded-full bg-green-500 ${
-                showBackground ? "absolute" : "hidden"
-              } bottom-0 -right-1`}
-            />
+            <Dot showDot={showBackground} />
           </div>
           <div className="relative flex items-center">
             <Tooltip title="Vordergrund an/aus">
@@ -204,11 +230,7 @@ const Map = ({
                 }
               />
             </Tooltip>
-            <div
-              className={`w-3 h-3 rounded-full bg-green-500 ${
-                showCurrentFeatureCollection ? "absolute" : "hidden"
-              } bottom-0 -right-1`}
-            />
+            <Dot showDot={showCurrentFeatureCollection} />
           </div>
         </div>
       }
@@ -256,9 +278,14 @@ const Map = ({
             const bbPoly = createQueryGeomFromBB(boundingBox);
             const area = getArea25832(bbPoly);
             const maxAreaForSearch = 130000;
-            if (area < maxAreaForSearch) {
+            if (area < maxAreaForSearch && area !== 0) {
+              setInfoText("");
               dispatch(searchForGeoFields(bbPoly));
             } else {
+              setInfoText(
+                "Zur Anzeige aller Flächen und Fronten, bitte eine größere Zoomstufe wählen"
+              );
+              dispatch(setToolbarProperties({}));
               dispatch(setFeatureCollection(undefined));
             }
           } catch (e) {
@@ -272,7 +299,47 @@ const Map = ({
           }
         }}
       >
-        <ScaleControl {...defaults} position="topleft" />
+        <ScaleControl {...defaults} position="bottomright" />
+        {/* {overlayFeature && (
+          <ProjSingleGeoJson
+            key={JSON.stringify(overlayFeature)}
+            geoJson={overlayFeature}
+            masked={true}
+            maskingPolygon={maskingPolygon}
+            mapRef={leafletRoutedMapRef}
+          />
+        )} */}
+        <GazetteerHitDisplay
+          key={"gazHit" + JSON.stringify(gazetteerHit)}
+          gazetteerHit={gazetteerHit}
+        />
+        {showLandParcelChooser ? (
+          <LandParcelChooser
+            setGazetteerHit={setGazetteerHit}
+            setOverlayFeature={setOverlayFeature}
+            setShowLandParcelChooser={setShowLandParcelChooser}
+          />
+        ) : (
+          <>
+            <GazetteerSearchControl
+              mapRef={refRoutedMap}
+              gazetteerHit={gazetteerHit}
+              setGazetteerHit={setGazetteerHit}
+              gazeteerHitTrigger={gazetteerHitTrigger}
+              overlayFeature={overlayFeature}
+              setOverlayFeature={setOverlayFeature}
+              gazData={gazData}
+              enabled={gazData.length > 0}
+              pixelwidth={300}
+              placeholder={gazetteerSearchPlaceholder}
+              tertiaryAction={() => {
+                setShowLandParcelChooser(true);
+              }}
+              tertiaryActionIcon={faF}
+              tertiaryActionTooltip="Flurstücksuche"
+            />
+          </>
+        )}
         {data.featureCollection &&
           data.featureCollection.length > 0 &&
           showCurrentFeatureCollection && (
@@ -338,8 +405,13 @@ const Map = ({
           activeAdditionalLayerKeys?.length > 0 &&
           activeAdditionalLayerKeys.map((activekey, index) => {
             const layerConf = additionalLayerConfiguration[activekey];
-            if (layerConf?.layer) {
-              return layerConf.layer;
+            if (layerConf?.props) {
+              return (
+                <StyledWMSTileLayer
+                  {...layerConf.props}
+                  opacity={opacities[activekey].toFixed(2) || 0.7}
+                />
+              );
             } else if (layerConf?.layerkey) {
               const layers = getLayers(layerConf.layerkey);
               return layers;
@@ -353,6 +425,7 @@ const Map = ({
           />
         )}
       </RoutedMap>
+      <Toolbar infoText={infoText} />
     </Card>
   );
 };

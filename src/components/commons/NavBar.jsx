@@ -43,6 +43,7 @@ import {
 import PdfCreator from "../ui/PdfCreator";
 import Settings from "./Settings";
 import SearchBar from "../search/SearchBar";
+import GrundBuch from "../ui/GrundBuch";
 
 const navLinks = () => {
   const showSurfaceDetails = useSelector(getShowSurfaceDetails);
@@ -165,6 +166,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
       </div>
       <SearchBar />
       <div className="flex items-center gap-3">
+        <GrundBuch />
         <PdfCreator />
         <Tooltip title="Änderungsanfragen" placement="bottom">
           <CommentOutlined

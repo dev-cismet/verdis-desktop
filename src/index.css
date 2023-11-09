@@ -16,3 +16,7 @@
 ::-webkit-scrollbar-button {
   display: none;
 }
+
+a {
+  color: inherit !important;
+}
