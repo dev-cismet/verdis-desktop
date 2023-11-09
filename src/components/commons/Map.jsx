@@ -47,6 +47,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faComment,
   faF,
+  faPlane,
   faImage as solidImage,
 } from "@fortawesome/free-solid-svg-icons";
 import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
@@ -199,11 +200,17 @@ const Map = ({
       title={<span className="text-lg">Karte</span>}
       extra={
         <div className="flex items-center gap-4">
-          <div
-            className="cursor-pointer"
-            onClick={() => setShowVirtualCityOverlay(!showVirtualCityOverlay)}
-          >
-            Show Overlay
+          <div className="relative flex items-center">
+            <Tooltip title="Schrägluftbild Overlay an/aus">
+              <FontAwesomeIcon
+                icon={faPlane}
+                className="h-6 cursor-pointer"
+                onClick={() =>
+                  setShowVirtualCityOverlay(!showVirtualCityOverlay)
+                }
+              />
+            </Tooltip>
+            <Dot showDot={showVirtualCityOverlay} />
           </div>
           {isLoadingGeofields && <LoadingOutlined />}
           <div className="relative flex items-center">
