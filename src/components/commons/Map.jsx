@@ -201,44 +201,46 @@ const Map = ({
       extra={
         <div className="flex items-center gap-4">
           {isLoadingGeofields && <LoadingOutlined />}
-          <div className="relative flex items-center">
-            <Tooltip title="Schrägluftbild Overlay an/aus">
-              <FontAwesomeIcon
-                icon={faPlane}
-                className="h-6 cursor-pointer"
-                onClick={() =>
-                  setShowVirtualCityOverlay(!showVirtualCityOverlay)
-                }
-              />
-            </Tooltip>
-            <Dot showDot={showVirtualCityOverlay} />
-          </div>
-          <div className="relative flex items-center">
-            <Tooltip title="Hintergrund an/aus">
+          <Tooltip title="Schrägluftbild Overlay an/aus">
+            <div
+              className="relative flex items-center"
+              onClick={() => setShowVirtualCityOverlay(!showVirtualCityOverlay)}
+              role="button"
+            >
+              <FontAwesomeIcon icon={faPlane} className="h-6 cursor-pointer" />
+              <Dot showDot={showVirtualCityOverlay} />
+            </div>
+          </Tooltip>
+          <Tooltip title="Hintergrund an/aus">
+            <div
+              className="relative flex items-center"
+              onClick={() => dispatch(setShowBackground(!showBackground))}
+              role="button"
+            >
               <FontAwesomeIcon
                 icon={solidImage}
                 className="h-6 cursor-pointer"
-                onClick={() => dispatch(setShowBackground(!showBackground))}
               />
-            </Tooltip>
-            <Dot showDot={showBackground} />
-          </div>
-          <div className="relative flex items-center">
-            <Tooltip title="Vordergrund an/aus">
+              <Dot showDot={showBackground} />
+            </div>
+          </Tooltip>
+          <Tooltip title="Vordergrund an/aus">
+            <div
+              className="relative flex items-center"
+              onClick={() =>
+                dispatch(
+                  setShowCurrentFeatureCollection(!showCurrentFeatureCollection)
+                )
+              }
+              role="button"
+            >
               <FontAwesomeIcon
                 icon={regularImage}
                 className="h-6 cursor-pointer"
-                onClick={() =>
-                  dispatch(
-                    setShowCurrentFeatureCollection(
-                      !showCurrentFeatureCollection
-                    )
-                  )
-                }
               />
-            </Tooltip>
-            <Dot showDot={showCurrentFeatureCollection} />
-          </div>
+              <Dot showDot={showCurrentFeatureCollection} />
+            </div>
+          </Tooltip>
         </div>
       }
       style={{
