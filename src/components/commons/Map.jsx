@@ -410,6 +410,7 @@ const Map = ({
         {activeAdditionalLayerKeys !== undefined &&
           additionalLayerConfiguration !== undefined &&
           activeAdditionalLayerKeys?.length > 0 &&
+          showBackground &&
           activeAdditionalLayerKeys.map((activekey, index) => {
             const layerConf = additionalLayerConfiguration[activekey];
             if (layerConf?.props) {
