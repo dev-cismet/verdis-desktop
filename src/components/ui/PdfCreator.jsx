@@ -48,6 +48,7 @@ const PdfCreator = () => {
         link.download = `${fileName}.pdf`;
         document.body.appendChild(link);
         link.click();
+        setIsOpen(false);
       }
       document.body.removeChild(link);
       dispatch(storeFebBlob(null));
