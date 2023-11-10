@@ -106,7 +106,7 @@ export default configureStore({
     auth: persistReducer(authConfig, authSlice.reducer),
     search: persistReducer(searchConfig, searchSlice.reducer),
     settings: persistReducer(settingsConfig, settingsSlice.reducer),
-    mapping: persistReducer(mappingConfig, mappingSlice.reducer),
+    mapping: mappingSlice.reducer,
     ui: persistReducer(uiConfig, uiSlice.reducer),
     gazetteerData: gazDataSlice.reducer,
   },
