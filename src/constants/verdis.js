@@ -35,3 +35,7 @@ export const flurStueckQuery = gql`
 export const buchungsblattQuery = gql`
   ${queries.buchblatt}
 `;
+
+export const kassenzeichenForBuchungsblattQuery = gql`
+  ${queries.kassenzeichenForBuchungsblatt}
+`;
