@@ -2,17 +2,27 @@ import { BuildOutlined, SnippetsOutlined } from "@ant-design/icons";
 import { Button, Input, Modal, Tooltip } from "antd";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getBuchungsblatt,
+  getBuchungsblattnummer,
+  storeBuchungsblatt,
+} from "../../store/slices/search";
+import { getJWT } from "../../store/slices/auth";
 
 const GrundBuch = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const jwt = useSelector(getJWT);
   const [showKassenzeichenList, setShowKassenzeichenList] = useState(false);
   const [kassenzeichenList, setKassenzeichenList] = useState([
     "12345678",
     "23456789",
     "34567890",
   ]);
+  const dispatch = useDispatch();
   const [selectedKassenzeichen, setSelectedKassenzeichen] = useState("");
   const [grundBuchNumber, setGrundBuchNumber] = useState("");
+  const grundbuch = useSelector(getBuchungsblattnummer);
 
   const {
     control,
@@ -27,7 +37,7 @@ const GrundBuch = () => {
   });
   const onSubmit = (data) => {
     setGrundBuchNumber(data.firstNumber + "-" + data.secondNumber);
-    setShowKassenzeichenList(true);
+    dispatch(getBuchungsblatt(data.firstNumber + "-" + data.secondNumber));
   };
 
   return (
@@ -48,7 +58,7 @@ const GrundBuch = () => {
         open={isOpen}
         onCancel={() => setIsOpen(false)}
         footer={[
-          showKassenzeichenList ? (
+          grundbuch ? (
             <Button className="w-full">Kassenzeichen öffnen</Button>
           ) : (
             <>
@@ -84,17 +94,20 @@ const GrundBuch = () => {
           ),
         ]}
       >
-        {showKassenzeichenList ? (
+        {grundbuch ? (
           <div className="flex flex-col gap-2">
             <div className="flex gap-2 items-center w-full justify-between">
               <span className="text-lg">Grundbuchblatt: {grundBuchNumber}</span>
               <div className="flex gap-2">
-                <Button disabled={true}>
-                  <SnippetsOutlined />
-                </Button>
-                <Button disabled={true}>
-                  <BuildOutlined />
-                </Button>
+                <Button
+                  icon={<SnippetsOutlined />}
+                  target="grundbuch"
+                  href={`http://localhost:3033/renderer/?domain=WUNDA_BLAU&jwt=${jwt}&table=alkis_buchungsblatt&id=${grundbuch.id}`}
+                />
+                <Button
+                  onClick={() => dispatch(storeBuchungsblatt(null))}
+                  icon={<BuildOutlined />}
+                />
               </div>
             </div>
             <p className="w-full text-center">3 Kassenzeichen gefunden</p>
