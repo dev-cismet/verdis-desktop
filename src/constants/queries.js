@@ -45,16 +45,9 @@ query MyQuery($grundbuchblattnummer: String) {
   }
 }`;
 
-queries.kassenzeichenForBuchblatt = `
+queries.kassenzeichenForBuchungsblatt = `
 query MyQuery($intersectionGeom: geometry) {
   kassenzeichen(order_by: {kassenzeichennummer8: asc}, where: {kassenzeichen_geometrienArray: {kassenzeichen_geometrieObject: {geom: {geo_field: {_st_intersects: $intersectionGeom}}}}}) {
-    kassenzeichen_geometrienArray {
-      kassenzeichen_geometrieObject {
-        geom {
-          geo_field
-        }
-      }
-    }
     id
     kassenzeichennummer8
   }

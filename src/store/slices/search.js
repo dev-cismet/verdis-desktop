@@ -5,6 +5,7 @@ import {
   buchungsblattQuery,
   flurStueckQuery,
   geoFieldsQuery,
+  kassenzeichenForBuchungsblattQuery,
   pointquery,
   query,
 } from "../../constants/verdis";
@@ -41,6 +42,7 @@ const initialState = {
   febBlob: null,
   errorMessage: null,
   buchungsblatt: null,
+  kassenzeichenForBuchungsblatt: [],
 };
 
 const slice = createSlice({
@@ -97,6 +99,10 @@ const slice = createSlice({
     },
     storeBuchungsblatt(state, action) {
       state.buchungsblatt = action.payload;
+      return state;
+    },
+    storeKassenzeichenForBuchungsblatt(state, action) {
+      state.kassenzeichenForBuchungsblatt = action.payload;
       return state;
     },
     resetStates(state) {
@@ -261,7 +267,44 @@ export const getBuchungsblatt = (buchblattnummer) => {
         return response.json();
       })
       .then((result) => {
+        dispatch(
+          getKassenzeichenForBuchungsblatt(
+            result.data.view_alkis_buchungsblatt[0].geom
+          )
+        );
         dispatch(storeBuchungsblatt(result.data.view_alkis_buchungsblatt[0]));
+      })
+      .catch((error) => {
+        console.error(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
+      });
+  };
+};
+
+export const getKassenzeichenForBuchungsblatt = (geom) => {
+  return async (dispatch, getState) => {
+    const jwt = getState().auth.jwt;
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        query: kassenzeichenForBuchungsblattQuery,
+        variables: { intersectionGeom: geom },
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        dispatch(storeKassenzeichenForBuchungsblatt(result.data.kassenzeichen));
       })
       .catch((error) => {
         console.error(
@@ -509,6 +552,7 @@ export const {
   resetStates,
   storeVirtualCity,
   storeBuchungsblatt,
+  storeKassenzeichenForBuchungsblatt,
   setIsLoading,
   setIsLoadingGeofields,
   setErrorMessage,
@@ -584,4 +628,8 @@ export const getVirtualCity = (state) => {
 
 export const getBuchungsblattnummer = (state) => {
   return state.search.buchungsblatt;
+};
+
+export const getKassenzeichenBuchungsblatt = (state) => {
+  return state.search.kassenzeichenForBuchungsblatt;
 };

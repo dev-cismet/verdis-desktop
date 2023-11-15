@@ -6,23 +6,22 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getBuchungsblatt,
   getBuchungsblattnummer,
+  getKassenzeichenBuchungsblatt,
+  searchForKassenzeichen,
   storeBuchungsblatt,
 } from "../../store/slices/search";
 import { getJWT } from "../../store/slices/auth";
+import { useSearchParams } from "react-router-dom";
 
 const GrundBuch = () => {
   const [isOpen, setIsOpen] = useState(false);
   const jwt = useSelector(getJWT);
-  const [showKassenzeichenList, setShowKassenzeichenList] = useState(false);
-  const [kassenzeichenList, setKassenzeichenList] = useState([
-    "12345678",
-    "23456789",
-    "34567890",
-  ]);
   const dispatch = useDispatch();
   const [selectedKassenzeichen, setSelectedKassenzeichen] = useState("");
   const [grundBuchNumber, setGrundBuchNumber] = useState("");
   const grundbuch = useSelector(getBuchungsblattnummer);
+  const kassenzeichenList = useSelector(getKassenzeichenBuchungsblatt);
+  const [urlParams, setUrlParams] = useSearchParams();
 
   const {
     control,
@@ -47,7 +46,6 @@ const GrundBuch = () => {
           className="text-2xl cursor-pointer"
           onClick={() => {
             setIsOpen(true);
-            setShowKassenzeichenList(false);
             setSelectedKassenzeichen("");
             clearErrors();
           }}
@@ -59,7 +57,21 @@ const GrundBuch = () => {
         onCancel={() => setIsOpen(false)}
         footer={[
           grundbuch ? (
-            <Button className="w-full">Kassenzeichen öffnen</Button>
+            <Button
+              className="w-full"
+              onClick={() => {
+                setIsOpen(false);
+                dispatch(
+                  searchForKassenzeichen(
+                    selectedKassenzeichen.toString(),
+                    urlParams,
+                    setUrlParams
+                  )
+                );
+              }}
+            >
+              Kassenzeichen öffnen
+            </Button>
           ) : (
             <>
               <form
@@ -110,19 +122,23 @@ const GrundBuch = () => {
                 />
               </div>
             </div>
-            <p className="w-full text-center">3 Kassenzeichen gefunden</p>
+            <p className="w-full text-center">
+              {kassenzeichenList?.length} Kassenzeichen gefunden
+            </p>
             <div className="flex flex-col border bg-zinc-100 h-52">
               {kassenzeichenList.map((kassenzeichen, i) => (
                 <div
                   key={`foundKassenzeichen_${i}`}
-                  onClick={() => setSelectedKassenzeichen(kassenzeichen)}
+                  onClick={() =>
+                    setSelectedKassenzeichen(kassenzeichen.kassenzeichennummer8)
+                  }
                   className={`p-1 cursor-pointer ${
-                    kassenzeichen === selectedKassenzeichen
+                    kassenzeichen.kassenzeichennummer8 === selectedKassenzeichen
                       ? "bg-primary/20"
                       : "hover:bg-zinc-200"
                   }`}
                 >
-                  {kassenzeichen}
+                  {kassenzeichen.kassenzeichennummer8}
                 </div>
               ))}
             </div>
