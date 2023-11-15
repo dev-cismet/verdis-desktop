@@ -31,3 +31,7 @@ export const vccPasswd = "---";
 export const flurStueckQuery = gql`
   ${queries.flurstuecke}
 `;
+
+export const buchungsblattQuery = gql`
+  ${queries.buchblatt}
+`;

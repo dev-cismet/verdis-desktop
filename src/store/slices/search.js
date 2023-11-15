@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   ENDPOINT,
   WUNDA_ENDPOINT,
+  buchungsblattQuery,
   flurStueckQuery,
   geoFieldsQuery,
   pointquery,
@@ -39,6 +40,7 @@ const initialState = {
   virtualCity: "",
   febBlob: null,
   errorMessage: null,
+  buchungsblatt: null,
 };
 
 const slice = createSlice({
@@ -91,6 +93,10 @@ const slice = createSlice({
     },
     storeVirtualCity(state, action) {
       state.virtualCity = action.payload;
+      return state;
+    },
+    storeBuchungsblatt(state, action) {
+      state.buchungsblatt = action.payload;
       return state;
     },
     resetStates(state) {
@@ -224,6 +230,38 @@ export const getflurstuecke = () => {
       .then((result) => {
         dispatch(storeLandparcels(result.data.view_alkis_landparcell));
         dispatch(storeGemarkungen(result.data.gemarkung));
+      })
+      .catch((error) => {
+        console.error(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
+      });
+  };
+};
+
+export const getBuchungsblatt = (buchblattnummer) => {
+  return async (dispatch, getState) => {
+    const jwt = getState().auth.jwt;
+    fetch(WUNDA_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        query: buchungsblattQuery,
+        variables: { grundbuchblattnummer: buchblattnummer },
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        dispatch(storeBuchungsblatt(result.data.view_alkis_buchungsblatt[0]));
       })
       .catch((error) => {
         console.error(
@@ -470,6 +508,7 @@ export const {
   storeGemarkungen,
   resetStates,
   storeVirtualCity,
+  storeBuchungsblatt,
   setIsLoading,
   setIsLoadingGeofields,
   setErrorMessage,
@@ -541,4 +580,8 @@ export const getFebBlob = (state) => {
 
 export const getVirtualCity = (state) => {
   return state.search.virtualCity;
+};
+
+export const getBuchungsblattnummer = (state) => {
+  return state.search.buchungsblatt;
 };

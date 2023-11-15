@@ -36,6 +36,30 @@ query kassenzeichenForPoint($x: Float!, $y: Float!) {
   }
 }`;
 
+queries.buchblatt = `
+query MyQuery($grundbuchblattnummer: String) {
+  view_alkis_buchungsblatt(where: {buchungsblattcode: {_eq: $grundbuchblattnummer}}) {
+    buchungsblattcode
+    geom
+    id
+  }
+}`;
+
+queries.kassenzeichenForBuchblatt = `
+query MyQuery($intersectionGeom: geometry) {
+  kassenzeichen(order_by: {kassenzeichennummer8: asc}, where: {kassenzeichen_geometrienArray: {kassenzeichen_geometrieObject: {geom: {geo_field: {_st_intersects: $intersectionGeom}}}}}) {
+    kassenzeichen_geometrienArray {
+      kassenzeichen_geometrieObject {
+        geom {
+          geo_field
+        }
+      }
+    }
+    id
+    kassenzeichennummer8
+  }
+}`;
+
 queries.geoFields = `
 query geoFields($bbPoly: geometry) {
   kassenzeichen(where: {flaechenArray: {flaecheObject: {flaecheninfoObject: {geom: {geo_field: {_st_intersects: $bbPoly}}}}}}) {
