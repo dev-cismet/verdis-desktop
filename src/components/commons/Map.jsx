@@ -278,7 +278,7 @@ const Map = ({
         fallbackZoom={urlSearchParamsObject?.zoom ?? fallback.zoom ?? 17}
         locationChangedHandler={(location) => {
           const newParams = { ...paramsToObject(urlParams), ...location };
-          // setUrlParams(newParams);
+          setUrlParams(newParams);
         }}
         boundingBoxChangedHandler={(boundingBox) => {
           boundingBoxChangedHandler(boundingBox);
