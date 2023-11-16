@@ -43,8 +43,8 @@ const Page = ({
     };
   }
 
-  const cardStyleArea = { width: "100%", height: "40%", minHeight: 0 };
-  const cardStyleSum = { width: "100%", height: "40%", minHeight: 0 };
+  const cardStyleArea = { width: "100%", height: "50%", minHeight: 0 };
+  const cardStyleSum = { width: "100%", height: "50%", minHeight: 0 };
   const cardStyleChangeReq = {
     width: "100%",
     height: "20%",
@@ -103,11 +103,11 @@ const Page = ({
               extractor={sumsExtractor}
             />
 
-            <ChangeRequests
+            {/* <ChangeRequests
               width={cardStyleChangeReq.width}
               height={cardStyleChangeReq.height}
               style={cardStyleChangeReq}
-            />
+            /> */}
           </div>
 
           <Map
