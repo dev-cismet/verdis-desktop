@@ -59,6 +59,7 @@ query geoFields($bbPoly: geometry) {
     kassenzeichennummer8
     flaechenArray {
       flaecheObject {
+        id
         flaechenbezeichnung
         flaecheninfoObject {
           geom {
@@ -83,6 +84,7 @@ query geoFields($bbPoly: geometry) {
       }
     }
     kassenzeichen_geometrienArray {
+      id
       kassenzeichen_geometrieObject {
         geom {
           geo_field

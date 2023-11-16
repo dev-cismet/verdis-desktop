@@ -12,7 +12,9 @@ export const getFlaechenFeatureCollection = (kassenzeichen) => {
       crs: flaeche.flaecheObject.flaecheninfoObject.geom.geo_field.crs,
       properties: {
         id: "flaeche." + flaeche.flaecheObject.id,
+        kassenzeichen: kassenzeichen.kassenzeichennummer8,
         bez: flaeche.flaecheObject.flaechenbezeichnung,
+        bezeichnung: flaeche.flaecheObject.flaechenbezeichnung,
         art_abk:
           flaeche.flaecheObject.flaecheninfoObject.flaechenartObject
             .art_abkuerzung,
@@ -44,6 +46,8 @@ export const getFrontenFeatureCollection = (kassenzeichen) => {
       crs: frontObject.frontinfoObject.geom.geo_field.crs,
       properties: {
         id: frontObject.frontinfoObject.id,
+        kassenzeichen: kassenzeichen.kassenzeichennummer8,
+        bezeichnung: frontObject.nummer,
         strassenreinigung: frontObject.frontinfoObject.strassenreinigung,
         winterdienst: frontObject.frontinfoObject.winterdienst,
         wd_prio_or: frontObject.frontinfoObject.wd_prio_or,
@@ -75,6 +79,8 @@ export const getGeneralGeomfeatureCollection = (kassenzeichen) => {
         id: geom.id,
         name: geomObject.name,
         isfrei: geomObject.isfrei,
+        kassenzeichen: kassenzeichen.kassenzeichennummer8,
+        bezeichnung: geomObject.name,
       },
     };
   });

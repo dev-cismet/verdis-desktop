@@ -24,6 +24,7 @@ export const createFeatureArray = (data) => {
         type: "Feature",
         featureType: "flaeche",
         id: flaeche.flaecheObject.flaecheninfoObject.id,
+        flaecheId: flaeche.flaecheObject.id,
         hovered: false,
         weight: 0.5,
         properties: {
@@ -92,6 +93,7 @@ export const createFeatureArray = (data) => {
         type: "Feature",
         featureType: "general",
         id: geometry.kassenzeichen_geometrieObject.id,
+        geomId: geometry.id,
         hovered: false,
         weight: 0.5,
         properties: {
