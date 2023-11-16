@@ -63,8 +63,6 @@ const Overlay = ({ mapWidth, mapHeight, mapRef }) => {
       <FontAwesomeIcon icon={faBullseye} style={{ fontSize: 40 }} />
     );
 
-    console.log(PASSWORD);
-
     return (
       <div className="w-full h-full flex items-center justify-center">
         <div
