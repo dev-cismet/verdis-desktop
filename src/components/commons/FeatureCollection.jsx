@@ -1,6 +1,13 @@
 import { FeatureCollectionDisplay } from "react-cismap";
 import { useDispatch, useSelector } from "react-redux";
-import { getLeafletElement, getLockMap } from "../../store/slices/mapping";
+import {
+  getLeafletElement,
+  getLockMap,
+  setFlaechenSelected,
+  setFrontenSelected,
+  setGeneralGeometrySelected,
+  setToolbarProperties,
+} from "../../store/slices/mapping";
 import {
   getBoundsForFeatureArray,
   getCenterAndZoomForBounds,
@@ -8,7 +15,12 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { isEqual } from "lodash";
-import { getIsLoading, getKassenzeichen } from "../../store/slices/search";
+import {
+  getIsLoading,
+  getKassenzeichen,
+  storeFlaechenId,
+  storeFrontenId,
+} from "../../store/slices/search";
 
 const FeatureCollection = ({
   featureCollection,
@@ -45,9 +57,9 @@ const FeatureCollection = ({
       const bb = getBoundsForFeatureArray(featureCollection);
       const { center, zoom } = getCenterAndZoomForBounds(map, bb);
       setUrlParams((prev) => {
-        prev.set("zoom", zoom);
         prev.set("lat", center.lat);
         prev.set("lng", center.lng);
+        prev.set("zoom", zoom);
         prev.set("kassenzeichen", kassenzeichenNummer);
         return prev;
       });
