@@ -1,6 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   getFeatureCollection,
+  getFlaechenCollection,
+  getFrontenCollection,
+  getGeneralGeometryCollection,
   getShowBackground,
   getShowCurrentFeatureCollection,
   setToolbarProperties,
@@ -11,11 +14,18 @@ import { useState } from "react";
 
 const FeatureMapLayer = ({ featureTypes }) => {
   const featureCollection = useSelector(getFeatureCollection);
+  const flaechenArray = useSelector(getFlaechenCollection);
+  const frontenArray = useSelector(getFrontenCollection);
+  const generalGeomArray = useSelector(getGeneralGeometryCollection);
   const dispatch = useDispatch();
   const showForeGround = useSelector(getShowCurrentFeatureCollection);
   const showBackGround = useSelector(getShowBackground);
-  const filteredCollection = featureCollection?.filter((item) =>
-    featureTypes.includes(item.featureType)
+  const filteredCollection = featureCollection?.filter(
+    (item) =>
+      featureTypes.includes(item.featureType) &&
+      !flaechenArray.some((obj) => obj.id === item.flaecheId) &&
+      !frontenArray.some((obj) => obj.properties.id === item.id) &&
+      !generalGeomArray.some((obj) => obj.properties.id === item.geomId)
   );
   const [hoveredFeature, setHoveredFeature] = useState(undefined);
 

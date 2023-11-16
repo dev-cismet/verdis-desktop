@@ -172,6 +172,19 @@ const Map = ({
     position: "topleft",
   };
 
+  const myVirtHoverer = () => {
+    const mouseoverHov = (feature) => {
+      dispatch(setToolbarProperties(feature.properties));
+    };
+
+    const mouseoutHov = () => {
+      dispatch(setToolbarProperties({}));
+    };
+
+    return { mouseoverHov, mouseoutHov };
+  };
+  myVirtHoverer.virtual = true;
+
   useEffect(() => {
     if (data?.featureCollection && refRoutedMap?.current) {
       const map = refRoutedMap.current.leafletMap.leafletElement;
@@ -359,6 +372,7 @@ const Map = ({
               style={data.styler}
               markerStyle={data.markerStyle}
               showMarkerCollection={data.showMarkerCollection || false}
+              hoverer={myVirtHoverer}
               featureClickHandler={
                 data.featureClickHandler ||
                 ((e) => {
