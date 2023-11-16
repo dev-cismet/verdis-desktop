@@ -172,26 +172,28 @@ const Map = ({
     position: "topleft",
   };
 
-  if (data?.featureCollection && refRoutedMap?.current) {
-    const map = refRoutedMap.current.leafletMap.leafletElement;
-    dispatch(setLeafletElement(map));
+  useEffect(() => {
+    if (data?.featureCollection && refRoutedMap?.current) {
+      const map = refRoutedMap.current.leafletMap.leafletElement;
+      dispatch(setLeafletElement(map));
 
-    const bb = getBoundsForFeatureArray(data?.featureCollection);
-    const { center, zoom } = getCenterAndZoomForBounds(map, bb);
-    if (
-      fallback?.position?.lat !== center.lat ||
-      fallback?.position?.lng !== center.lng ||
-      fallback?.zoom !== zoom
-    ) {
-      setFallback({
-        position: {
-          lat: center.lat,
-          lng: center.lng,
-        },
-        zoom: zoom,
-      });
+      const bb = getBoundsForFeatureArray(data?.featureCollection);
+      const { center, zoom } = getCenterAndZoomForBounds(map, bb);
+      if (
+        fallback?.position?.lat !== center.lat ||
+        fallback?.position?.lng !== center.lng ||
+        fallback?.zoom !== zoom
+      ) {
+        setFallback({
+          position: {
+            lat: center.lat,
+            lng: center.lng,
+          },
+          zoom: zoom,
+        });
+      }
     }
-  }
+  }, [data]);
 
   return (
     <Card
