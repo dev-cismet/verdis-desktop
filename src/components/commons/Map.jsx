@@ -65,6 +65,7 @@ import Toolbar from "./Toolbar";
 import LandParcelChooser from "./LandParcelChooser";
 import Dot from "./Dot";
 import { LoadingOutlined } from "@ant-design/icons";
+import FeatureCollection from "./FeatureCollection";
 const mockExtractor = (input) => {
   return {
     homeCenter: [51.27225612927373, 7.199918031692506],
@@ -177,41 +178,12 @@ const Map = ({
     position: "topleft",
   };
 
-  const myVirtHoverer = () => {
-    const mouseoverHov = (feature) => {
-      dispatch(setToolbarProperties(feature.properties));
-    };
-
-    const mouseoutHov = () => {
-      dispatch(setToolbarProperties({}));
-    };
-
-    return { mouseoverHov, mouseoutHov };
-  };
-  myVirtHoverer.virtual = true;
-
   useEffect(() => {
-    if (data?.featureCollection && refRoutedMap?.current) {
+    if (refRoutedMap.current) {
       const map = refRoutedMap.current.leafletMap.leafletElement;
       dispatch(setLeafletElement(map));
-
-      const bb = getBoundsForFeatureArray(data?.featureCollection);
-      const { center, zoom } = getCenterAndZoomForBounds(map, bb);
-      if (
-        fallback?.position?.lat !== center.lat ||
-        fallback?.position?.lng !== center.lng ||
-        fallback?.zoom !== zoom
-      ) {
-        setFallback({
-          position: {
-            lat: center.lat,
-            lng: center.lng,
-          },
-          zoom: zoom,
-        });
-      }
     }
-  }, [data]);
+  }, [refRoutedMap]);
 
   return (
     <Card
@@ -306,7 +278,7 @@ const Map = ({
         fallbackZoom={urlSearchParamsObject?.zoom ?? fallback.zoom ?? 17}
         locationChangedHandler={(location) => {
           const newParams = { ...paramsToObject(urlParams), ...location };
-          setUrlParams(newParams);
+          // setUrlParams(newParams);
         }}
         boundingBoxChangedHandler={(boundingBox) => {
           boundingBoxChangedHandler(boundingBox);
@@ -379,59 +351,12 @@ const Map = ({
         {data.featureCollection &&
           data.featureCollection.length > 0 &&
           showCurrentFeatureCollection && (
-            <FeatureCollectionDisplay
+            <FeatureCollection
               featureCollection={data.featureCollection}
-              style={data.styler}
+              styler={data.styler}
               markerStyle={data.markerStyle}
               showMarkerCollection={data.showMarkerCollection || false}
-              hoverer={myVirtHoverer}
-              featureClickHandler={
-                data.featureClickHandler ||
-                ((e) => {
-                  const feature = e.target.feature;
-                  if (feature.selected) {
-                    const map = refRoutedMap.current.leafletMap.leafletElement;
-                    const bb = getBoundsForFeatureArray([feature]);
-                    const { center, zoom } = getCenterAndZoomForBounds(map, bb);
-                    setUrlParams((prev) => {
-                      prev.set("zoom", zoom);
-                      prev.set("lat", center.lat);
-                      prev.set("lng", center.lng);
-                      return prev;
-                    });
-                  } else {
-                    switch (feature.featureType) {
-                      case "flaeche": {
-                        dispatch(storeFlaechenId(feature.id));
-                        dispatch(setFlaechenSelected({ id: feature.id }));
-
-                        break;
-                      }
-                      case "front": {
-                        dispatch(storeFrontenId(feature.properties.id));
-                        dispatch(
-                          setFrontenSelected({ id: feature.properties.id })
-                        );
-                        break;
-                      }
-                      case "general": {
-                        dispatch(
-                          setGeneralGeometrySelected({
-                            id: feature.properties.id,
-                          })
-                        );
-                        break;
-                      }
-                      default: {
-                        console.log(
-                          "no featureClickHandler set",
-                          e.target.feature
-                        );
-                      }
-                    }
-                  }
-                })
-              }
+              featureClickHandler={data.featureClickHandler}
             />
           )}
 

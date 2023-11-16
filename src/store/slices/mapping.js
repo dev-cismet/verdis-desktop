@@ -212,3 +212,7 @@ export const getToolbarProperties = (state) => {
 export const getLockMap = (state) => {
   return state.mapping.lockMap;
 };
+
+export const getLeafletElement = (state) => {
+  return state.mapping.leafletElement;
+};
