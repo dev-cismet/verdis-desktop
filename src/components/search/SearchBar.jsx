@@ -31,7 +31,10 @@ const SearchBar = () => {
 
   useEffect(() => {
     const urlKassenzeichen = urlParams.get("kassenzeichen");
-    if (urlKassenzeichen) {
+    if (
+      urlKassenzeichen &&
+      !isEqual(urlKassenzeichen, kassenzeichenNummer?.toString())
+    ) {
       dispatch(searchForKassenzeichen(urlKassenzeichen));
       setInpuValue(urlKassenzeichen);
     }
