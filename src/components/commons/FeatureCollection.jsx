@@ -56,13 +56,19 @@ const FeatureCollection = ({
     if (!lockMap) {
       const bb = getBoundsForFeatureArray(featureCollection);
       const { center, zoom } = getCenterAndZoomForBounds(map, bb);
-      setUrlParams((prev) => {
-        prev.set("lat", center.lat);
-        prev.set("lng", center.lng);
-        prev.set("zoom", zoom);
-        prev.set("kassenzeichen", kassenzeichenNummer);
-        return prev;
-      });
+      if (
+        kassenzeichenNummer.toString() !== urlParams.get("kassenzeichen") ||
+        (kassenzeichenNummer.toString() === urlParams.get("kassenzeichen") &&
+          !urlParams.get("zoom"))
+      ) {
+        setUrlParams((prev) => {
+          prev.set("lat", center.lat);
+          prev.set("lng", center.lng);
+          prev.set("zoom", zoom);
+          prev.set("kassenzeichen", kassenzeichenNummer);
+          return prev;
+        });
+      }
     }
   };
 
