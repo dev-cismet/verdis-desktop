@@ -447,6 +447,7 @@ export const searchForKassenzeichen = (
   return async (dispatch, getState) => {
     const jwt = getState().auth.jwt;
     const syncKassenzeichen = getState().settings.syncKassenzeichen;
+    const lockMap = getState().mapping.lockMap;
     if (!kassenzeichen || isNaN(+kassenzeichen)) {
       console.error("Invalid kassenzeichen");
       dispatch(setErrorMessage("Invalid kassenzeichen"));
@@ -483,7 +484,14 @@ export const searchForKassenzeichen = (
           dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
           if (urlParams && setUrlParams) {
             if (urlParams.get("kassenzeichen") !== trimmedQuery) {
-              setUrlParams({ kassenzeichen: trimmedQuery });
+              if (lockMap) {
+                setUrlParams((prev) => {
+                  prev.set("kassenzeichen", trimmedQuery);
+                  return prev;
+                });
+              } else {
+                setUrlParams({ kassenzeichen: trimmedQuery });
+              }
             }
           }
           dispatch(addSearch(trimmedQuery));

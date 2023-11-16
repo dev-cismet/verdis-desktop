@@ -30,6 +30,7 @@ import {
 } from "../../store/slices/search";
 import {
   getAdditionalLayerOpacities,
+  getLockMap,
   getShowBackground,
   getShowCurrentFeatureCollection,
   setFeatureCollection,
@@ -37,6 +38,7 @@ import {
   setFrontenSelected,
   setGeneralGeometrySelected,
   setLeafletElement,
+  setLockMap,
   setShowBackground,
   setShowCurrentFeatureCollection,
   setToolbarProperties,
@@ -47,6 +49,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faComment,
   faF,
+  faLock,
+  faLockOpen,
   faPlane,
   faImage as solidImage,
 } from "@fortawesome/free-solid-svg-icons";
@@ -88,6 +92,7 @@ const Map = ({
   );
   const gazData = useSelector(getGazData);
 
+  const lockMap = useSelector(getLockMap);
   const showBackground = useSelector(getShowBackground);
   const opacities = useSelector(getAdditionalLayerOpacities);
   const isLoadingGeofields = useSelector(getIsLoadingGeofields);
@@ -216,6 +221,13 @@ const Map = ({
       extra={
         <div className="flex items-center gap-4">
           {isLoadingGeofields && <LoadingOutlined />}
+          <Tooltip title="Karte feststellen an/aus">
+            <FontAwesomeIcon
+              icon={lockMap ? faLock : faLockOpen}
+              onClick={() => dispatch(setLockMap(!lockMap))}
+              className={`h-6 cursor-pointer ${lockMap && "pr-[5.5px]"}`}
+            />
+          </Tooltip>
           <Tooltip title="Schrägluftbild Overlay an/aus">
             <div
               className="relative flex items-center"

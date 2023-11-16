@@ -15,6 +15,7 @@ const initialState = {
     nrwAlkisGebaeude: 0.7,
   },
   toolbarProperties: {},
+  lockMap: false,
 };
 
 const slice = createSlice({
@@ -137,6 +138,10 @@ const slice = createSlice({
       state.toolbarProperties = action.payload;
       return state;
     },
+    setLockMap(state, action) {
+      state.lockMap = action.payload;
+      return state;
+    },
     clear(state) {
       state.flaechenCollection = undefined;
       state.frontenCollection = undefined;
@@ -164,6 +169,7 @@ export const {
   setShowBackground,
   setLayerOpacity,
   setToolbarProperties,
+  setLockMap,
   clear,
 } = slice.actions;
 
@@ -198,6 +204,11 @@ export const getShowBackground = (state) => {
 export const getAdditionalLayerOpacities = (state) => {
   return state.mapping.additionalLayerOpacities;
 };
+
 export const getToolbarProperties = (state) => {
   return state.mapping.toolbarProperties;
+};
+
+export const getLockMap = (state) => {
+  return state.mapping.lockMap;
 };
