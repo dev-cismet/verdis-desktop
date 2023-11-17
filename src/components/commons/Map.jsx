@@ -24,6 +24,7 @@ import {
 } from "../../tools/mappingTools";
 import {
   getIsLoadingGeofields,
+  getIsLoadingKassenzeichenWithPoint,
   searchForGeoFields,
   storeFlaechenId,
   storeFrontenId,
@@ -97,6 +98,9 @@ const Map = ({
   const showBackground = useSelector(getShowBackground);
   const opacities = useSelector(getAdditionalLayerOpacities);
   const isLoadingGeofields = useSelector(getIsLoadingGeofields);
+  const isLoadingKassenzeichenWithPoint = useSelector(
+    getIsLoadingKassenzeichenWithPoint
+  );
   const [overlayFeature, setOverlayFeature] = useState(null);
   const [gazetteerHit, setGazetteerHit] = useState(null);
   const gazetteerHitTrigger = () => {
@@ -192,7 +196,9 @@ const Map = ({
       title={<span className="text-lg">Karte</span>}
       extra={
         <div className="flex items-center gap-4">
-          {isLoadingGeofields && <LoadingOutlined />}
+          {(isLoadingGeofields || isLoadingKassenzeichenWithPoint) && (
+            <LoadingOutlined />
+          )}
           <Tooltip title="Karte feststellen an/aus">
             <FontAwesomeIcon
               icon={lockMap ? faLock : faLockOpen}

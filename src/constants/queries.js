@@ -9,28 +9,16 @@ query Test {
 
 queries.kassenzeichenForPoint = `
 query kassenzeichenForPoint($x: Float!, $y: Float!) {
-  kassenzeichen(
-    where: {
-      flaechenArray: {
-        flaecheObject: {
-          flaecheninfoObject: {
-            geom: {
-              geo_field: {
-                _st_intersects: {
+  kassenzeichen(where: {_or: [
+    {flaechenArray: {flaecheObject: {flaecheninfoObject: {geom: {geo_field: {_st_intersects: {type: "Point", crs: {type: "name", properties: {name: "urn:ogc:def:crs:EPSG::25832"}}, coordinates: [$x, $y]}}}}}}}, 
+    {kassenzeichen_geometrienArray: {kassenzeichen_geometrieObject: {geom: {geo_field: {_st_intersects: {
                   type: "Point"
                   crs: {
                     type: "name"
                     properties: { name: "urn:ogc:def:crs:EPSG::25832" }
                   }
                   coordinates: [$x, $y]
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  ) {
+  }}}}}}] }) {
     id
     kassenzeichennummer8
   }

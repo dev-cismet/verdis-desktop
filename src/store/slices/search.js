@@ -39,6 +39,7 @@ const initialState = {
   gemarkungen: [],
   isLoading: false,
   isLoadingGeofields: false,
+  isLoadingKassenzeichenWithPoint: false,
   virtualCity: "",
   febBlob: null,
   errorMessage: null,
@@ -126,6 +127,10 @@ const slice = createSlice({
     },
     setIsLoadingGeofields(state, action) {
       state.isLoadingGeofields = action.payload;
+      return state;
+    },
+    setIsLoadingKassenzeichenWithPoint(state, action) {
+      state.isLoadingKassenzeichenWithPoint = action.payload;
       return state;
     },
     setErrorMessage(state, action) {
@@ -329,6 +334,7 @@ export const searchForKassenzeichenWithPoint = (
 ) => {
   return async (dispatch, getState) => {
     const jwt = getState().auth.jwt;
+    dispatch(setIsLoadingKassenzeichenWithPoint(true));
     fetch(ENDPOINT, {
       method: "POST",
       headers: {
@@ -342,12 +348,14 @@ export const searchForKassenzeichenWithPoint = (
     })
       .then((response) => {
         if (!response.ok) {
+          dispatch(setIsLoadingKassenzeichenWithPoint(false));
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((result) => {
-        console.log("result", result);
+        dispatch(setIsLoadingKassenzeichenWithPoint(false));
+
         dispatch(
           searchForKassenzeichen(
             result.data.kassenzeichen[0].kassenzeichennummer8 + "",
@@ -357,6 +365,8 @@ export const searchForKassenzeichenWithPoint = (
         );
       })
       .catch((error) => {
+        dispatch(setIsLoadingKassenzeichenWithPoint(false));
+
         console.error(
           "There was a problem with the fetch operation:",
           error.message
@@ -602,6 +612,7 @@ export const {
   storeKassenzeichenForBuchungsblatt,
   setIsLoading,
   setIsLoadingGeofields,
+  setIsLoadingKassenzeichenWithPoint,
   setErrorMessage,
   addSearch,
   storeFebBlob,
@@ -659,6 +670,10 @@ export const getIsLoading = (state) => {
 
 export const getIsLoadingGeofields = (state) => {
   return state.search.isLoadingGeofields;
+};
+
+export const getIsLoadingKassenzeichenWithPoint = (state) => {
+  return state.search.isLoadingKassenzeichenWithPoint;
 };
 
 export const getErrorMessage = (state) => {
