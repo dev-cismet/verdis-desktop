@@ -1,6 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import CustomCard from "../ui/Card";
-import { getKassenzeichen } from "../../store/slices/search";
+import {
+  getKassenzeichen,
+  searchForAlkisLandparcel,
+} from "../../store/slices/search";
 import { LandParcelColors } from "../../tools/mappingTools";
 import {
   getGeneralGeometryCollection,
@@ -23,9 +26,12 @@ const Row = ({ title, id }) => {
     <>
       <div
         className={`flex items-center w-full gap-3 px-2 py-1 text-base cursor-pointer hover:bg-zinc-100 ${
-          currentGeometry.selected ? "bg-primary/20" : ""
+          currentGeometry?.selected ? "bg-primary/20" : ""
         }`}
-        onClick={() => dispatch(setGeneralGeometrySelected({ id: id }))}
+        onClick={() => {
+          dispatch(setGeneralGeometrySelected({ id: id }));
+          dispatch(searchForAlkisLandparcel(title));
+        }}
       >
         <div
           className="w-2 h-2"

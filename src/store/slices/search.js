@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   ENDPOINT,
   WUNDA_ENDPOINT,
+  alkisLandParcelQuery,
   buchungsblattQuery,
   flurStueckQuery,
   geoFieldsQuery,
@@ -43,6 +44,7 @@ const initialState = {
   errorMessage: null,
   buchungsblatt: null,
   kassenzeichenForBuchungsblatt: [],
+  alkisLandparcel: [],
 };
 
 const slice = createSlice({
@@ -99,6 +101,10 @@ const slice = createSlice({
     },
     storeBuchungsblatt(state, action) {
       state.buchungsblatt = action.payload;
+      return state;
+    },
+    storeAlkisLandparcel(state, action) {
+      state.alkisLandparcel = action.payload;
       return state;
     },
     storeKassenzeichenForBuchungsblatt(state, action) {
@@ -341,6 +347,7 @@ export const searchForKassenzeichenWithPoint = (
         return response.json();
       })
       .then((result) => {
+        console.log("result", result);
         dispatch(
           searchForKassenzeichen(
             result.data.kassenzeichen[0].kassenzeichennummer8 + "",
@@ -348,7 +355,6 @@ export const searchForKassenzeichenWithPoint = (
             setUrlParams
           )
         );
-        console.log("result", result);
       })
       .catch((error) => {
         console.error(
@@ -435,6 +441,38 @@ export const getFEBByStac = (
           console.log(result);
           dispatch(setIsLoading(false));
         }
+      });
+  };
+};
+
+export const searchForAlkisLandparcel = (id) => {
+  return async (dispatch, getState) => {
+    const jwt = getState().auth.jwt;
+    fetch(WUNDA_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
+      },
+      body: JSON.stringify({
+        query: alkisLandParcelQuery,
+        variables: { alkisId: id },
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        dispatch(storeAlkisLandparcel(result.data.alkis_landparcel));
+      })
+      .catch((error) => {
+        console.error(
+          "There was a problem with the fetch operation:",
+          error.message
+        );
       });
   };
 };
@@ -560,6 +598,7 @@ export const {
   resetStates,
   storeVirtualCity,
   storeBuchungsblatt,
+  storeAlkisLandparcel,
   storeKassenzeichenForBuchungsblatt,
   setIsLoading,
   setIsLoadingGeofields,
@@ -640,4 +679,8 @@ export const getBuchungsblattnummer = (state) => {
 
 export const getKassenzeichenBuchungsblatt = (state) => {
   return state.search.kassenzeichenForBuchungsblatt;
+};
+
+export const getAlkisLandparcel = (state) => {
+  return state.search.alkisLandparcel;
 };

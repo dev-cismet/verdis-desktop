@@ -18,6 +18,9 @@ export const query = gql`
 export const pointquery = gql`
   ${queries.kassenzeichenForPoint}
 `;
+export const alkisLandParcelQuery = gql`
+  ${queries.alkisLandparcel}
+`;
 
 export const geoFieldsQuery = gql`
   ${queries.geoFields}

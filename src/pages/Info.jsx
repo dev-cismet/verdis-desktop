@@ -4,9 +4,13 @@ import InfoTable from "../components/info/InfoTable";
 import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
 import { useSelector } from "react-redux";
-import { getKassenzeichen } from "../store/slices/search";
+import { getAlkisLandparcel, getKassenzeichen } from "../store/slices/search";
 import { getGeneralGeometryCollection } from "../store/slices/mapping";
-import { geometryExtractor, mappingExtractor } from "../tools/extractors";
+import {
+  alkisLandparcelExtractor,
+  geometryExtractor,
+  mappingExtractor,
+} from "../tools/extractors";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 
 const Page = ({
@@ -26,6 +30,7 @@ const Page = ({
 
   const cardStyle = { width: "100%", height: "100%", minHeight: 0 };
   const kassenzeichen = useSelector(getKassenzeichen);
+  const alkisLandparcel = useSelector(getAlkisLandparcel);
   const generalGeomArray = useSelector(getGeneralGeometryCollection);
 
   return (
@@ -48,6 +53,8 @@ const Page = ({
               height={cardStyle.height}
               style={cardStyle}
               title="Alkis Flurstücke"
+              extractor={alkisLandparcelExtractor}
+              dataIn={alkisLandparcel}
             />
           </div>
 

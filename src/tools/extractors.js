@@ -319,6 +319,13 @@ export const geometryExtractor = (kassenzeichen) => {
   }));
 };
 
+export const alkisLandparcelExtractor = (landparcels) => {
+  return landparcels?.map((landparcel) => ({
+    title: landparcel.bezeichnung,
+    id: landparcel.id,
+  }));
+};
+
 export const mappingExtractor = ({
   kassenzeichen,
   flaechenArray,
