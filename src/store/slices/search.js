@@ -40,6 +40,9 @@ const initialState = {
   isLoading: false,
   isLoadingGeofields: false,
   isLoadingKassenzeichenWithPoint: false,
+  isLoadingBuchungsblatt: false,
+  isLoadingKassenzeichenForBuchungsblatt: false,
+  buchungsblattError: false,
   virtualCity: "",
   febBlob: null,
   errorMessage: null,
@@ -110,6 +113,18 @@ const slice = createSlice({
     },
     storeKassenzeichenForBuchungsblatt(state, action) {
       state.kassenzeichenForBuchungsblatt = action.payload;
+      return state;
+    },
+    storeIsLoadingBuchungsblatt(state, action) {
+      state.isLoadingBuchungsblatt = action.payload;
+      return state;
+    },
+    storeBuchungsblattError(state, action) {
+      state.buchungsblattError = action.payload;
+      return state;
+    },
+    storeIsLoadingKassenzeichenForBuchungsblatt(state, action) {
+      state.isLoadingKassenzeichenForBuchungsblatt = action.payload;
       return state;
     },
     resetStates(state) {
@@ -259,6 +274,8 @@ export const getflurstuecke = () => {
 
 export const getBuchungsblatt = (buchblattnummer) => {
   return async (dispatch, getState) => {
+    dispatch(storeBuchungsblattError(false));
+    dispatch(storeIsLoadingBuchungsblatt(true));
     const jwt = getState().auth.jwt;
     fetch(WUNDA_ENDPOINT, {
       method: "POST",
@@ -273,19 +290,27 @@ export const getBuchungsblatt = (buchblattnummer) => {
     })
       .then((response) => {
         if (!response.ok) {
+          dispatch(storeIsLoadingBuchungsblatt(false));
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((result) => {
-        dispatch(
-          getKassenzeichenForBuchungsblatt(
-            result.data.view_alkis_buchungsblatt[0].geom
-          )
-        );
-        dispatch(storeBuchungsblatt(result.data.view_alkis_buchungsblatt[0]));
+        if (result.data.view_alkis_buchungsblatt[0]) {
+          dispatch(
+            getKassenzeichenForBuchungsblatt(
+              result.data.view_alkis_buchungsblatt[0].geom
+            )
+          );
+          dispatch(storeBuchungsblatt(result.data.view_alkis_buchungsblatt[0]));
+          dispatch(storeIsLoadingBuchungsblatt(false));
+        } else {
+          dispatch(storeIsLoadingBuchungsblatt(false));
+          dispatch(storeBuchungsblattError(true));
+        }
       })
       .catch((error) => {
+        dispatch(storeIsLoadingBuchungsblatt(false));
         console.error(
           "There was a problem with the fetch operation:",
           error.message
@@ -296,6 +321,7 @@ export const getBuchungsblatt = (buchblattnummer) => {
 
 export const getKassenzeichenForBuchungsblatt = (geom) => {
   return async (dispatch, getState) => {
+    dispatch(storeIsLoadingKassenzeichenForBuchungsblatt(true));
     const jwt = getState().auth.jwt;
     fetch(ENDPOINT, {
       method: "POST",
@@ -310,14 +336,17 @@ export const getKassenzeichenForBuchungsblatt = (geom) => {
     })
       .then((response) => {
         if (!response.ok) {
+          dispatch(storeIsLoadingKassenzeichenForBuchungsblatt(false));
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((result) => {
+        dispatch(storeIsLoadingKassenzeichenForBuchungsblatt(false));
         dispatch(storeKassenzeichenForBuchungsblatt(result.data.kassenzeichen));
       })
       .catch((error) => {
+        dispatch(storeIsLoadingKassenzeichenForBuchungsblatt(false));
         console.error(
           "There was a problem with the fetch operation:",
           error.message
@@ -610,6 +639,9 @@ export const {
   storeBuchungsblatt,
   storeAlkisLandparcel,
   storeKassenzeichenForBuchungsblatt,
+  storeIsLoadingBuchungsblatt,
+  storeBuchungsblattError,
+  storeIsLoadingKassenzeichenForBuchungsblatt,
   setIsLoading,
   setIsLoadingGeofields,
   setIsLoadingKassenzeichenWithPoint,
@@ -698,4 +730,16 @@ export const getKassenzeichenBuchungsblatt = (state) => {
 
 export const getAlkisLandparcel = (state) => {
   return state.search.alkisLandparcel;
+};
+
+export const getBuchungsblattError = (state) => {
+  return state.search.buchungsblattError;
+};
+
+export const getIsLoadingBuchungsblatt = (state) => {
+  return state.search.isLoadingBuchungsblatt;
+};
+
+export const getIsLoadingKassenzeichenForBuchungsblatt = (state) => {
+  return state.search.isLoadingKassenzeichenForBuchungsblatt;
 };
