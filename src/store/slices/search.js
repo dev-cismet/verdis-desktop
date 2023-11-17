@@ -193,7 +193,7 @@ export const getVirtualCityPassword = () => {
   return async (dispatch, getState) => {
     const jwt = getState().auth.jwt;
     fetch(
-      "https://wunda-cloud.cismet.de/wunda/api/configattributes/virtualcitymap_secret",
+      "https://wunda-api.cismet.de/configattributes/virtualcitymap_secret",
       {
         headers: {
           "Content-Type": "application/json",
@@ -401,7 +401,7 @@ export const getFEBByStac = (
     dispatch(setIsLoading(true));
 
     fetch(
-      "https://verdis-cloud.cismet.de/verdis/api/actions/VERDIS_GRUNDIS.EBReport/tasks?resultingInstanceType=result",
+      "https://verdis-api.cismet.de/actions/VERDIS_GRUNDIS.EBReport/tasks?resultingInstanceType=result",
       {
         method: "POST",
         headers: {

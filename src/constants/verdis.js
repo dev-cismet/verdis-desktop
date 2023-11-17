@@ -1,8 +1,8 @@
 import { gql } from "graphql-request";
 
 import queries from "./queries";
-export const REST_SERVICE = "https://verdis-cloud.cismet.de/verdis/api/";
-export const REST_SERVICE_WUNDA = "https://wunda-cloud.cismet.de/wunda/api";
+export const REST_SERVICE = "https://verdis-api.cismet.de";
+export const REST_SERVICE_WUNDA = "https://wunda-api.cismet.de";
 export const DOMAIN = "VERDIS_GRUNDIS";
 export const WUNDA_DOMAIN = "WUNDA_BLAU";
 export const ENDPOINT = REST_SERVICE + `/graphql/` + DOMAIN + "/execute";
