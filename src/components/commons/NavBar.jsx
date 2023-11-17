@@ -181,12 +181,12 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
         </a>
         <GrundBuch />
         <PdfCreator />
-        <Tooltip title="Änderungsanfragen" placement="bottom">
+        {/* <Tooltip title="Änderungsanfragen" placement="bottom">
           <CommentOutlined
             className="text-2xl cursor-pointer"
             onClick={() => dispatch(setShowChat(!showChat))}
           />
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip title="Ausloggen" placement="bottom">
           <LogoutOutlined
             className="text-2xl cursor-pointer"
