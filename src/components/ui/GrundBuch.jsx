@@ -5,10 +5,13 @@ import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getBuchungsblatt,
+  getBuchungsblattError,
   getBuchungsblattnummer,
+  getIsLoadingBuchungsblatt,
   getKassenzeichenBuchungsblatt,
   searchForKassenzeichen,
   storeBuchungsblatt,
+  storeBuchungsblattError,
 } from "../../store/slices/search";
 import { getJWT } from "../../store/slices/auth";
 import { useSearchParams } from "react-router-dom";
@@ -22,6 +25,8 @@ const GrundBuch = () => {
   const grundbuch = useSelector(getBuchungsblattnummer);
   const kassenzeichenList = useSelector(getKassenzeichenBuchungsblatt);
   const [urlParams, setUrlParams] = useSearchParams();
+  const error = useSelector(getBuchungsblattError);
+  const isLoadingBuchungsblatt = useSelector(getIsLoadingBuchungsblatt);
 
   const {
     control,
@@ -53,6 +58,7 @@ const GrundBuch = () => {
   };
 
   const onSubmit = (data) => {
+    dispatch(storeBuchungsblattError(false));
     const firstNumber = getFirstNumber(data.firstNumber).trim();
     const secondNumber = getSecondNumber(data.secondNumber).trim();
 
@@ -77,7 +83,10 @@ const GrundBuch = () => {
       <Modal
         title="Suche über Grundbuchblattnummer"
         open={isOpen}
-        onCancel={() => setIsOpen(false)}
+        onCancel={() => {
+          setIsOpen(false);
+          dispatch(storeBuchungsblattError(false));
+        }}
         footer={[
           grundbuch ? (
             <Button
@@ -118,11 +127,18 @@ const GrundBuch = () => {
                     <Input {...field} status={errors.secondNumber && "error"} />
                   )}
                 />
-                <Button htmlType="submit">Kassenzeichen suchen</Button>
+                <Button htmlType="submit" loading={isLoadingBuchungsblatt}>
+                  Kassenzeichen suchen
+                </Button>
               </form>
               {(errors.firstNumber || errors.secondNumber) && (
                 <p className="text-center text-red-500 pt-1 pb-0">
                   Bitte zwei gültige Zahlen eingeben
+                </p>
+              )}
+              {error && (
+                <p className="text-center text-red-500 pt-1 pb-0">
+                  Buchungsblatt nicht gefunden
                 </p>
               )}
             </>
