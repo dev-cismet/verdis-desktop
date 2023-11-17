@@ -105,6 +105,7 @@ const GrundBuch = () => {
                   )
                 );
               }}
+              disabled={!selectedKassenzeichen}
             >
               Kassenzeichen öffnen
             </Button>
