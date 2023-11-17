@@ -23,9 +23,9 @@ const FeatureMapLayer = ({ featureTypes }) => {
   const filteredCollection = featureCollection?.filter(
     (item) =>
       featureTypes.includes(item.featureType) &&
-      !flaechenArray.some((obj) => obj.id === item.flaecheId) &&
-      !frontenArray.some((obj) => obj.properties.id === item.id) &&
-      !generalGeomArray.some((obj) => obj.properties.id === item.geomId)
+      !flaechenArray?.some((obj) => obj.id === item.flaecheId) &&
+      !frontenArray?.some((obj) => obj.properties.id === item.id) &&
+      !generalGeomArray?.some((obj) => obj.properties.id === item.geomId)
   );
   const [hoveredFeature, setHoveredFeature] = useState(undefined);
 
