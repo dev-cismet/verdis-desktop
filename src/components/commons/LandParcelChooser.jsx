@@ -201,7 +201,7 @@ const LandParcelChooser = ({
   }
 
   return (
-    <div className="absolute flex items-center gap-1 bottom-[5px] left-[10px] z-[999]">
+    <div className="absolute flex items-center gap-[2px] bottom-[5px] left-[10px] z-[999]">
       <Tooltip
         title={selectedGemarkung ? "Suche zurücksetzen" : "Adressensuche"}
         align={{
@@ -222,7 +222,7 @@ const LandParcelChooser = ({
       </Tooltip>
       <Select
         ref={gemarkungRef}
-        className="w-40 -ml-[8px]"
+        className="w-[108px] -ml-[8px]"
         placeholder="Gemarkung"
         autoFocus
         showSearch
@@ -244,7 +244,7 @@ const LandParcelChooser = ({
         })}
       />
       <Select
-        className="w-40"
+        className="w-30"
         ref={flurRef}
         value={selectedFlur?.flur || undefined}
         placeholder="Flur"
@@ -264,7 +264,7 @@ const LandParcelChooser = ({
         })}
       />
       <Select
-        className="w-40"
+        className="w-[96px]"
         ref={flurstueckRef}
         value={selectedFlurstueckLabel || undefined}
         key={
