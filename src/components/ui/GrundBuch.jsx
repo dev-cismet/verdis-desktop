@@ -34,9 +34,30 @@ const GrundBuch = () => {
       secondNumber: "",
     },
   });
+
+  const getFirstNumber = (number) => {
+    if (number.toString().length < 5) {
+      return "05" + number;
+    }
+
+    return number;
+  };
+
+  const getSecondNumber = (number) => {
+    let paddedNumber = number.toString();
+    while (paddedNumber.length < 6) {
+      paddedNumber = "0" + paddedNumber;
+    }
+
+    return paddedNumber;
+  };
+
   const onSubmit = (data) => {
+    const firstNumber = getFirstNumber(data.firstNumber);
+    const secondNumber = getSecondNumber(data.secondNumber);
+
     setGrundBuchNumber(data.firstNumber + "-" + data.secondNumber);
-    dispatch(getBuchungsblatt(data.firstNumber + "-" + data.secondNumber));
+    dispatch(getBuchungsblatt(firstNumber + "-" + secondNumber));
   };
 
   return (
@@ -149,7 +170,7 @@ const GrundBuch = () => {
               Geben Sie eine Grundbuchblattnummer ein, um nach Kassenzeichen zu
               suchen.
             </p>
-            <p>Beispiel: 053279-004835</p>
+            <p>Beispiel: 3279-4835</p>
           </div>
         )}
       </Modal>
