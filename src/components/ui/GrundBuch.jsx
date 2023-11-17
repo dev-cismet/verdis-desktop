@@ -53,10 +53,12 @@ const GrundBuch = () => {
   };
 
   const onSubmit = (data) => {
-    const firstNumber = getFirstNumber(data.firstNumber);
-    const secondNumber = getSecondNumber(data.secondNumber);
+    const firstNumber = getFirstNumber(data.firstNumber).trim();
+    const secondNumber = getSecondNumber(data.secondNumber).trim();
 
-    setGrundBuchNumber(data.firstNumber + "-" + data.secondNumber);
+    setGrundBuchNumber(
+      data.firstNumber.trim() + "-" + data.secondNumber.trim()
+    );
     dispatch(getBuchungsblatt(firstNumber + "-" + secondNumber));
   };
 
