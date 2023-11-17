@@ -148,7 +148,7 @@ const GrundBuch = () => {
             <p className="w-full text-center">
               {kassenzeichenList?.length} Kassenzeichen gefunden
             </p>
-            <div className="flex flex-col border bg-zinc-100 h-52">
+            <div className="flex flex-col border h-52 overflow-auto">
               {kassenzeichenList.map((kassenzeichen, i) => (
                 <div
                   key={`foundKassenzeichen_${i}`}
@@ -158,7 +158,7 @@ const GrundBuch = () => {
                   className={`p-1 cursor-pointer ${
                     kassenzeichen.kassenzeichennummer8 === selectedKassenzeichen
                       ? "bg-primary/20"
-                      : "hover:bg-zinc-200"
+                      : "hover:bg-zinc-100"
                   }`}
                 >
                   {kassenzeichen.kassenzeichennummer8}
