@@ -203,11 +203,18 @@ const Map = ({
             <LoadingOutlined />
           )}
           <Tooltip title="Kartenausschnitt für dieses Kassenzeichen beibehalten">
-            <FontAwesomeIcon
-              icon={lockScale ? faLock : faLockOpen}
+            <div
+              className="relative flex cursor-pointer items-center justify-center"
               onClick={() => dispatch(setLockScale(!lockScale))}
-              className={`h-6 cursor-pointer ${lockScale && "pr-[5.5px]"}`}
-            />
+            >
+              <FontAwesomeIcon
+                icon={lockScale ? faLock : faLockOpen}
+                className={`h-6 ${lockScale && "pr-[5.5px]"}`}
+              />
+              <span className="absolute -bottom-[10px] right-0 text-primary text-lg">
+                K
+              </span>
+            </div>
           </Tooltip>
           <Tooltip title="Kartenausschnitt beibehalten">
             <FontAwesomeIcon
