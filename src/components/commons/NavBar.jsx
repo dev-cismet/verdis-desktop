@@ -46,6 +46,7 @@ import PdfCreator from "../ui/PdfCreator";
 import Settings from "./Settings";
 import SearchBar from "../search/SearchBar";
 import GrundBuch from "../ui/GrundBuch";
+import { getLockScale } from "../../store/slices/mapping";
 
 const navLinks = () => {
   const showSurfaceDetails = useSelector(getShowSurfaceDetails);
@@ -106,6 +107,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const showChat = useSelector(getShowChat);
   const kassenzeichen = useSelector(getKassenzeichen);
   const kassenzeichenNummer = kassenzeichen?.kassenzeichennummer8;
+  const lockScale = useSelector(getLockScale);
   const [urlParams, setUrlParams] = useSearchParams();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -146,7 +148,17 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
           </div>
         </Tooltip>
         {links.map((link, i) => (
-          <Link to={link.href + `?${urlParams}`} key={`navLink_${i}`}>
+          <Link
+            to={
+              link.href +
+              `?${
+                lockScale
+                  ? urlParams
+                  : "kassenzeichen=" + urlParams.get("kassenzeichen")
+              }`
+            }
+            key={`navLink_${i}`}
+          >
             <Button
               type="text"
               className={`${

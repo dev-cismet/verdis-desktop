@@ -32,6 +32,7 @@ import {
 import {
   getAdditionalLayerOpacities,
   getLockMap,
+  getLockScale,
   getShowBackground,
   getShowCurrentFeatureCollection,
   setFeatureCollection,
@@ -40,6 +41,7 @@ import {
   setGeneralGeometrySelected,
   setLeafletElement,
   setLockMap,
+  setLockScale,
   setShowBackground,
   setShowCurrentFeatureCollection,
   setToolbarProperties,
@@ -95,6 +97,7 @@ const Map = ({
   const gazData = useSelector(getGazData);
 
   const lockMap = useSelector(getLockMap);
+  const lockScale = useSelector(getLockScale);
   const showBackground = useSelector(getShowBackground);
   const opacities = useSelector(getAdditionalLayerOpacities);
   const isLoadingGeofields = useSelector(getIsLoadingGeofields);
@@ -199,7 +202,14 @@ const Map = ({
           {(isLoadingGeofields || isLoadingKassenzeichenWithPoint) && (
             <LoadingOutlined />
           )}
-          <Tooltip title="Karte feststellen an/aus">
+          <Tooltip title="Kartenausschnitt für dieses Kassenzeichen beibehalten">
+            <FontAwesomeIcon
+              icon={lockScale ? faLock : faLockOpen}
+              onClick={() => dispatch(setLockScale(!lockScale))}
+              className={`h-6 cursor-pointer ${lockScale && "pr-[5.5px]"}`}
+            />
+          </Tooltip>
+          <Tooltip title="Kartenausschnitt beibehalten">
             <FontAwesomeIcon
               icon={lockMap ? faLock : faLockOpen}
               onClick={() => dispatch(setLockMap(!lockMap))}

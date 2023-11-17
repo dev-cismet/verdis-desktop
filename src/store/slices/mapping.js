@@ -16,6 +16,7 @@ const initialState = {
   },
   toolbarProperties: {},
   lockMap: false,
+  lockScale: false,
 };
 
 const slice = createSlice({
@@ -142,6 +143,10 @@ const slice = createSlice({
       state.lockMap = action.payload;
       return state;
     },
+    setLockScale(state, action) {
+      state.lockScale = action.payload;
+      return state;
+    },
     clear(state) {
       state.flaechenCollection = undefined;
       state.frontenCollection = undefined;
@@ -170,6 +175,7 @@ export const {
   setLayerOpacity,
   setToolbarProperties,
   setLockMap,
+  setLockScale,
   clear,
 } = slice.actions;
 
@@ -215,4 +221,8 @@ export const getLockMap = (state) => {
 
 export const getLeafletElement = (state) => {
   return state.mapping.leafletElement;
+};
+
+export const getLockScale = (state) => {
+  return state.mapping.lockScale;
 };
