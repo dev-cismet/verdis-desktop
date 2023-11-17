@@ -8,6 +8,7 @@ import {
   getBuchungsblattError,
   getBuchungsblattnummer,
   getIsLoadingBuchungsblatt,
+  getIsLoadingKassenzeichenForBuchungsblatt,
   getKassenzeichenBuchungsblatt,
   searchForKassenzeichen,
   storeBuchungsblatt,
@@ -27,6 +28,9 @@ const GrundBuch = () => {
   const [urlParams, setUrlParams] = useSearchParams();
   const error = useSelector(getBuchungsblattError);
   const isLoadingBuchungsblatt = useSelector(getIsLoadingBuchungsblatt);
+  const isLoadingKassenzeichen = useSelector(
+    getIsLoadingKassenzeichenForBuchungsblatt
+  );
 
   const {
     control,
@@ -162,7 +166,9 @@ const GrundBuch = () => {
               </div>
             </div>
             <p className="w-full text-center">
-              {kassenzeichenList?.length} Kassenzeichen gefunden
+              {isLoadingKassenzeichen
+                ? "Kassenzeichen werden geladen..."
+                : kassenzeichenList?.length + " Kassenzeichen gefunden"}
             </p>
             <div className="flex flex-col border h-52 overflow-auto">
               {kassenzeichenList.map((kassenzeichen, i) => (

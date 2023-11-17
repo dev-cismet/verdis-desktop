@@ -40,6 +40,7 @@ const initialState = {
   isLoading: false,
   isLoadingGeofields: false,
   isLoadingBuchungsblatt: false,
+  isLoadingKassenzeichenForBuchungsblatt: false,
   buchungsblattError: false,
   virtualCity: "",
   febBlob: null,
@@ -119,6 +120,10 @@ const slice = createSlice({
     },
     storeBuchungsblattError(state, action) {
       state.buchungsblattError = action.payload;
+      return state;
+    },
+    storeIsLoadingKassenzeichenForBuchungsblatt(state, action) {
+      state.isLoadingKassenzeichenForBuchungsblatt = action.payload;
       return state;
     },
     resetStates(state) {
@@ -311,6 +316,7 @@ export const getBuchungsblatt = (buchblattnummer) => {
 
 export const getKassenzeichenForBuchungsblatt = (geom) => {
   return async (dispatch, getState) => {
+    dispatch(storeIsLoadingKassenzeichenForBuchungsblatt(true));
     const jwt = getState().auth.jwt;
     fetch(ENDPOINT, {
       method: "POST",
@@ -325,14 +331,17 @@ export const getKassenzeichenForBuchungsblatt = (geom) => {
     })
       .then((response) => {
         if (!response.ok) {
+          dispatch(storeIsLoadingKassenzeichenForBuchungsblatt(false));
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((result) => {
+        dispatch(storeIsLoadingKassenzeichenForBuchungsblatt(false));
         dispatch(storeKassenzeichenForBuchungsblatt(result.data.kassenzeichen));
       })
       .catch((error) => {
+        dispatch(storeIsLoadingKassenzeichenForBuchungsblatt(false));
         console.error(
           "There was a problem with the fetch operation:",
           error.message
@@ -622,6 +631,7 @@ export const {
   storeKassenzeichenForBuchungsblatt,
   storeIsLoadingBuchungsblatt,
   storeBuchungsblattError,
+  storeIsLoadingKassenzeichenForBuchungsblatt,
   setIsLoading,
   setIsLoadingGeofields,
   setErrorMessage,
@@ -713,4 +723,8 @@ export const getBuchungsblattError = (state) => {
 
 export const getIsLoadingBuchungsblatt = (state) => {
   return state.search.isLoadingBuchungsblatt;
+};
+
+export const getIsLoadingKassenzeichenForBuchungsblatt = (state) => {
+  return state.search.isLoadingKassenzeichenForBuchungsblatt;
 };
