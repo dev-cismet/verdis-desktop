@@ -211,7 +211,7 @@ const Map = ({
                 icon={lockScale ? faLock : faLockOpen}
                 className={`h-6 ${lockScale && "pr-[5.5px]"}`}
               />
-              <span className="absolute -bottom-[10px] right-0 text-primary text-lg">
+              <span className="absolute -bottom-[10px] right-0 text-primary font-bold text-lg">
                 K
               </span>
             </div>
