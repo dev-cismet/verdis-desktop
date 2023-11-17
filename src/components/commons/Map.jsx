@@ -372,6 +372,7 @@ const Map = ({
               return (
                 <StyledWMSTileLayer
                   {...layerConf.props}
+                  maxZoom={25}
                   opacity={opacities[activekey].toFixed(2) || 0.7}
                 />
               );
