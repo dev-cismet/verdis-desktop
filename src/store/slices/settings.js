@@ -7,6 +7,10 @@ const initialState = {
   showFrontDetails: false,
   showSeepageDetails: false,
   syncKassenzeichen: false,
+  additionalLayerOpacities: {
+    nrwAlkisFstck: 0.7,
+    nrwAlkisGebaeude: 0.7,
+  },
 };
 
 const slice = createSlice({
@@ -37,6 +41,11 @@ const slice = createSlice({
       state.syncKassenzeichen = action.payload;
       return state;
     },
+    setLayerOpacity(state, action) {
+      const { layer, opacity } = action.payload;
+      state.additionalLayerOpacities[layer] = opacity;
+      return state;
+    },
   },
 });
 
@@ -49,6 +58,7 @@ export const {
   setShowFrontDetails,
   setShowSeepageDetails,
   setSyncKassenzeichen,
+  setLayerOpacity,
 } = slice.actions;
 
 export const getReadOnly = (state) => {
@@ -73,4 +83,8 @@ export const getShowSeepageDetails = (state) => {
 
 export const getSyncKassenzeichen = (state) => {
   return state.settings.syncKassenzeichen;
+};
+
+export const getAdditionalLayerOpacities = (state) => {
+  return state.settings.additionalLayerOpacities;
 };

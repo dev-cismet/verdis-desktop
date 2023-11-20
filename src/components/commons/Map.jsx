@@ -5,11 +5,7 @@ import { Card, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
 import { flaechen } from "../../stories/_data/rathausKassenzeichenfeatureCollection";
-import {
-  FeatureCollectionDisplay,
-  MappingConstants,
-  RoutedMap,
-} from "react-cismap";
+import { MappingConstants, RoutedMap } from "react-cismap";
 import {
   TopicMapStylingContext,
   TopicMapStylingDispatchContext,
@@ -17,28 +13,18 @@ import {
 import GazetteerSearchControl from "react-cismap/GazetteerSearchControl";
 import GazetteerHitDisplay from "react-cismap/GazetteerHitDisplay";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import {
-  createQueryGeomFromBB,
-  getBoundsForFeatureArray,
-  getCenterAndZoomForBounds,
-} from "../../tools/mappingTools";
+import { createQueryGeomFromBB } from "../../tools/mappingTools";
 import {
   getIsLoadingGeofields,
   getIsLoadingKassenzeichenWithPoint,
   searchForGeoFields,
-  storeFlaechenId,
-  storeFrontenId,
 } from "../../store/slices/search";
 import {
-  getAdditionalLayerOpacities,
   getLockMap,
   getLockScale,
   getShowBackground,
   getShowCurrentFeatureCollection,
   setFeatureCollection,
-  setFlaechenSelected,
-  setFrontenSelected,
-  setGeneralGeometrySelected,
   setLeafletElement,
   setLockMap,
   setLockScale,
@@ -50,7 +36,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { ScaleControl } from "react-leaflet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faComment,
   faF,
   faLock,
   faLockOpen,
@@ -69,6 +54,7 @@ import LandParcelChooser from "./LandParcelChooser";
 import Dot from "./Dot";
 import { LoadingOutlined } from "@ant-design/icons";
 import FeatureCollection from "./FeatureCollection";
+import { getAdditionalLayerOpacities } from "../../store/slices/settings";
 const mockExtractor = (input) => {
   return {
     homeCenter: [51.27225612927373, 7.199918031692506],
@@ -391,6 +377,7 @@ const Map = ({
           showBackground &&
           activeAdditionalLayerKeys.map((activekey, index) => {
             const layerConf = additionalLayerConfiguration[activekey];
+            console.log(layerConf);
             if (layerConf?.props) {
               return (
                 <StyledWMSTileLayer

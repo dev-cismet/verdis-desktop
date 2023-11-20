@@ -92,7 +92,7 @@ const uiConfig = {
 const settingsConfig = {
   key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.settings",
   storage: localForage,
-  whitelist: ["syncKassenzeichen"],
+  whitelist: ["syncKassenzeichen", "additionalLayerOpacities"],
 };
 
 const mappingConfig = {

@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAdditionalLayerOpacities,
   getSyncKassenzeichen,
+  setLayerOpacity,
   setSyncKassenzeichen,
 } from "../../store/slices/settings";
 import { Checkbox, Radio, Slider, Switch } from "antd";
@@ -9,10 +11,6 @@ import {
   TopicMapStylingContext,
   TopicMapStylingDispatchContext,
 } from "react-cismap/contexts/TopicMapStylingContextProvider";
-import {
-  getAdditionalLayerOpacities,
-  setLayerOpacity,
-} from "../../store/slices/mapping";
 
 const SettingsRow = ({ onClick, title, children }) => {
   return (

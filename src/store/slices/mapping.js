@@ -10,10 +10,6 @@ const initialState = {
   featureCollection: undefined,
   showCurrentFeatureCollection: true,
   showBackground: true,
-  additionalLayerOpacities: {
-    nrwAlkisFstck: 0.7,
-    nrwAlkisGebaeude: 0.7,
-  },
   toolbarProperties: {},
   lockMap: false,
   lockScale: false,
@@ -130,11 +126,6 @@ const slice = createSlice({
       state.showBackground = action.payload;
       return state;
     },
-    setLayerOpacity(state, action) {
-      const { layer, opacity } = action.payload;
-      state.additionalLayerOpacities[layer] = opacity;
-      return state;
-    },
     setToolbarProperties(state, action) {
       state.toolbarProperties = action.payload;
       return state;
@@ -172,7 +163,6 @@ export const {
   setFeatureCollection,
   setShowCurrentFeatureCollection,
   setShowBackground,
-  setLayerOpacity,
   setToolbarProperties,
   setLockMap,
   setLockScale,
@@ -205,10 +195,6 @@ export const getShowCurrentFeatureCollection = (state) => {
 
 export const getShowBackground = (state) => {
   return state.mapping.showBackground;
-};
-
-export const getAdditionalLayerOpacities = (state) => {
-  return state.mapping.additionalLayerOpacities;
 };
 
 export const getToolbarProperties = (state) => {
