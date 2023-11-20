@@ -377,7 +377,6 @@ const Map = ({
           showBackground &&
           activeAdditionalLayerKeys.map((activekey, index) => {
             const layerConf = additionalLayerConfiguration[activekey];
-            console.log(layerConf);
             if (layerConf?.props) {
               return (
                 <StyledWMSTileLayer
@@ -409,12 +408,12 @@ Map.propTypes = {
   /**
    * The width of the map
    */
-  width: PropTypes.number,
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
   /**
    * The height of the map
    */
-  height: PropTypes.number,
+  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
   /**
    * The current main data object that is being used
