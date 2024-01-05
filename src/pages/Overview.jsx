@@ -101,10 +101,6 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
                 befreiungErlaubnisseArray,
                 shownFeatureTypes: overviewFeatureTypes,
                 ondblclick: (event) => {
-                  console.log(
-                    "xxx event.öatlng",
-                    convertLatLngToXY(event.latlng)
-                  );
                   const xy = convertLatLngToXY(event.latlng);
                   dispatch(
                     searchForKassenzeichenWithPoint(
