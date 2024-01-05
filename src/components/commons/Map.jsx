@@ -13,11 +13,15 @@ import {
 import GazetteerSearchControl from "react-cismap/GazetteerSearchControl";
 import GazetteerHitDisplay from "react-cismap/GazetteerHitDisplay";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import { createQueryGeomFromBB } from "../../tools/mappingTools";
+import {
+  convertLatLngToXY,
+  createQueryGeomFromBB,
+} from "../../tools/mappingTools";
 import {
   getIsLoadingGeofields,
   getIsLoadingKassenzeichenWithPoint,
   searchForGeoFields,
+  searchForKassenzeichenWithPoint,
 } from "../../store/slices/search";
 import {
   getLockMap,
@@ -313,6 +317,16 @@ const Map = ({
           //if data contains a ondblclick handler, call it
           if (data.ondblclick) {
             data.ondblclick(event);
+          } else {
+            const xy = convertLatLngToXY(event.latlng);
+            dispatch(
+              searchForKassenzeichenWithPoint(
+                xy[0],
+                xy[1],
+                urlParams,
+                setUrlParams
+              )
+            );
           }
         }}
       >
