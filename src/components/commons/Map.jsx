@@ -262,25 +262,36 @@ const Map = ({
   }
 
   useDeepCompareEffect(() => {
-    if (
-      isMapLoadingValue === false &&
-      data?.featureCollection &&
-      data?.featureCollection.length !== 0 &&
-      refRoutedMap?.current
-    ) {
-      const map = refRoutedMap.current.leafletMap.leafletElement;
-      const bb = getBoundsForFeatureArray(data?.featureCollection);
-      if (map && bb) {
-        map.fitBounds(bb);
-      }
+    const map = refRoutedMap?.current?.leafletMap?.leafletElement;
+    if (map == undefined) {
+      console.log("xxx map is undefined");
+      return;
     }
-  }, [data?.featureCollection, refRoutedMap.current, isMapLoadingValue]);
+    let bb = undefined;
+    if (data?.featureCollection) {
+      // console.log("xxx will use featureCollection", data?.featureCollection);
+
+      bb = getBoundsForFeatureArray(data?.featureCollection);
+    } else if (data?.allFeatures) {
+      // console.log("xxx will use allFeatures", data?.allFeatures);
+      bb = getBoundsForFeatureArray(data?.allFeatures);
+    }
+
+    if (map && bb) {
+      map.fitBounds(bb);
+    }
+  }, [
+    data?.featureCollection,
+    data?.allFeatures,
+    refRoutedMap.current,
+    isMapLoadingValue,
+  ]);
 
   const backgroundLayerOpacities = useSelector(getBackgroundLayerOpacities);
   const additionalLayerOpacities = useSelector(getAdditionalLayerOpacities);
   const activeBackgroundLayer = useSelector(getActiveBackgroundLayer);
   const activeAdditionalLayers = useSelector(getActiveAdditionalLayers);
-  console.log("mapFallbacks", mapFallbacks);
+  // console.log("xxx data", data);
 
   return (
     <Card

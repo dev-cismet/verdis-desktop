@@ -3,7 +3,6 @@ import { getHoveredObject } from "../../store/slices/ui";
 
 const Toolbar = ({ infoText }) => {
   const properties = useSelector(getHoveredObject);
-  console.log("properties ", properties);
 
   return (
     <div

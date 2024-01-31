@@ -337,7 +337,12 @@ export const mappingExtractor = ({
 }) => {
   if (kassenzeichen !== undefined && JSON.stringify(kassenzeichen) !== "{}") {
     const featureArray = [];
-
+    const allFeatures = [
+      ...flaechenArray,
+      ...frontenArray,
+      ...generalGeomArray,
+      ...befreiungErlaubnisseArray,
+    ];
     if (shownFeatureTypes.includes("front")) {
       //add frontenArray to featureArray
       featureArray.push(...frontenArray);
@@ -365,6 +370,7 @@ export const mappingExtractor = ({
     return {
       _homeCenter: [51.272570027476256, 7.19963690266013],
       featureCollection,
+      allFeatures,
       styler: createStyler(false, featureArray),
       markerStyle: getMarkerStyleFromFeatureConsideringSelection,
       showMarkerCollection: false,
