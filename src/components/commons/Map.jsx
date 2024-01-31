@@ -20,6 +20,10 @@ import {
   getCenterAndZoomForBounds,
   createQueryGeomFromBB,
 } from "../../tools/mappingTools";
+import Dot from "./Dot";
+import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
+import Overlay from "./Overlay";
+
 import {
   getIsLoadingGeofields,
   getIsLoadingKassenzeichenWithPoint,
@@ -27,16 +31,26 @@ import {
   searchForKassenzeichenWithPoint,
 } from "../../store/slices/search";
 import {
+  getLockMap,
+  getLockScale,
   getShowBackground,
   getShowCurrentFeatureCollection,
   setFlaechenSelected,
   setFrontenSelected,
   setGeneralGeometrySelected,
+  setLockMap,
+  setLockScale,
   setShowBackground,
   setShowCurrentFeatureCollection,
 } from "../../store/slices/mapping";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
-
+import {
+  faF,
+  faLock,
+  faLockOpen,
+  faPlane,
+  faImage as solidImage,
+} from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { ScaleControl } from "react-leaflet";
 import { FileImageOutlined, FileImageFilled } from "@ant-design/icons";
@@ -276,7 +290,9 @@ const Map = ({
       // console.log("xxx will use allFeatures", data?.allFeatures);
       bb = getBoundsForFeatureArray(data?.allFeatures);
     }
-
+    if (lockMap) {
+      return;
+    }
     if (map && bb) {
       map.fitBounds(bb);
     }
@@ -286,6 +302,8 @@ const Map = ({
     refRoutedMap.current,
     isMapLoadingValue,
   ]);
+  const lockMap = useSelector(getLockMap);
+  const lockScale = useSelector(getLockScale);
 
   const backgroundLayerOpacities = useSelector(getBackgroundLayerOpacities);
   const additionalLayerOpacities = useSelector(getAdditionalLayerOpacities);
@@ -299,35 +317,71 @@ const Map = ({
       hoverable={false}
       title={<span>Karte</span>}
       extra={
-        <div className="flex items-center gap-3">
-          <div className="relative flex items-center">
-            <Tooltip title="Hintergrund an/aus">
-              <FileImageFilled
-                className="text-lg h-6 cursor-pointer"
-                onClick={handleSetShowBackground}
-              />
-            </Tooltip>
+        <div className="flex items-center gap-4">
+          {/* {(isLoadingGeofields || isLoadingKassenzeichenWithPoint) && (
+            <LoadingOutlined />
+          )} */}
+          <Tooltip title="Kartenausschnitt für dieses Kassenzeichen beibehalten">
             <div
-              className={`w-3 h-3 rounded-full bg-[#4ABC96] ${
-                showBackground ? "absolute" : "hidden"
-              } bottom-0 -right-1 cursor-pointer`}
-              onClick={handleSetShowBackground}
-            />
-          </div>
-          <div className="relative flex items-center">
-            <Tooltip title="Vordergrund an/aus">
-              <FileImageOutlined
-                className="text-lg h-6 cursor-pointer"
-                onClick={handleShowCurrentFeatureCollection}
+              className="relative flex cursor-pointer items-center justify-center"
+              onClick={() => dispatch(setLockScale(!lockScale))}
+            >
+              <FontAwesomeIcon
+                icon={lockScale ? faLock : faLockOpen}
+                className={`h-6 ${lockScale && "pr-[5.5px]"}`}
               />
-            </Tooltip>
-            <div
-              className={`w-3 h-3 rounded-full bg-[#4ABC96] ${
-                showCurrentFeatureCollection ? "absolute" : "hidden"
-              } bottom-0 -right-1 cursor-pointer`}
-              onClick={handleShowCurrentFeatureCollection}
+              <span className="absolute -bottom-[10px] right-0 text-primary font-bold text-lg">
+                K
+              </span>
+            </div>
+          </Tooltip>
+          <Tooltip title="Kartenausschnitt beibehalten">
+            <FontAwesomeIcon
+              icon={lockMap ? faLock : faLockOpen}
+              onClick={() => dispatch(setLockMap(!lockMap))}
+              className={`h-6 cursor-pointer ${lockMap && "pr-[5.5px]"}`}
             />
-          </div>
+          </Tooltip>
+          <Tooltip title="Schrägluftbild Overlay an/aus">
+            <div
+              className="relative flex items-center"
+              onClick={() => setShowVirtualCityOverlay(!showVirtualCityOverlay)}
+              role="button"
+            >
+              <FontAwesomeIcon icon={faPlane} className="h-6 cursor-pointer" />
+              <Dot showDot={showVirtualCityOverlay} />
+            </div>
+          </Tooltip>
+          <Tooltip title="Hintergrund an/aus">
+            <div
+              className="relative flex items-center"
+              onClick={() => dispatch(setShowBackground(!showBackground))}
+              role="button"
+            >
+              <FontAwesomeIcon
+                icon={solidImage}
+                className="h-6 cursor-pointer"
+              />
+              <Dot showDot={showBackground} />
+            </div>
+          </Tooltip>
+          <Tooltip title="Vordergrund an/aus">
+            <div
+              className="relative flex items-center"
+              onClick={() =>
+                dispatch(
+                  setShowCurrentFeatureCollection(!showCurrentFeatureCollection)
+                )
+              }
+              role="button"
+            >
+              <FontAwesomeIcon
+                icon={regularImage}
+                className="h-6 cursor-pointer"
+              />
+              <Dot showDot={showCurrentFeatureCollection} />
+            </div>
+          </Tooltip>
         </div>
       }
       style={{
