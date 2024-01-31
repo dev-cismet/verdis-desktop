@@ -187,64 +187,64 @@ export const configuration = {
   //     format: "image/png",
   //   },
   // },
-  versiegelteFlaechen: {
-    initialActive: false,
-    title: "Versiegelte Flächen",
-    conf: {
-      type: "graphql",
-      referenceSystemDefinition: MappingConstants.proj4crs3857def,
-      query: `
-      query geoFields($bbPoly: geometry) {
-        kassenzeichen(where: {flaechenArray: {flaecheObject: {flaecheninfoObject: {geom: {geo_field: {_st_intersects: $bbPoly}}}}}}) {
-          kassenzeichennummer8
-          flaechenArray {
-            flaecheObject {
-              id
-              flaechenbezeichnung
-              flaecheninfoObject {
-                geom {
-                  geo_field
-                }
-                id
-                anschlussgradObject {
-                  grad
-                }
-              }
-            }
-          }      
-        }
-      }`,
-      endpoint: REST_SERVICE_WUNDA + "/graphql/VERDIS_GRUNDIS/execute",
-      fetchAllowed: (bbPoly) => {
-        const area = getArea25832(bbPoly);
-        const maxAreaForSearch = 130000;
+  // versiegelteFlaechen: {
+  //   initialActive: false,
+  //   title: "Versiegelte Flächen",
+  //   conf: {
+  //     type: "graphql",
+  //     referenceSystemDefinition: MappingConstants.proj4crs3857def,
+  //     query: `
+  //     query geoFields($bbPoly: geometry) {
+  //       kassenzeichen(where: {flaechenArray: {flaecheObject: {flaecheninfoObject: {geom: {geo_field: {_st_intersects: $bbPoly}}}}}}) {
+  //         kassenzeichennummer8
+  //         flaechenArray {
+  //           flaecheObject {
+  //             id
+  //             flaechenbezeichnung
+  //             flaecheninfoObject {
+  //               geom {
+  //                 geo_field
+  //               }
+  //               id
+  //               anschlussgradObject {
+  //                 grad
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }`,
+  //     endpoint: REST_SERVICE_WUNDA + "/graphql/VERDIS_GRUNDIS/execute",
+  //     fetchAllowed: (bbPoly) => {
+  //       const area = getArea25832(bbPoly);
+  //       const maxAreaForSearch = 130000;
 
-        return area < maxAreaForSearch && area !== 0;
-      },
-      style: {
-        color: "#00000040",
-        fillColor: "#00000020",
-        weight: 2,
-      },
-      hoveredStyle: {
-        color: "#00000040",
-        fillColor: "#00000020",
-        weight: 4,
-      },
-      useHover: true,
-      createFeature: createKassenzeichenFlaechenFeatureArray,
-      // ---- Events ----
-      onMouseOver: (feature) => {
-        // setHoveredProperties(feature.properties);
-      },
-      onMouseOut: () => {
-        // setHoveredProperties({});
-      },
-      onStatus: (status) => {
-        // console.log("statusxx", status);
-      },
-    },
-  },
+  //       return area < maxAreaForSearch && area !== 0;
+  //     },
+  //     style: {
+  //       color: "#00000040",
+  //       fillColor: "#00000020",
+  //       weight: 2,
+  //     },
+  //     hoveredStyle: {
+  //       color: "#00000040",
+  //       fillColor: "#00000020",
+  //       weight: 4,
+  //     },
+  //     useHover: true,
+  //     createFeature: createKassenzeichenFlaechenFeatureArray,
+  //     // ---- Events ----
+  //     onMouseOver: (feature) => {
+  //       // setHoveredProperties(feature.properties);
+  //     },
+  //     onMouseOut: () => {
+  //       // setHoveredProperties({});
+  //     },
+  //     onStatus: (status) => {
+  //       // console.log("statusxx", status);
+  //     },
+  //   },
+  // },
 };
 
 export default function AdditionalLayers({
