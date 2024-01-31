@@ -219,8 +219,49 @@ const Map = ({
       map.invalidateSize();
     }
   }, [mapWidth, mapHeight]);
+  [,];
 
-  useEffect(() => {
+  function useDeepCompareEffect(callback, dependencies) {
+    const currentDependenciesRef = useRef();
+
+    const isSame = (deps1, deps2) => {
+      if (deps1 === deps2) return true;
+      if (typeof deps1 !== "object" || typeof deps2 !== "object") return false;
+      if (deps1 == null || deps2 == null) return false;
+      if (Object.keys(deps1).length !== Object.keys(deps2).length) return false;
+
+      for (const key of Object.keys(deps1)) {
+        if (!isEqual(deps1[key], deps2[key])) return false;
+      }
+
+      return true;
+    };
+
+    const isEqual = (value1, value2) => {
+      if (value1 === value2) return true;
+      if (typeof value1 !== "object" || typeof value2 !== "object")
+        return false;
+      if (value1 == null || value2 == null) return false;
+
+      if (Array.isArray(value1) && Array.isArray(value2)) {
+        if (value1.length !== value2.length) return false;
+        for (let i = 0; i < value1.length; i++) {
+          if (!isEqual(value1[i], value2[i])) return false;
+        }
+        return true;
+      }
+
+      return isSame(value1, value2);
+    };
+
+    if (!isSame(currentDependenciesRef.current, dependencies)) {
+      currentDependenciesRef.current = dependencies;
+    }
+
+    useEffect(callback, [currentDependenciesRef.current]);
+  }
+
+  useDeepCompareEffect(() => {
     if (
       isMapLoadingValue === false &&
       data?.featureCollection &&
@@ -239,8 +280,7 @@ const Map = ({
   const additionalLayerOpacities = useSelector(getAdditionalLayerOpacities);
   const activeBackgroundLayer = useSelector(getActiveBackgroundLayer);
   const activeAdditionalLayers = useSelector(getActiveAdditionalLayers);
-  const hoveredObject = useSelector(getHoveredObject);
-  console.log("yy hoveredObject", hoveredObject);
+  console.log("mapFallbacks", mapFallbacks);
 
   return (
     <Card
@@ -304,11 +344,11 @@ const Map = ({
         maxZoom={25}
         zoomSnap={0.5}
         zoomDelta={0.5}
-        fallbackPosition={mapFallbacks.fallbackPosition}
+        fallbackPosition={mapFallbacks.position}
         fallbackZoom={urlSearchParamsObject?.zoom ?? mapFallbacks.zoom ?? 17}
         locationChangedHandler={(location) => {
           const newParams = { ...paramsToObject(urlParams), ...location };
-          // setUrlParams(newParams);
+          setUrlParams(newParams);
         }}
         boundingBoxChangedHandler={(boundingBox) => {
           boundingBoxChangedHandler(boundingBox);
