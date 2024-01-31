@@ -515,7 +515,21 @@ export const searchForAlkisLandparcel = (id) => {
       });
   };
 };
+const updateQueryParams = (newKassenzeichen) => {
+  const trimmedQuery = newKassenzeichen.trim();
+  if (urlParams && setUrlParams) {
+    // Create a new URLSearchParams object from the existing one
+    const newParams = new URLSearchParams(urlParams);
 
+    // Update or add the 'kassenzeichen' parameter
+    newParams.set("kassenzeichen", trimmedQuery);
+
+    // Check if there's a need to update the URL
+    if (urlParams.get("kassenzeichen") !== trimmedQuery) {
+      setUrlParams(newParams);
+    }
+  }
+};
 export const searchForKassenzeichen = (
   kassenzeichen,
   urlParams,
@@ -532,6 +546,15 @@ export const searchForKassenzeichen = (
       return;
     }
 
+    const trimmedQuery = kassenzeichen.trim();
+    if (urlParams && setUrlParams) {
+      if (urlParams.get("kassenzeichen") !== trimmedQuery) {
+        setUrlParams((prev) => {
+          prev.set("kassenzeichen", trimmedQuery);
+          return prev;
+        });
+      }
+    }
     dispatch(setIsLoading(true));
 
     fetch(ENDPOINT, {
@@ -555,22 +578,9 @@ export const searchForKassenzeichen = (
       .then((result) => {
         const data = result?.data;
         if (data?.kassenzeichen?.length > 0) {
-          const trimmedQuery = kassenzeichen.trim();
-
           dispatch(storeKassenzeichen(data.kassenzeichen[0]));
           dispatch(storeAenderungsAnfrage(data.aenderungsanfrage));
-          if (urlParams && setUrlParams) {
-            if (urlParams.get("kassenzeichen") !== trimmedQuery) {
-              if (lockMap) {
-                setUrlParams((prev) => {
-                  prev.set("kassenzeichen", trimmedQuery);
-                  return prev;
-                });
-              } else {
-                setUrlParams({ kassenzeichen: trimmedQuery });
-              }
-            }
-          }
+
           dispatch(addSearch(trimmedQuery));
           dispatch(resetStates());
 
