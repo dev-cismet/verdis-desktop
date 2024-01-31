@@ -523,7 +523,7 @@ export const searchForKassenzeichen = (
 ) => {
   return async (dispatch, getState) => {
     const jwt = getState().auth.jwt;
-    const syncKassenzeichen = getState().settings.syncKassenzeichen;
+    const syncKassenzeichen = getState().ui.syncKassenzeichen;
     const lockMap = getState().mapping.lockMap;
     if (!kassenzeichen || isNaN(+kassenzeichen)) {
       console.error("Invalid kassenzeichen");
