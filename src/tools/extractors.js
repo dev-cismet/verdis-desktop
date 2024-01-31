@@ -342,7 +342,6 @@ export const mappingExtractor = ({
       //add frontenArray to featureArray
       featureArray.push(...frontenArray);
     }
-
     if (shownFeatureTypes.includes("general")) {
       //add generalGeomArray to featureArray
       featureArray.push(...generalGeomArray);
@@ -364,7 +363,7 @@ export const mappingExtractor = ({
     }
 
     return {
-      homeCenter: [51.272570027476256, 7.19963690266013],
+      _homeCenter: [51.272570027476256, 7.19963690266013],
       featureCollection,
       styler: createStyler(false, featureArray),
       markerStyle: getMarkerStyleFromFeatureConsideringSelection,
@@ -374,8 +373,9 @@ export const mappingExtractor = ({
   }
 
   return {
-    homeCenter: [51.272570027476256, 7.19963690266013],
-    homeZoom: 16,
+    fallback: true,
+    _homeCenter: [51.272570027476256, 7.19963690266013],
+    _homeZoom: 16,
     ondblclick,
     featureCollection: undefined,
   };
