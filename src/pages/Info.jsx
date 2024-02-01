@@ -5,12 +5,18 @@ import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
 import { useSelector } from "react-redux";
 import { getAlkisLandparcel, getKassenzeichen } from "../store/slices/search";
-import { getGeneralGeometryCollection } from "../store/slices/mapping";
+
 import {
   alkisLandparcelExtractor,
   geometryExtractor,
   mappingExtractor,
 } from "../tools/extractors";
+import {
+  getBefreiungErlaubnisCollection,
+  getFlaechenCollection,
+  getFrontenCollection,
+  getGeneralGeometryCollection,
+} from "../store/slices/mapping";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 
 const Page = ({
@@ -31,7 +37,13 @@ const Page = ({
   const cardStyle = { width: "100%", height: "100%", minHeight: 0 };
   const kassenzeichen = useSelector(getKassenzeichen);
   const alkisLandparcel = useSelector(getAlkisLandparcel);
+  const flaechenArray = useSelector(getFlaechenCollection);
+  const frontenArray = useSelector(getFrontenCollection);
   const generalGeomArray = useSelector(getGeneralGeometryCollection);
+
+  const befreiungErlaubnisseArray = useSelector(
+    getBefreiungErlaubnisCollection
+  );
 
   return (
     <div
@@ -63,7 +75,10 @@ const Page = ({
             height="50%"
             dataIn={{
               kassenzeichen,
+              flaechenArray,
+              frontenArray,
               generalGeomArray,
+              befreiungErlaubnisseArray,
               shownFeatureTypes: ["general"],
             }}
             extractor={mappingExtractor}

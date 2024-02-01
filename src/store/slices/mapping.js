@@ -13,12 +13,22 @@ const initialState = {
   toolbarProperties: {},
   lockMap: false,
   lockScale: false,
+  mapRed: undefined,
 };
 
 const slice = createSlice({
   name: "mapping",
   initialState,
   reducers: {
+    setCollections(state, action) {
+      state.flaechenCollection = action.payload.flaechenCollection;
+      state.frontenCollection = action.payload.frontenCollection;
+      state.generalGeometryCollection =
+        action.payload.generalGeometryCollection;
+      state.befreiungErlaubnisCollection =
+        action.payload.befreiungErlaubnisCollection;
+      return state;
+    },
     setFlaechenCollection(state, action) {
       state.flaechenCollection = action.payload;
       return state;
@@ -145,12 +155,17 @@ const slice = createSlice({
       state.befreiungErlaubnisCollection = undefined;
       return state;
     },
+    setMapRef(state, action) {
+      state.mapRef = action.payload;
+      return state;
+    },
   },
 });
 
 export default slice;
 
 export const {
+  setCollections,
   setFlaechenCollection,
   setFrontenCollection,
   setGeneralGeometryCollection,
@@ -167,6 +182,7 @@ export const {
   setLockMap,
   setLockScale,
   clear,
+  setMapRef,
 } = slice.actions;
 
 export const getFlaechenCollection = (state) => {
@@ -211,4 +227,8 @@ export const getLeafletElement = (state) => {
 
 export const getLockScale = (state) => {
   return state.mapping.lockScale;
+};
+
+export const getMapRef = (state) => {
+  return state.mapping.mapRef;
 };

@@ -11,7 +11,12 @@ import {
 import SubNav from "../components/seepagePermits/SubNav";
 import { getKassenzeichen } from "../store/slices/search";
 import { useSelector } from "react-redux";
-import { getBefreiungErlaubnisCollection } from "../store/slices/mapping";
+import {
+  getBefreiungErlaubnisCollection,
+  getFlaechenCollection,
+  getFrontenCollection,
+  getGeneralGeometryCollection,
+} from "../store/slices/mapping";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 
 const Page = ({
@@ -33,6 +38,9 @@ const Page = ({
   const cardStyleFileNumber = { width: "100%", height: "100%", minHeight: 0 };
 
   const kassenzeichen = useSelector(getKassenzeichen);
+  const flaechenArray = useSelector(getFlaechenCollection);
+  const frontenArray = useSelector(getFrontenCollection);
+  const generalGeomArray = useSelector(getGeneralGeometryCollection);
   const befreiungErlaubnisseArray = useSelector(
     getBefreiungErlaubnisCollection
   );
@@ -65,6 +73,9 @@ const Page = ({
             height={"100%"}
             dataIn={{
               kassenzeichen,
+              flaechenArray,
+              frontenArray,
+              generalGeomArray,
               befreiungErlaubnisseArray,
               shownFeatureTypes: ["befreiung"],
             }}

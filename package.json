@@ -2,6 +2,7 @@
   "name": "verdis-desktop",
   "private": true,
   "version": "1.0.2",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "start": "vite --host",
@@ -33,7 +34,7 @@
     "postcss": "^8.4.26",
     "react": "^18.2.0",
     "react-bootstrap-typeahead": "^6.3.1",
-    "react-cismap": "^1.16.1",
+    "react-cismap": "^1.18.3",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
     "react-leaflet": "1.6.4",

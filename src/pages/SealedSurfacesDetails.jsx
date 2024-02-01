@@ -14,8 +14,10 @@ import {
 import { compare, formatDate } from "../tools/helper";
 import SubNav from "../components/sealedSurfaces/SubNav";
 import {
+  getBefreiungErlaubnisCollection,
   getFlaechenCollection,
-  setFlaechenSelected,
+  getFrontenCollection,
+  getGeneralGeometryCollection,
 } from "../store/slices/mapping";
 import { setShowSurfaceDetails } from "../store/slices/settings";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
@@ -122,6 +124,9 @@ const Page = ({
               dataIn={{
                 kassenzeichen,
                 flaechenArray,
+                frontenArray,
+                generalGeomArray,
+                befreiungErlaubnisseArray,
                 shownFeatureTypes: ["flaeche"],
               }}
               extractor={mappingExtractor}

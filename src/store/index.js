@@ -86,19 +86,20 @@ const searchConfig = {
 const uiConfig = {
   key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.config",
   storage: localForage,
-  whitelist: ["overviewFeatureTypes"],
+  whitelist: [
+    "overviewFeatureTypes",
+    "syncKassenzeichen",
+    "activeBackgroundLayer",
+    "backgroundLayerOpacities",
+    "activeAdditionalLayers",
+    "additionalLayerOpacities",
+  ],
 };
 
 const settingsConfig = {
   key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.settings",
   storage: localForage,
-  whitelist: ["syncKassenzeichen", "additionalLayerOpacities"],
-};
-
-const mappingConfig = {
-  key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.mapping",
-  storage: localForage,
-  whitelist: ["additionalLayerOpacities"],
+  whitelist: [],
 };
 
 export default configureStore({

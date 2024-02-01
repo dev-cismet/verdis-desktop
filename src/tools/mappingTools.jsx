@@ -160,14 +160,14 @@ export const createQueryGeomFromBB = (boundingBox) => {
   return updatedGeom;
 };
 
-export const fitFeatureArray = (featureArray, mapRef) => {
-  const bounds = getBoundsForFeatureArray(featureArray);
+// export const fitFeatureArray = (featureArray, mapRef) => {
+//   const bounds = getBoundsForFeatureArray(featureArray);
 
-  //ugly winning to avoid some race condition
-  setTimeout(() => {
-    mapRef.current.leafletMap.leafletElement.fitBounds(bounds);
-  }, 1000);
-};
+//   //ugly winning to avoid some race condition
+//   setTimeout(() => {
+//     mapRef.current.leafletMap.leafletElement.fitBounds(bounds);
+//   }, 1000);
+// };
 
 export const getBoundsForFeatureArray = (featureArray) => {
   // Convert your featureArray into a FeatureCollection

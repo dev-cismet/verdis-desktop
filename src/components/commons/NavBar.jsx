@@ -48,17 +48,24 @@ import SearchBar from "../search/SearchBar";
 import GrundBuch from "../ui/GrundBuch";
 import { getLockScale } from "../../store/slices/mapping";
 
-const navLinks = () => {
+const navLinks = (urlParams) => {
   const showSurfaceDetails = useSelector(getShowSurfaceDetails);
   const showFrontDetails = useSelector(getShowFrontDetails);
   const showSeepageDetails = useSelector(getShowSeepageDetails);
+  // Function to construct query string
+  const constructQueryString = (baseHref) => {
+    const searchParams = new URLSearchParams(urlParams);
+    return `${baseHref}?${searchParams.toString()}`;
+  };
 
   return [
     {
       title: "Versiegelte Flächen",
-      href: showSurfaceDetails
-        ? "/versiegelteFlaechen/details"
-        : "/versiegelteFlaechen",
+      href: constructQueryString(
+        showSurfaceDetails
+          ? "/versiegelteFlaechen/details"
+          : "/versiegelteFlaechen"
+      ),
       icon: (
         <Tooltip title="Versiegelte Flächen" placement="bottom">
           <FontAwesomeIcon icon={faCloudRain} className="h-6" />
@@ -67,9 +74,9 @@ const navLinks = () => {
     },
     {
       title: "Straßenreinigung",
-      href: showFrontDetails
-        ? "/strassenreinigung/details"
-        : "/strassenreinigung",
+      href: constructQueryString(
+        showFrontDetails ? "/strassenreinigung/details" : "/strassenreinigung"
+      ),
       icon: (
         <Tooltip title="Straßenreinigung" placement="bottom">
           <FontAwesomeIcon icon={faBroom} className="h-6" />
@@ -78,7 +85,7 @@ const navLinks = () => {
     },
     {
       title: "Info",
-      href: "/info",
+      href: constructQueryString("/info"),
       icon: (
         <Tooltip title="Info" placement="bottom">
           <FontAwesomeIcon icon={faTag} className="h-6" />
@@ -87,9 +94,11 @@ const navLinks = () => {
     },
     {
       title: "Versickerungsgenehmigungen",
-      href: showSeepageDetails
-        ? "/versickerungsgenehmigungen/details"
-        : "/versickerungsgenehmigungen",
+      href: constructQueryString(
+        showSeepageDetails
+          ? "/versickerungsgenehmigungen/details"
+          : "/versickerungsgenehmigungen"
+      ),
       icon: (
         <Tooltip title="Versickerungsgenehmigungen" placement="bottom">
           <FontAwesomeIcon icon={faEarthAmericas} className="h-6" />
@@ -102,7 +111,7 @@ const navLinks = () => {
 const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const links = navLinks();
+
   const location = useLocation();
   const showChat = useSelector(getShowChat);
   const kassenzeichen = useSelector(getKassenzeichen);
@@ -110,6 +119,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
   const lockScale = useSelector(getLockScale);
   const [urlParams, setUrlParams] = useSearchParams();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const links = navLinks(urlParams);
 
   let storyStyle = {};
   if (inStory) {
@@ -148,17 +158,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
           </div>
         </Tooltip>
         {links.map((link, i) => (
-          <Link
-            to={
-              link.href +
-              `?${
-                lockScale
-                  ? urlParams
-                  : "kassenzeichen=" + urlParams.get("kassenzeichen")
-              }`
-            }
-            key={`navLink_${i}`}
-          >
+          <Link to={link.href} key={`navLink_${i}`}>
             <Button
               type="text"
               className={`${
@@ -218,7 +218,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
           placement="right"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
-          size="large"
+          size="small"
         >
           <Settings />
         </Drawer>

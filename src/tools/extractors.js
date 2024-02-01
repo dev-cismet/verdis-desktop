@@ -337,23 +337,27 @@ export const mappingExtractor = ({
 }) => {
   if (kassenzeichen !== undefined && JSON.stringify(kassenzeichen) !== "{}") {
     const featureArray = [];
-
+    const allFeatures = [
+      ...(flaechenArray || []),
+      ...(frontenArray || []),
+      ...(generalGeomArray || []),
+      ...(befreiungErlaubnisseArray || []),
+    ];
     if (shownFeatureTypes.includes("front")) {
       //add frontenArray to featureArray
-      featureArray.push(...frontenArray);
+      featureArray.push(...(frontenArray || []));
     }
-
     if (shownFeatureTypes.includes("general")) {
       //add generalGeomArray to featureArray
-      featureArray.push(...generalGeomArray);
+      featureArray.push(...(generalGeomArray || []));
     }
     if (shownFeatureTypes.includes("flaeche")) {
       //add flaechenArray to featureArray
-      featureArray.push(...flaechenArray);
+      featureArray.push(...(flaechenArray || []));
     }
     if (shownFeatureTypes.includes("befreiung")) {
       //add flaechenArray to featureArray
-      featureArray.push(...befreiungErlaubnisseArray);
+      featureArray.push(...(befreiungErlaubnisseArray || []));
     }
 
     const featureCollections = [];
@@ -364,8 +368,9 @@ export const mappingExtractor = ({
     }
 
     return {
-      homeCenter: [51.272570027476256, 7.19963690266013],
+      _homeCenter: [51.272570027476256, 7.19963690266013],
       featureCollection,
+      allFeatures,
       styler: createStyler(false, featureArray),
       markerStyle: getMarkerStyleFromFeatureConsideringSelection,
       showMarkerCollection: false,
@@ -374,8 +379,9 @@ export const mappingExtractor = ({
   }
 
   return {
-    homeCenter: [51.272570027476256, 7.19963690266013],
-    homeZoom: 16,
+    fallback: true,
+    _homeCenter: [51.272570027476256, 7.19963690266013],
+    _homeZoom: 16,
     ondblclick,
     featureCollection: undefined,
   };

@@ -129,7 +129,6 @@ export const getVersickerungsGenFeatureCollection = (kassenzeichen) => {
       );
     features.push(...subfeatures);
   });
-  console.log("xxx features", features);
 
   return features;
 };

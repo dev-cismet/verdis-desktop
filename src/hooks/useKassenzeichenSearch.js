@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getJWT } from "../store/slices/auth";
 import request from "graphql-request";
 import { useSearchParams } from "react-router-dom";
-import { getSyncKassenzeichen } from "../store/slices/settings";
+import { getSyncKassenzeichen } from "../store/slices/ui";
 import {
   addSearch,
   resetStates,
