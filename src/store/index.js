@@ -102,12 +102,6 @@ const settingsConfig = {
   whitelist: [],
 };
 
-const mappingConfig = {
-  key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.mapping",
-  storage: localForage,
-  whitelist: ["additionalLayerOpacities"],
-};
-
 export default configureStore({
   reducer: {
     auth: persistReducer(authConfig, authSlice.reducer),

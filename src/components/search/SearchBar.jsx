@@ -33,7 +33,15 @@ const SearchBar = () => {
       return;
     }
     const urlKassenzeichen = urlParams.get("kassenzeichen");
-    if (urlKassenzeichen && !isEqual(urlKassenzeichen, kassenzeichenNummer)) {
+    if (
+      urlKassenzeichen &&
+      !isEqual(urlKassenzeichen, kassenzeichenNummer?.toString())
+    ) {
+      console.log("xxx will getKassenzeichen", {
+        urlKassenzeichen,
+        kassenzeichenNummer,
+      });
+
       dispatch(searchForKassenzeichen(urlKassenzeichen));
       setInpuValue(urlKassenzeichen);
     }

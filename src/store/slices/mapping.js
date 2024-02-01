@@ -13,6 +13,7 @@ const initialState = {
   toolbarProperties: {},
   lockMap: false,
   lockScale: false,
+  mapRed: undefined,
 };
 
 const slice = createSlice({
@@ -145,6 +146,10 @@ const slice = createSlice({
       state.befreiungErlaubnisCollection = undefined;
       return state;
     },
+    setMapRef(state, action) {
+      state.mapRef = action.payload;
+      return state;
+    },
   },
 });
 
@@ -167,6 +172,7 @@ export const {
   setLockMap,
   setLockScale,
   clear,
+  setMapRef,
 } = slice.actions;
 
 export const getFlaechenCollection = (state) => {
@@ -211,4 +217,8 @@ export const getLeafletElement = (state) => {
 
 export const getLockScale = (state) => {
   return state.mapping.lockScale;
+};
+
+export const getMapRef = (state) => {
+  return state.mapping.mapRef;
 };

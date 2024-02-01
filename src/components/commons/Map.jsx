@@ -25,10 +25,13 @@ import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
 import Overlay from "./Overlay";
 
 import {
+  getIsLoading,
   getIsLoadingGeofields,
   getIsLoadingKassenzeichenWithPoint,
   searchForGeoFields,
   searchForKassenzeichenWithPoint,
+  storeFlaechenId,
+  storeFrontenId,
 } from "../../store/slices/search";
 import {
   getLockMap,
@@ -40,6 +43,7 @@ import {
   setGeneralGeometrySelected,
   setLockMap,
   setLockScale,
+  setMapRef,
   setShowBackground,
   setShowCurrentFeatureCollection,
 } from "../../store/slices/mapping";
@@ -99,6 +103,7 @@ const Map = ({
   const showCurrentFeatureCollection = useSelector(
     getShowCurrentFeatureCollection
   );
+  const isLoading = useSelector(getIsLoading);
   const gazData = useSelector(getGazData);
   const showBackground = useSelector(getShowBackground);
   const jwt = useSelector(getJWT);
@@ -235,51 +240,13 @@ const Map = ({
   }, [mapWidth, mapHeight]);
   [,];
 
-  function useDeepCompareEffect(callback, dependencies) {
-    const currentDependenciesRef = useRef();
-
-    const isSame = (deps1, deps2) => {
-      if (deps1 === deps2) return true;
-      if (typeof deps1 !== "object" || typeof deps2 !== "object") return false;
-      if (deps1 == null || deps2 == null) return false;
-      if (Object.keys(deps1).length !== Object.keys(deps2).length) return false;
-
-      for (const key of Object.keys(deps1)) {
-        if (!isEqual(deps1[key], deps2[key])) return false;
-      }
-
-      return true;
-    };
-
-    const isEqual = (value1, value2) => {
-      if (value1 === value2) return true;
-      if (typeof value1 !== "object" || typeof value2 !== "object")
-        return false;
-      if (value1 == null || value2 == null) return false;
-
-      if (Array.isArray(value1) && Array.isArray(value2)) {
-        if (value1.length !== value2.length) return false;
-        for (let i = 0; i < value1.length; i++) {
-          if (!isEqual(value1[i], value2[i])) return false;
-        }
-        return true;
-      }
-
-      return isSame(value1, value2);
-    };
-
-    if (!isSame(currentDependenciesRef.current, dependencies)) {
-      currentDependenciesRef.current = dependencies;
-    }
-
-    useEffect(callback, [currentDependenciesRef.current]);
-  }
-
-  useDeepCompareEffect(() => {
+  function fitMapBounds() {
     const map = refRoutedMap?.current?.leafletMap?.leafletElement;
     if (map == undefined) {
       console.log("xxx map is undefined");
       return;
+    } else {
+      dispatch(setMapRef(map));
     }
     let bb = undefined;
     if (data?.featureCollection && data?.featureCollection.length > 0) {
@@ -295,13 +262,17 @@ const Map = ({
     }
     if (map && bb) {
       map.fitBounds(bb);
+      console.log("xxx fitBounds");
     }
-  }, [
-    data?.featureCollection,
-    data?.allFeatures,
-    refRoutedMap.current,
-    isMapLoadingValue,
-  ]);
+  }
+
+  useEffect(() => {
+    if (isLoading === true) {
+      return;
+    }
+    fitMapBounds();
+  }, [refRoutedMap.current, isLoading]);
+
   const lockMap = useSelector(getLockMap);
   const lockScale = useSelector(getLockScale);
 
@@ -497,16 +468,21 @@ const Map = ({
                 data.featureClickHandler ||
                 ((e) => {
                   const feature = e.target.feature;
+                  console.log("xxx feature clicked", feature);
+
                   if (feature.selected) {
                     const map = refRoutedMap.current.leafletMap.leafletElement;
                     const bb = getBoundsForFeatureArray([feature]);
-                    const { center, zoom } = getCenterAndZoomForBounds(map, bb);
-                    setUrlParams((prev) => {
-                      prev.set("zoom", zoom);
-                      prev.set("lat", center.lat);
-                      prev.set("lng", center.lng);
-                      return prev;
-                    });
+                    // const { center, zoom } = getCenterAndZoomForBounds(map, bb);
+                    // setUrlParams((prev) => {
+                    //   prev.set("zoom", zoom);
+                    //   prev.set("lat", center.lat);
+                    //   prev.set("lng", center.lng);
+                    //   return prev;
+                    // });
+                    if (map && bb) {
+                      map.fitBounds(bb);
+                    }
                   } else {
                     switch (feature.featureType) {
                       case "flaeche": {

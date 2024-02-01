@@ -617,6 +617,7 @@ export const searchForKassenzeichen = (
               getVersickerungsGenFeatureCollection(data.kassenzeichen[0])
             )
           );
+
           dispatch(setIsLoading(false));
         } else {
           dispatch(setErrorMessage("Kassenzeichen not found"));
