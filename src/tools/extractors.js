@@ -338,10 +338,10 @@ export const mappingExtractor = ({
   if (kassenzeichen !== undefined && JSON.stringify(kassenzeichen) !== "{}") {
     const featureArray = [];
     const allFeatures = [
-      ...flaechenArray,
-      ...frontenArray,
-      ...generalGeomArray,
-      ...befreiungErlaubnisseArray,
+      ...(flaechenArray || []),
+      ...(frontenArray || []),
+      ...(generalGeomArray || []),
+      ...(befreiungErlaubnisseArray || []),
     ];
     if (shownFeatureTypes.includes("front")) {
       //add frontenArray to featureArray

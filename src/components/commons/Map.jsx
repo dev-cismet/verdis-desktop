@@ -282,11 +282,11 @@ const Map = ({
       return;
     }
     let bb = undefined;
-    if (data?.featureCollection) {
+    if (data?.featureCollection && data?.featureCollection.length > 0) {
       // console.log("xxx will use featureCollection", data?.featureCollection);
 
       bb = getBoundsForFeatureArray(data?.featureCollection);
-    } else if (data?.allFeatures) {
+    } else if (data?.allFeatures && data?.allFeatures.length > 0) {
       // console.log("xxx will use allFeatures", data?.allFeatures);
       bb = getBoundsForFeatureArray(data?.allFeatures);
     }
