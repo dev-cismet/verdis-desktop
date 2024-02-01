@@ -174,6 +174,17 @@ export const configuration = {
       format: "image/png",
     },
   },
+  kanal: {
+    initialActive: false,
+    title: "Kanal",
+    conf: {
+      type: "vector",
+      style: "https://omt.map-hosting.de/styles/kanal/style.json",
+      pane: "additionalLayers1",
+      offlineAvailable: false,
+      offlineDataStoreKey: "kanal",
+    },
+  },
   // kanaldaten: {
   //   initialActive: false,
   //   title: "Kanaldaten",
