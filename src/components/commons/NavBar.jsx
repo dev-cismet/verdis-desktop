@@ -218,7 +218,7 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
           placement="right"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
-          size="large"
+          size="small"
         >
           <Settings />
         </Drawer>
