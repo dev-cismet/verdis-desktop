@@ -37,11 +37,6 @@ const SearchBar = () => {
       urlKassenzeichen &&
       !isEqual(urlKassenzeichen, kassenzeichenNummer?.toString())
     ) {
-      console.log("xxx will getKassenzeichen", {
-        urlKassenzeichen,
-        kassenzeichenNummer,
-      });
-
       dispatch(searchForKassenzeichen(urlKassenzeichen));
       setInpuValue(urlKassenzeichen);
     }

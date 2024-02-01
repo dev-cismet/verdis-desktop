@@ -480,8 +480,6 @@ const Map = ({
                 data.featureClickHandler ||
                 ((e) => {
                   const feature = e.target.feature;
-                  console.log("xxx feature clicked", feature);
-
                   if (feature.selected) {
                     const map = refRoutedMap.current.leafletMap.leafletElement;
                     const bb = getBoundsForFeatureArray([feature]);
