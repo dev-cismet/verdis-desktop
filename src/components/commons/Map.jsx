@@ -49,6 +49,7 @@ import {
 } from "../../store/slices/mapping";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 import {
+  faExpandArrowsAlt,
   faF,
   faLock,
   faLockOpen,
@@ -260,6 +261,8 @@ const Map = ({
     if (lockMap) {
       return;
     }
+    console.log("xxx ", data?.allFeatures);
+
     if (map && bb) {
       map.fitBounds(bb);
       console.log("xxx fitBounds");
@@ -270,7 +273,9 @@ const Map = ({
     if (isLoading === true) {
       return;
     }
-    fitMapBounds();
+    setTimeout(() => {
+      fitMapBounds();
+    }, 500);
   }, [refRoutedMap.current, isLoading]);
 
   const lockMap = useSelector(getLockMap);
@@ -292,7 +297,15 @@ const Map = ({
           {/* {(isLoadingGeofields || isLoadingKassenzeichenWithPoint) && (
             <LoadingOutlined />
           )} */}
-          <Tooltip title="Kartenausschnitt für dieses Kassenzeichen beibehalten">
+          <Tooltip title="optimaler Kartenausschnitt für dieses Kassenzeichen">
+            <div
+              className="relative flex cursor-pointer items-center justify-center"
+              onClick={() => fitMapBounds()}
+            >
+              <FontAwesomeIcon icon={faExpandArrowsAlt} className={`h-6`} />
+            </div>
+          </Tooltip>
+          {/* <Tooltip title="Kartenausschnitt für dieses Kassenzeichen beibehalten">
             <div
               className="relative flex cursor-pointer items-center justify-center"
               onClick={() => dispatch(setLockScale(!lockScale))}
@@ -305,7 +318,7 @@ const Map = ({
                 K
               </span>
             </div>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip title="Kartenausschnitt beibehalten">
             <FontAwesomeIcon
               icon={lockMap ? faLock : faLockOpen}
