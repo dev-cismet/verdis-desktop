@@ -49,8 +49,14 @@ const Page = ({
   };
   const dispatch = useDispatch();
   const mapHeight = height - 100;
+
   const kassenzeichen = useSelector(getKassenzeichen);
+  const flaechenArray = useSelector(getFlaechenCollection);
   const frontenArray = useSelector(getFrontenCollection);
+  const generalGeomArray = useSelector(getGeneralGeometryCollection);
+  const befreiungErlaubnisseArray = useSelector(
+    getBefreiungErlaubnisCollection
+  );
   const frontenId = useSelector(getFrontenId);
 
   return (
