@@ -5,12 +5,18 @@ import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
 import { useSelector } from "react-redux";
 import { getAlkisLandparcel, getKassenzeichen } from "../store/slices/search";
-import { getGeneralGeometryCollection } from "../store/slices/mapping";
+
 import {
   alkisLandparcelExtractor,
   geometryExtractor,
   mappingExtractor,
 } from "../tools/extractors";
+import {
+  getBefreiungErlaubnisCollection,
+  getFlaechenCollection,
+  getFrontenCollection,
+  getGeneralGeometryCollection,
+} from "../store/slices/mapping";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 
 const Page = ({
