@@ -20,6 +20,15 @@ const slice = createSlice({
   name: "mapping",
   initialState,
   reducers: {
+    setCollections(state, action) {
+      state.flaechenCollection = action.payload.flaechenCollection;
+      state.frontenCollection = action.payload.frontenCollection;
+      state.generalGeometryCollection =
+        action.payload.generalGeometryCollection;
+      state.befreiungErlaubnisCollection =
+        action.payload.befreiungErlaubnisCollection;
+      return state;
+    },
     setFlaechenCollection(state, action) {
       state.flaechenCollection = action.payload;
       return state;
@@ -156,6 +165,7 @@ const slice = createSlice({
 export default slice;
 
 export const {
+  setCollections,
   setFlaechenCollection,
   setFrontenCollection,
   setGeneralGeometryCollection,
