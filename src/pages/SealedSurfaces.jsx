@@ -18,8 +18,10 @@ import {
   storeFlaechenId,
 } from "../store/slices/search";
 import {
+  getBefreiungErlaubnisCollection,
   getFlaechenCollection,
-  setFlaechenSelected,
+  getFrontenCollection,
+  getGeneralGeometryCollection,
 } from "../store/slices/mapping";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 
@@ -32,6 +34,12 @@ const Page = ({
   const dispatch = useDispatch();
   const kassenzeichen = useSelector(getKassenzeichen);
   const flaechenArray = useSelector(getFlaechenCollection);
+  const frontenArray = useSelector(getFrontenCollection);
+  const generalGeomArray = useSelector(getGeneralGeometryCollection);
+
+  const befreiungErlaubnisseArray = useSelector(
+    getBefreiungErlaubnisCollection
+  );
   const flaechenId = useSelector(getFlaechenId);
 
   let storyStyle = {};
@@ -117,6 +125,9 @@ const Page = ({
             dataIn={{
               kassenzeichen,
               flaechenArray,
+              frontenArray,
+              generalGeomArray,
+              befreiungErlaubnisseArray,
               shownFeatureTypes: ["flaeche"],
             }}
             extractor={mappingExtractor}

@@ -261,11 +261,10 @@ const Map = ({
     if (lockMap) {
       return;
     }
-    console.log("xxx ", data?.allFeatures);
 
     if (map && bb) {
       map.fitBounds(bb);
-      console.log("xxx fitBounds");
+      // console.log("xxx fitBounds");
     }
   }
 

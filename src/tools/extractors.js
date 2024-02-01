@@ -345,19 +345,19 @@ export const mappingExtractor = ({
     ];
     if (shownFeatureTypes.includes("front")) {
       //add frontenArray to featureArray
-      featureArray.push(...frontenArray);
+      featureArray.push(...(frontenArray || []));
     }
     if (shownFeatureTypes.includes("general")) {
       //add generalGeomArray to featureArray
-      featureArray.push(...generalGeomArray);
+      featureArray.push(...(generalGeomArray || []));
     }
     if (shownFeatureTypes.includes("flaeche")) {
       //add flaechenArray to featureArray
-      featureArray.push(...flaechenArray);
+      featureArray.push(...(flaechenArray || []));
     }
     if (shownFeatureTypes.includes("befreiung")) {
       //add flaechenArray to featureArray
-      featureArray.push(...befreiungErlaubnisseArray);
+      featureArray.push(...(befreiungErlaubnisseArray || []));
     }
 
     const featureCollections = [];

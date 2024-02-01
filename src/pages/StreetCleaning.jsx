@@ -13,8 +13,10 @@ import { compare } from "../tools/helper";
 import SubNav from "../components/streetCleaning/SubNav";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getBefreiungErlaubnisCollection,
+  getFlaechenCollection,
   getFrontenCollection,
-  setFrontenSelected,
+  getGeneralGeometryCollection,
 } from "../store/slices/mapping";
 import {
   getFrontenId,
@@ -114,7 +116,10 @@ const Page = ({
             height={"100%"}
             dataIn={{
               kassenzeichen,
+              flaechenArray,
               frontenArray,
+              generalGeomArray,
+              befreiungErlaubnisseArray,
               shownFeatureTypes: ["front"],
             }}
             extractor={mappingExtractor}

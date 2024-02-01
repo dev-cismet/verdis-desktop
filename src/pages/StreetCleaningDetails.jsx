@@ -14,8 +14,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import SubNav from "../components/streetCleaning/SubNav";
 import {
+  getBefreiungErlaubnisCollection,
+  getFlaechenCollection,
   getFrontenCollection,
-  setFrontenSelected,
+  getGeneralGeometryCollection,
 } from "../store/slices/mapping";
 import { setShowFrontDetails } from "../store/slices/settings";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
@@ -40,8 +42,13 @@ const Page = ({
   const cardStyleFronts = { width: "50%", height: "100%", minHeight: 0 };
   const cardStyleDetails = { width: "100%", height: "50%", minHeight: 0 };
   const kassenzeichen = useSelector(getKassenzeichen);
+  const flaechenArray = useSelector(getFlaechenCollection);
   const frontenArray = useSelector(getFrontenCollection);
+  const generalGeomArray = useSelector(getGeneralGeometryCollection);
 
+  const befreiungErlaubnisseArray = useSelector(
+    getBefreiungErlaubnisCollection
+  );
   useEffect(() => {
     dispatch(setShowFrontDetails(true));
   }, []);
@@ -102,7 +109,10 @@ const Page = ({
               height={"50%"}
               dataIn={{
                 kassenzeichen,
+                flaechenArray,
                 frontenArray,
+                generalGeomArray,
+                befreiungErlaubnisseArray,
                 shownFeatureTypes: ["front"],
               }}
               extractor={mappingExtractor}

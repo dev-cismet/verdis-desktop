@@ -16,6 +16,7 @@ import {
   setFlaechenCollection,
   setFrontenCollection,
   setGeneralGeometryCollection,
+  setCollections,
 } from "./mapping";
 import {
   getFlaechenFeatureCollection,
@@ -596,27 +597,43 @@ export const searchForKassenzeichen = (
           //create the featureCollections
 
           dispatch(
-            setFlaechenCollection(
-              getFlaechenFeatureCollection(data.kassenzeichen[0])
-            )
-          );
-          dispatch(
-            setFrontenCollection(
-              getFrontenFeatureCollection(data.kassenzeichen[0])
-            )
+            setCollections({
+              flaechenCollection: getFlaechenFeatureCollection(
+                data.kassenzeichen[0]
+              ),
+              frontenCollection: getFrontenFeatureCollection(
+                data.kassenzeichen[0]
+              ),
+              generalGeometryCollection: getGeneralGeomfeatureCollection(
+                data.kassenzeichen[0]
+              ),
+              befreiungErlaubnisCollection:
+                getVersickerungsGenFeatureCollection(data.kassenzeichen[0]),
+            })
           );
 
-          dispatch(
-            setGeneralGeometryCollection(
-              getGeneralGeomfeatureCollection(data.kassenzeichen[0])
-            )
-          );
+          // dispatch(
+          //   setFlaechenCollection(
+          //     getFlaechenFeatureCollection(data.kassenzeichen[0])
+          //   )
+          // );
+          // dispatch(
+          //   setFrontenCollection(
+          //     getFrontenFeatureCollection(data.kassenzeichen[0])
+          //   )
+          // );
 
-          dispatch(
-            setBefreiungErlaubnisCollection(
-              getVersickerungsGenFeatureCollection(data.kassenzeichen[0])
-            )
-          );
+          // dispatch(
+          //   setGeneralGeometryCollection(
+          //     getGeneralGeomfeatureCollection(data.kassenzeichen[0])
+          //   )
+          // );
+
+          // dispatch(
+          //   setBefreiungErlaubnisCollection(
+          //     getVersickerungsGenFeatureCollection(data.kassenzeichen[0])
+          //   )
+          // );
 
           dispatch(setIsLoading(false));
         } else {

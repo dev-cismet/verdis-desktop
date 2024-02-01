@@ -39,6 +39,9 @@ const Page = ({
   const cardStyleDetails = { width: "100%", height: "100%", minHeight: 0 };
 
   const kassenzeichen = useSelector(getKassenzeichen);
+  const flaechenArray = useSelector(getFlaechenCollection);
+  const frontenArray = useSelector(getFrontenCollection);
+  const generalGeomArray = useSelector(getGeneralGeometryCollection);
   const befreiungErlaubnisseArray = useSelector(
     getBefreiungErlaubnisCollection
   );
@@ -123,6 +126,10 @@ const Page = ({
               height={"100%"}
               dataIn={{
                 kassenzeichen,
+                kassenzeichen,
+                flaechenArray,
+                frontenArray,
+                generalGeomArray,
                 befreiungErlaubnisseArray,
                 shownFeatureTypes: ["befreiung"],
               }}
