@@ -18,6 +18,7 @@ import {
   getFlaechenCollection,
   getFrontenCollection,
   getGeneralGeometryCollection,
+  setFlaechenSelected,
 } from "../store/slices/mapping";
 import { setShowSurfaceDetails } from "../store/slices/settings";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
@@ -42,9 +43,14 @@ const Page = ({
 
   const cardStyleTable = { width: "50%", height: "100%", minHeight: 0 };
   const cardStyleDetails = { width: "100%", height: "50%", minHeight: 0 };
+
   const kassenzeichen = useSelector(getKassenzeichen);
   const flaechenArray = useSelector(getFlaechenCollection);
-
+  const frontenArray = useSelector(getFrontenCollection);
+  const generalGeomArray = useSelector(getGeneralGeometryCollection);
+  const befreiungErlaubnisseArray = useSelector(
+    getBefreiungErlaubnisCollection
+  );
   useEffect(() => {
     dispatch(setShowSurfaceDetails(true));
   }, []);

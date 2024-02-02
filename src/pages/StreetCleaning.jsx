@@ -17,6 +17,7 @@ import {
   getFlaechenCollection,
   getFrontenCollection,
   getGeneralGeometryCollection,
+  setFrontenSelected,
 } from "../store/slices/mapping";
 import {
   getFrontenId,

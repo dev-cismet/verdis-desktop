@@ -18,6 +18,7 @@ import {
   getFlaechenCollection,
   getFrontenCollection,
   getGeneralGeometryCollection,
+  setFrontenSelected,
 } from "../store/slices/mapping";
 import { setShowFrontDetails } from "../store/slices/settings";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";

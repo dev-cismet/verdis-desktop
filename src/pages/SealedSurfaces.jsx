@@ -25,6 +25,7 @@ import {
   getGeneralGeometryCollection,
   getLockMap,
   getLockMapOnlyInKassenzeichen,
+  setFlaechenSelected,
 } from "../store/slices/mapping";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 import { useEffect } from "react";
@@ -41,10 +42,10 @@ const Page = ({
   const flaechenArray = useSelector(getFlaechenCollection);
   const frontenArray = useSelector(getFrontenCollection);
   const generalGeomArray = useSelector(getGeneralGeometryCollection);
-
   const befreiungErlaubnisseArray = useSelector(
     getBefreiungErlaubnisCollection
   );
+
   const flaechenId = useSelector(getFlaechenId);
 
   let storyStyle = {};
