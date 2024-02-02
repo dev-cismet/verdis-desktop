@@ -68,7 +68,7 @@ const createKassenzeichenFlaechenFeatureArray = (data) => {
 export const configuration = {
   bplan: {
     initialActive: false,
-    title: "Bebauungsplanverfahren (rechtsverb.)",
+    title: "BPläne",
     conf: {
       type: "wmts",
       url: "http://s10221.wuppertal-intra.de/bebauungsplanung/services",
@@ -81,7 +81,7 @@ export const configuration = {
   },
   baulastnachweis: {
     initialActive: false,
-    title: "Baulastnachweis",
+    title: "Baulastnachweise",
     conf: {
       type: "wmts",
       url: "http://s10221.wuppertal-intra.de:8056/baulasten/services",
@@ -95,8 +95,7 @@ export const configuration = {
   },
   hausnummern: {
     initialActive: false,
-    title:
-      "Hausnummern, vorhandene Adressen, geplante Adressen mit/ohne Bauantrag",
+    title: "Hausnummern",
     conf: {
       type: "wmts",
       url: "http://s10221.wuppertal-intra.de:7098/alkis/services",
@@ -123,7 +122,7 @@ export const configuration = {
   },
   eswReinigungsklassen: {
     initialActive: false,
-    title: "ESW Reinigungsklassen",
+    title: "Reinigungsklassen",
     conf: {
       type: "wmts",
       url: "http://s10221.wuppertal-intra.de:8099/esw/services",
@@ -150,7 +149,7 @@ export const configuration = {
   },
   expresskarte: {
     initialActive: false,
-    title: "Expresskarte (Strich s/w)",
+    title: "Expresskarte (s/w)",
     conf: {
       type: "wmts",
       url: "http://s10221.wuppertal-intra.de:7098/alkis/services",
@@ -163,7 +162,7 @@ export const configuration = {
   },
   expresskarteGelb: {
     initialActive: false,
-    title: "Expresskarte (Strich gelb)",
+    title: "Expresskarte (gelb)",
     conf: {
       type: "wmts",
       url: "http://s10221.wuppertal-intra.de:7098/alkis/services",
@@ -176,7 +175,7 @@ export const configuration = {
   },
   kanal: {
     initialActive: false,
-    title: "Kanal",
+    title: "Kanäle",
     conf: {
       type: "vector",
       style: "https://omt.map-hosting.de/styles/kanal/style.json",
