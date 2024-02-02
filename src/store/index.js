@@ -96,6 +96,12 @@ const uiConfig = {
   ],
 };
 
+const mappingConfig = {
+  key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.mapping",
+  storage: localForage,
+  whitelist: ["lockMap", "lockMapOnlyInKassenzeichen"],
+};
+
 const settingsConfig = {
   key: "@" + APP_KEY + "." + STORAGE_PREFIX + ".app.settings",
   storage: localForage,
@@ -107,7 +113,7 @@ export default configureStore({
     auth: persistReducer(authConfig, authSlice.reducer),
     search: persistReducer(searchConfig, searchSlice.reducer),
     settings: persistReducer(settingsConfig, settingsSlice.reducer),
-    mapping: mappingSlice.reducer,
+    mapping: persistReducer(mappingConfig, mappingSlice.reducer),
     ui: persistReducer(uiConfig, uiSlice.reducer),
     gazetteerData: gazDataSlice.reducer,
   },

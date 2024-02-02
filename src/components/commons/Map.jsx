@@ -35,18 +35,17 @@ import {
 } from "../../store/slices/search";
 import {
   getLockMap,
-  getLockScale,
   getShowBackground,
   getShowCurrentFeatureCollection,
   setFlaechenSelected,
   setFrontenSelected,
   setGeneralGeometrySelected,
-  setLockMap,
-  setLockScale,
-  setMapRef,
+  getLockMapOnlyInKassenzeichen,
+  setLockMapOnlyInKassenzeichen,
   setShowBackground,
   setShowCurrentFeatureCollection,
   setGraphqlStatus,
+  setLockMap,
 } from "../../store/slices/mapping";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 import {
@@ -247,7 +246,6 @@ const Map = ({
       console.log("xxx map is undefined");
       return;
     } else {
-      dispatch(setMapRef(map));
     }
     let bb = undefined;
     if (data?.featureCollection && data?.featureCollection.length > 0) {
@@ -278,7 +276,7 @@ const Map = ({
   }, [refRoutedMap.current, isLoading]);
 
   const lockMap = useSelector(getLockMap);
-  const lockScale = useSelector(getLockScale);
+  const lockMapOnlyInKassenzeichen = useSelector(getLockMapOnlyInKassenzeichen);
 
   const backgroundLayerOpacities = useSelector(getBackgroundLayerOpacities);
   const additionalLayerOpacities = useSelector(getAdditionalLayerOpacities);
@@ -304,20 +302,24 @@ const Map = ({
               <FontAwesomeIcon icon={faExpandArrowsAlt} className={`h-6`} />
             </div>
           </Tooltip>
-          {/* <Tooltip title="Kartenausschnitt für dieses Kassenzeichen beibehalten">
+          <Tooltip title="Kartenausschnitt für dieses Kassenzeichen beibehalten">
             <div
               className="relative flex cursor-pointer items-center justify-center"
-              onClick={() => dispatch(setLockScale(!lockScale))}
+              onClick={() =>
+                dispatch(
+                  setLockMapOnlyInKassenzeichen(!lockMapOnlyInKassenzeichen)
+                )
+              }
             >
               <FontAwesomeIcon
-                icon={lockScale ? faLock : faLockOpen}
-                className={`h-6 ${lockScale && "pr-[5.5px]"}`}
+                icon={lockMapOnlyInKassenzeichen ? faLock : faLockOpen}
+                className={`h-6 ${lockMapOnlyInKassenzeichen && "pr-[5.5px]"}`}
               />
               <span className="absolute -bottom-[10px] right-0 text-primary font-bold text-lg">
                 K
               </span>
             </div>
-          </Tooltip> */}
+          </Tooltip>
           <Tooltip title="Kartenausschnitt beibehalten">
             <FontAwesomeIcon
               icon={lockMap ? faLock : faLockOpen}
