@@ -46,6 +46,7 @@ import {
   setMapRef,
   setShowBackground,
   setShowCurrentFeatureCollection,
+  setGraphqlStatus,
 } from "../../store/slices/mapping";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 import {
@@ -100,7 +101,6 @@ const Map = ({
   // const [fallback, setFallback] = useState({});
   const [showVirtualCityOverlay, setShowVirtualCityOverlay] = useState(false);
   const [infoText, setInfoText] = useState("");
-  const [graphqlLayerStatus, setGraphqlLayerStatus] = useState();
   const showCurrentFeatureCollection = useSelector(
     getShowCurrentFeatureCollection
   );
@@ -467,7 +467,34 @@ const Map = ({
           pixelwidth={500}
           placeholder={gazetteerSearchPlaceholder}
         />
-        {/* {children} */}
+
+        {showBackground && (
+          <>
+            <BackgroundLayers
+              activeBackgroundLayer={activeBackgroundLayer}
+              opacities={backgroundLayerOpacities}
+            />
+            <AdditionalLayers
+              jwt={jwt}
+              mapRef={refRoutedMap}
+              activeLayers={activeAdditionalLayers}
+              opacities={additionalLayerOpacities}
+              onHoverUpdate={(featureproperties) => {
+                dispatch(setHoveredObject(featureproperties));
+              }}
+              onGraphqlLayerStatus={(status) => {
+                dispatch(setGraphqlStatus(status));
+              }}
+            />
+          </>
+        )}
+        {showVirtualCityOverlay && (
+          <Overlay
+            mapWidth={mapWidth}
+            mapHeight={mapHeight}
+            mapRef={refRoutedMap}
+          />
+        )}
         {data.featureCollection &&
           data.featureCollection.length > 0 &&
           showCurrentFeatureCollection && (
@@ -528,42 +555,6 @@ const Map = ({
               }
             />
           )}
-
-        {showBackground && (
-          <>
-            <BackgroundLayers
-              activeBackgroundLayer={activeBackgroundLayer}
-              opacities={backgroundLayerOpacities}
-            />
-            <AdditionalLayers
-              jwt={jwt}
-              mapRef={refRoutedMap}
-              activeLayers={activeAdditionalLayers}
-              opacities={additionalLayerOpacities}
-              onHoverUpdate={(featureproperties) => {
-                console.log("xxx ho", featureproperties);
-                //setInfoText(featureproperties?.hoverString);
-                dispatch(setHoveredObject(featureproperties));
-              }}
-              onGraphqlLayerStatus={(status) => {
-                // console.log("graphqlLayerStatus", status);
-                // if (status === "NOT_ALLOWED") {
-                //   setGraphqlLayerStatus(status);
-                // } else {
-                //   setGraphqlLayerStatus();
-                // }
-                // setGraphqlLayerStatus(status);
-              }}
-            />
-          </>
-        )}
-        {showVirtualCityOverlay && (
-          <Overlay
-            mapWidth={mapWidth}
-            mapHeight={mapHeight}
-            mapRef={refRoutedMap}
-          />
-        )}
       </RoutedMap>
       <Toolbar />
     </Card>

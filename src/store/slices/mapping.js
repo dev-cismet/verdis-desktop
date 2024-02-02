@@ -13,7 +13,8 @@ const initialState = {
   toolbarProperties: {},
   lockMap: false,
   lockScale: false,
-  mapRed: undefined,
+  mapRef: undefined,
+  graphqlStatus: undefined,
 };
 
 const slice = createSlice({
@@ -159,6 +160,10 @@ const slice = createSlice({
       state.mapRef = action.payload;
       return state;
     },
+    setGraphqlStatus(state, action) {
+      state.graphqlStatus = action.payload;
+      return state;
+    },
   },
 });
 
@@ -183,6 +188,7 @@ export const {
   setLockScale,
   clear,
   setMapRef,
+  setGraphqlStatus,
 } = slice.actions;
 
 export const getFlaechenCollection = (state) => {
@@ -231,4 +237,8 @@ export const getLockScale = (state) => {
 
 export const getMapRef = (state) => {
   return state.mapping.mapRef;
+};
+
+export const getGraphqlStatus = (state) => {
+  return state.mapping.graphqlStatus;
 };
