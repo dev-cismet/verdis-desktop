@@ -202,7 +202,7 @@ export const configuration = {
     title: "VerdIS Flächen",
     conf: {
       type: "graphql",
-      pane: "vectorLayers",
+      pane: "additionalLayers2",
       referenceSystemDefinition: MappingConstants.proj4crs3857def,
       query: `
       query geoFields($bbPoly: geometry) {
@@ -233,14 +233,19 @@ export const configuration = {
         return area < maxAreaForSearch && area !== 0;
       },
       style: {
-        color: "#666666",
-        fillColor: "#262626",
+        pane: "additionalLayers2", //you can set a pane here
+        color: "#66666666",
+        fillColor: "#28282866",
         weight: 0.5,
       },
       hoveredStyle: {
-        color: "#666666",
-        fillColor: "#666666",
+        color: "#66666666",
+        fillColor: "#66666666",
         weight: 1,
+      },
+      featureClickHandler: (e) => {
+        let underlyingLayer = findUnderlyingLayer(e.latlng);
+        console.log("click", underlyingLayer);
       },
       useHover: true,
       createFeature: createKassenzeichenFlaechenFeatureArray,
