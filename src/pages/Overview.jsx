@@ -20,16 +20,21 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import {
+  fitBounds,
   getBefreiungErlaubnisCollection,
   getFlaechenCollection,
   getFrontenCollection,
   getGeneralGeometryCollection,
+  getLockMap,
+  getLockMapOnlyInKassenzeichen,
 } from "../store/slices/mapping";
 import { getOverviewFeatureTypes } from "../store/slices/ui";
 import { convertLatLngToXY } from "../tools/mappingTools";
 import { useSearchParams } from "react-router-dom";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 import { isEmpty } from "lodash";
+import { useEffect } from "react";
+import { useFitBoundsIfUnlocked } from "../hooks/useFitBoundsIfUnlocked";
 
 const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   let storyStyle = {};
@@ -55,6 +60,8 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
   );
   const dispatch = useDispatch();
   const [urlParams, setUrlParams] = useSearchParams();
+
+  useFitBoundsIfUnlocked();
 
   return (
     <div

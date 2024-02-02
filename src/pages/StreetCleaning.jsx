@@ -25,6 +25,7 @@ import {
   storeFrontenId,
 } from "../store/slices/search";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
+import { useFitBoundsIfUnlocked } from "../hooks/useFitBoundsIfUnlocked";
 
 const Page = ({
   width = "100%",
@@ -58,7 +59,7 @@ const Page = ({
     getBefreiungErlaubnisCollection
   );
   const frontenId = useSelector(getFrontenId);
-
+  useFitBoundsIfUnlocked();
   return (
     <div
       style={{ ...storyStyle, width, height }}

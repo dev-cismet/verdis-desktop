@@ -21,6 +21,7 @@ import {
 } from "../store/slices/mapping";
 import { setShowSurfaceDetails } from "../store/slices/settings";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
+import { useFitBoundsIfUnlocked } from "../hooks/useFitBoundsIfUnlocked";
 
 const Page = ({
   width = "100%",
@@ -47,7 +48,7 @@ const Page = ({
   useEffect(() => {
     dispatch(setShowSurfaceDetails(true));
   }, []);
-
+  useFitBoundsIfUnlocked();
   return (
     <div
       style={{ ...storyStyle, width, height }}

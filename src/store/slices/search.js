@@ -17,6 +17,7 @@ import {
   setFrontenCollection,
   setGeneralGeometryCollection,
   setCollections,
+  fitBounds,
 } from "./mapping";
 import {
   getFlaechenFeatureCollection,
@@ -539,7 +540,9 @@ export const searchForKassenzeichen = (
   return async (dispatch, getState) => {
     const jwt = getState().auth.jwt;
     const syncKassenzeichen = getState().ui.syncKassenzeichen;
-    const lockMap = getState().mapping.lockMap;
+    const state = getState();
+    const lockMap = state.mapping.lockMap;
+    const lockMapOnlyInKassenzeichen = state.mapping.lockMapOnlyInKassenzeichen;
     if (!kassenzeichen || isNaN(+kassenzeichen)) {
       console.error("Invalid kassenzeichen");
       dispatch(setErrorMessage("Invalid kassenzeichen"));
@@ -612,30 +615,10 @@ export const searchForKassenzeichen = (
             })
           );
 
-          // dispatch(
-          //   setFlaechenCollection(
-          //     getFlaechenFeatureCollection(data.kassenzeichen[0])
-          //   )
-          // );
-          // dispatch(
-          //   setFrontenCollection(
-          //     getFrontenFeatureCollection(data.kassenzeichen[0])
-          //   )
-          // );
-
-          // dispatch(
-          //   setGeneralGeometryCollection(
-          //     getGeneralGeomfeatureCollection(data.kassenzeichen[0])
-          //   )
-          // );
-
-          // dispatch(
-          //   setBefreiungErlaubnisCollection(
-          //     getVersickerungsGenFeatureCollection(data.kassenzeichen[0])
-          //   )
-          // );
-
           dispatch(setIsLoading(false));
+          if (!lockMap) {
+            dispatch(fitBounds());
+          }
         } else {
           dispatch(setErrorMessage("Kassenzeichen not found"));
           dispatch(setIsLoading(false));

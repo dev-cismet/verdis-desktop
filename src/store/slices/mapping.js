@@ -14,6 +14,7 @@ const initialState = {
   lockMap: false,
   lockMapOnlyInKassenzeichen: false,
   graphqlStatus: undefined,
+  fitBoundsCounter: 0,
 };
 
 const slice = createSlice({
@@ -160,6 +161,10 @@ const slice = createSlice({
       state.graphqlStatus = action.payload;
       return state;
     },
+    setFitBoundsCounter(state, action) {
+      state.fitBoundsCounter = action.payload;
+      return state;
+    },
   },
 });
 
@@ -184,6 +189,7 @@ export const {
   setLockMapOnlyInKassenzeichen,
   clear,
   setGraphqlStatus,
+  setFitBoundsCounter,
 } = slice.actions;
 
 export const getFlaechenCollection = (state) => {
@@ -232,4 +238,14 @@ export const getLockMapOnlyInKassenzeichen = (state) => {
 
 export const getGraphqlStatus = (state) => {
   return state.mapping.graphqlStatus;
+};
+export const getFitBoundsCounter = (state) => {
+  return state.mapping.fitBoundsCounter;
+};
+
+export const fitBounds = (state) => {
+  return async (dispatch, getState) => {
+    const counter = getState().mapping.fitBoundsCounter + 1;
+    dispatch(setFitBoundsCounter(counter));
+  };
 };

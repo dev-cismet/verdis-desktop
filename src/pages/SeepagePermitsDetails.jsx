@@ -17,6 +17,7 @@ import {
 import { getBefreiungErlaubnisCollection } from "../store/slices/mapping";
 import { setShowSeepageDetails } from "../store/slices/settings";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
+import { useFitBoundsIfUnlocked } from "../hooks/useFitBoundsIfUnlocked";
 
 const Page = ({
   width = "100%",
@@ -49,7 +50,7 @@ const Page = ({
   useEffect(() => {
     dispatch(setShowSeepageDetails(true));
   }, []);
-
+  useFitBoundsIfUnlocked();
   return (
     <div
       style={{ ...storyStyle, width, height }}

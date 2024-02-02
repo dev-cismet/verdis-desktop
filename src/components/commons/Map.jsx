@@ -46,6 +46,7 @@ import {
   setShowCurrentFeatureCollection,
   setGraphqlStatus,
   setLockMap,
+  getFitBoundsCounter,
 } from "../../store/slices/mapping";
 import { getArea25832 } from "../../tools/kassenzeichenMappingTools";
 import {
@@ -103,6 +104,8 @@ const Map = ({
   const showCurrentFeatureCollection = useSelector(
     getShowCurrentFeatureCollection
   );
+  const fitBoundsCounter = useSelector(getFitBoundsCounter);
+
   const isLoading = useSelector(getIsLoading);
   const gazData = useSelector(getGazData);
   const showBackground = useSelector(getShowBackground);
@@ -142,6 +145,8 @@ const Map = ({
 
   const cardRef = useRef(null);
   const [mapWidth, setMapWidth] = useState(0);
+  const [initialFitBoundsCounter, setInitialFitBoundsCounter] =
+    useState(fitBoundsCounter);
   const [mapHeight, setMapHeight] = useState(window.innerHeight * 0.5); //uggly winning
   const {
     backgroundModes,
@@ -240,6 +245,9 @@ const Map = ({
   }, [mapWidth, mapHeight]);
   [,];
 
+  const lockMap = useSelector(getLockMap);
+  const lockMapOnlyInKassenzeichen = useSelector(getLockMapOnlyInKassenzeichen);
+
   function fitMapBounds() {
     const map = refRoutedMap?.current?.leafletMap?.leafletElement;
     if (map == undefined) {
@@ -256,9 +264,6 @@ const Map = ({
       // console.log("xxx will use allFeatures", data?.allFeatures);
       bb = getBoundsForFeatureArray(data?.allFeatures);
     }
-    if (lockMap) {
-      return;
-    }
 
     if (map && bb) {
       map.fitBounds(bb);
@@ -267,16 +272,18 @@ const Map = ({
   }
 
   useEffect(() => {
-    if (isLoading === true) {
-      return;
+    if (fitBoundsCounter > initialFitBoundsCounter) {
+      setTimeout(() => {
+        fitMapBounds();
+      }, 250);
     }
-    setTimeout(() => {
-      fitMapBounds();
-    }, 500);
-  }, [refRoutedMap.current, isLoading]);
-
-  const lockMap = useSelector(getLockMap);
-  const lockMapOnlyInKassenzeichen = useSelector(getLockMapOnlyInKassenzeichen);
+    // if (isLoading === true) {
+    //   return;
+    // }
+    // if (lockMap) {
+    //   return;
+    // }
+  }, [fitBoundsCounter]);
 
   const backgroundLayerOpacities = useSelector(getBackgroundLayerOpacities);
   const additionalLayerOpacities = useSelector(getAdditionalLayerOpacities);

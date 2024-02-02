@@ -18,12 +18,17 @@ import {
   storeFlaechenId,
 } from "../store/slices/search";
 import {
+  fitBounds,
   getBefreiungErlaubnisCollection,
   getFlaechenCollection,
   getFrontenCollection,
   getGeneralGeometryCollection,
+  getLockMap,
+  getLockMapOnlyInKassenzeichen,
 } from "../store/slices/mapping";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
+import { useEffect } from "react";
+import { useFitBoundsIfUnlocked } from "../hooks/useFitBoundsIfUnlocked";
 
 const Page = ({
   width = "100%",
@@ -58,7 +63,7 @@ const Page = ({
     height: "20%",
     minHeight: 0,
   };
-
+  useFitBoundsIfUnlocked();
   return (
     <div
       style={{ ...storyStyle, width, height }}
