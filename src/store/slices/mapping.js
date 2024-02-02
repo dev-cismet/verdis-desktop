@@ -12,8 +12,7 @@ const initialState = {
   showBackground: true,
   toolbarProperties: {},
   lockMap: false,
-  lockScale: false,
-  mapRef: undefined,
+  lockMapOnlyInKassenzeichen: false,
   graphqlStatus: undefined,
 };
 
@@ -145,8 +144,8 @@ const slice = createSlice({
       state.lockMap = action.payload;
       return state;
     },
-    setLockScale(state, action) {
-      state.lockScale = action.payload;
+    setLockMapOnlyInKassenzeichen(state, action) {
+      state.lockMapOnlyInKassenzeichen = action.payload;
       return state;
     },
     clear(state) {
@@ -156,10 +155,7 @@ const slice = createSlice({
       state.befreiungErlaubnisCollection = undefined;
       return state;
     },
-    setMapRef(state, action) {
-      state.mapRef = action.payload;
-      return state;
-    },
+
     setGraphqlStatus(state, action) {
       state.graphqlStatus = action.payload;
       return state;
@@ -185,9 +181,8 @@ export const {
   setShowBackground,
   setToolbarProperties,
   setLockMap,
-  setLockScale,
+  setLockMapOnlyInKassenzeichen,
   clear,
-  setMapRef,
   setGraphqlStatus,
 } = slice.actions;
 
@@ -231,12 +226,8 @@ export const getLeafletElement = (state) => {
   return state.mapping.leafletElement;
 };
 
-export const getLockScale = (state) => {
-  return state.mapping.lockScale;
-};
-
-export const getMapRef = (state) => {
-  return state.mapping.mapRef;
+export const getLockMapOnlyInKassenzeichen = (state) => {
+  return state.mapping.lockMapOnlyInKassenzeichen;
 };
 
 export const getGraphqlStatus = (state) => {
