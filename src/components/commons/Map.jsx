@@ -23,6 +23,7 @@ import {
 import Dot from "./Dot";
 import { faImage as regularImage } from "@fortawesome/free-regular-svg-icons";
 import Overlay from "./Overlay";
+import LandParcelChooser from "./LandParcelChooser";
 
 import {
   getIsLoading,
@@ -145,6 +146,7 @@ const Map = ({
 
   const cardRef = useRef(null);
   const [mapWidth, setMapWidth] = useState(0);
+  const [showLandParcelChooser, setShowLandParcelChooser] = useState(false);
   const [initialFitBoundsCounter, setInitialFitBoundsCounter] =
     useState(fitBoundsCounter);
   const [mapHeight, setMapHeight] = useState(window.innerHeight * 0.5); //uggly winning
@@ -464,18 +466,31 @@ const Map = ({
           key={"gazHit" + JSON.stringify(gazetteerHit)}
           gazetteerHit={gazetteerHit}
         />
-        <GazetteerSearchControl
-          mapRef={refRoutedMap}
-          gazetteerHit={gazetteerHit}
-          setGazetteerHit={setGazetteerHit}
-          gazeteerHitTrigger={gazetteerHitTrigger}
-          overlayFeature={overlayFeature}
-          setOverlayFeature={setOverlayFeature}
-          gazData={gazData}
-          enabled={gazData.length > 0}
-          pixelwidth={500}
-          placeholder={gazetteerSearchPlaceholder}
-        />
+        {showLandParcelChooser ? (
+          <LandParcelChooser
+            setGazetteerHit={setGazetteerHit}
+            setOverlayFeature={setOverlayFeature}
+            setShowLandParcelChooser={setShowLandParcelChooser}
+          />
+        ) : (
+          <GazetteerSearchControl
+            mapRef={refRoutedMap}
+            gazetteerHit={gazetteerHit}
+            setGazetteerHit={setGazetteerHit}
+            gazeteerHitTrigger={gazetteerHitTrigger}
+            overlayFeature={overlayFeature}
+            setOverlayFeature={setOverlayFeature}
+            gazData={gazData}
+            enabled={gazData.length > 0}
+            pixelwidth={500}
+            placeholder={gazetteerSearchPlaceholder}
+            tertiaryAction={() => {
+              setShowLandParcelChooser(true);
+            }}
+            tertiaryActionIcon={faF}
+            tertiaryActionTooltip="Flurstücksuche"
+          />
+        )}
 
         {showBackground && (
           <>
