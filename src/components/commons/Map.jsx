@@ -453,7 +453,7 @@ const Map = ({
         // }}
       >
         <ScaleControl {...defaults} position="topright" />
-        {overlayFeature && (
+        {/* {overlayFeature && (
           <ProjSingleGeoJson
             key={JSON.stringify(overlayFeature)}
             geoJson={overlayFeature}
@@ -461,7 +461,7 @@ const Map = ({
             maskingPolygon={maskingPolygon}
             mapRef={leafletRoutedMapRef}
           />
-        )}
+        )} */}
         <GazetteerHitDisplay
           key={"gazHit" + JSON.stringify(gazetteerHit)}
           gazetteerHit={gazetteerHit}
