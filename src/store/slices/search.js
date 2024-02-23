@@ -313,6 +313,7 @@ export const getBuchungsblatt = (buchblattnummer) => {
       })
       .catch((error) => {
         dispatch(storeIsLoadingBuchungsblatt(false));
+        dispatch(storeBuchungsblattError(true));
         console.error(
           "There was a problem with the fetch operation:",
           error.message
