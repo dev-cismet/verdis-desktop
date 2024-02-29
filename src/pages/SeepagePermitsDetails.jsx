@@ -11,13 +11,21 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getKassenzeichen,
   getSeepageId,
+  searchForKassenzeichenWithPoint,
   storeSeepage,
   storeSeepageId,
 } from "../store/slices/search";
-import { getBefreiungErlaubnisCollection } from "../store/slices/mapping";
+import {
+  getBefreiungErlaubnisCollection,
+  getFlaechenCollection,
+  getFrontenCollection,
+  getGeneralGeometryCollection,
+} from "../store/slices/mapping";
 import { setShowSeepageDetails } from "../store/slices/settings";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 import { useFitBoundsIfUnlocked } from "../hooks/useFitBoundsIfUnlocked";
+import { useSearchParams } from "react-router-dom";
+import { convertLatLngToXY } from "../tools/mappingTools";
 
 const Page = ({
   width = "100%",
@@ -34,6 +42,7 @@ const Page = ({
     };
   }
   const dispatch = useDispatch();
+  const [urlParams, setUrlParams] = useSearchParams();
   const seepageId = useSelector(getSeepageId);
 
   const cardStylePermits = { width: "100%", height: "50%", minHeight: 0 };
@@ -127,12 +136,22 @@ const Page = ({
               height={"100%"}
               dataIn={{
                 kassenzeichen,
-                kassenzeichen,
                 flaechenArray,
                 frontenArray,
                 generalGeomArray,
                 befreiungErlaubnisseArray,
                 shownFeatureTypes: ["befreiung"],
+                ondblclick: (event) => {
+                  const xy = convertLatLngToXY(event.latlng);
+                  dispatch(
+                    searchForKassenzeichenWithPoint(
+                      xy[0],
+                      xy[1],
+                      urlParams,
+                      setUrlParams
+                    )
+                  );
+                },
               }}
               extractor={mappingExtractor}
             >

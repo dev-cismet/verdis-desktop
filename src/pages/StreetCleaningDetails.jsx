@@ -8,6 +8,7 @@ import { compare } from "../tools/helper";
 import {
   getFrontenId,
   getKassenzeichen,
+  searchForKassenzeichenWithPoint,
   storeFront,
   storeFrontenId,
 } from "../store/slices/search";
@@ -23,6 +24,8 @@ import {
 import { setShowFrontDetails } from "../store/slices/settings";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 import { useFitBoundsIfUnlocked } from "../hooks/useFitBoundsIfUnlocked";
+import { useSearchParams } from "react-router-dom";
+import { convertLatLngToXY } from "../tools/mappingTools";
 
 const Page = ({
   width = "100%",
@@ -39,6 +42,7 @@ const Page = ({
     };
   }
   const dispatch = useDispatch();
+  const [urlParams, setUrlParams] = useSearchParams();
   const frontenId = useSelector(getFrontenId);
 
   const cardStyleFronts = { width: "50%", height: "100%", minHeight: 0 };
@@ -116,6 +120,17 @@ const Page = ({
                 generalGeomArray,
                 befreiungErlaubnisseArray,
                 shownFeatureTypes: ["front"],
+                ondblclick: (event) => {
+                  const xy = convertLatLngToXY(event.latlng);
+                  dispatch(
+                    searchForKassenzeichenWithPoint(
+                      xy[0],
+                      xy[1],
+                      urlParams,
+                      setUrlParams
+                    )
+                  );
+                },
               }}
               extractor={mappingExtractor}
             >

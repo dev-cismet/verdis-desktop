@@ -9,8 +9,11 @@ import {
   sewerConnectionExtractor,
 } from "../tools/extractors";
 import SubNav from "../components/seepagePermits/SubNav";
-import { getKassenzeichen } from "../store/slices/search";
-import { useSelector } from "react-redux";
+import {
+  getKassenzeichen,
+  searchForKassenzeichenWithPoint,
+} from "../store/slices/search";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getBefreiungErlaubnisCollection,
   getFlaechenCollection,
@@ -19,6 +22,8 @@ import {
 } from "../store/slices/mapping";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 import { useFitBoundsIfUnlocked } from "../hooks/useFitBoundsIfUnlocked";
+import { useSearchParams } from "react-router-dom";
+import { convertLatLngToXY } from "../tools/mappingTools";
 
 const Page = ({
   width = "100%",
@@ -45,6 +50,10 @@ const Page = ({
   const befreiungErlaubnisseArray = useSelector(
     getBefreiungErlaubnisCollection
   );
+
+  const dispatch = useDispatch();
+  const [urlParams, setUrlParams] = useSearchParams();
+
   useFitBoundsIfUnlocked();
   return (
     <div
@@ -79,6 +88,17 @@ const Page = ({
               generalGeomArray,
               befreiungErlaubnisseArray,
               shownFeatureTypes: ["befreiung"],
+              ondblclick: (event) => {
+                const xy = convertLatLngToXY(event.latlng);
+                dispatch(
+                  searchForKassenzeichenWithPoint(
+                    xy[0],
+                    xy[1],
+                    urlParams,
+                    setUrlParams
+                  )
+                );
+              },
             }}
             extractor={mappingExtractor}
           >

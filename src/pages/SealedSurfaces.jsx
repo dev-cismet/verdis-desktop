@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getFlaechenId,
   getKassenzeichen,
+  searchForKassenzeichenWithPoint,
   storeFlaeche,
   storeFlaechenId,
 } from "../store/slices/search";
@@ -30,6 +31,8 @@ import {
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
 import { useEffect } from "react";
 import { useFitBoundsIfUnlocked } from "../hooks/useFitBoundsIfUnlocked";
+import { useSearchParams } from "react-router-dom";
+import { convertLatLngToXY } from "../tools/mappingTools";
 
 const Page = ({
   width = "100%",
@@ -37,7 +40,6 @@ const Page = ({
   inStory = false,
   showChat = false,
 }) => {
-  const dispatch = useDispatch();
   const kassenzeichen = useSelector(getKassenzeichen);
   const flaechenArray = useSelector(getFlaechenCollection);
   const frontenArray = useSelector(getFrontenCollection);
@@ -45,6 +47,9 @@ const Page = ({
   const befreiungErlaubnisseArray = useSelector(
     getBefreiungErlaubnisCollection
   );
+
+  const dispatch = useDispatch();
+  const [urlParams, setUrlParams] = useSearchParams();
 
   const flaechenId = useSelector(getFlaechenId);
 
@@ -135,6 +140,17 @@ const Page = ({
               generalGeomArray,
               befreiungErlaubnisseArray,
               shownFeatureTypes: ["flaeche"],
+              ondblclick: (event) => {
+                const xy = convertLatLngToXY(event.latlng);
+                dispatch(
+                  searchForKassenzeichenWithPoint(
+                    xy[0],
+                    xy[1],
+                    urlParams,
+                    setUrlParams
+                  )
+                );
+              },
             }}
             extractor={mappingExtractor}
           >

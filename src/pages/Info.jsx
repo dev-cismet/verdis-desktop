@@ -3,8 +3,12 @@ import Map from "../components/commons/Map";
 import InfoTable from "../components/info/InfoTable";
 import Chat from "../components/commons/Chat";
 import InfoBar from "../components/commons/InfoBar";
-import { useSelector } from "react-redux";
-import { getAlkisLandparcel, getKassenzeichen } from "../store/slices/search";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAlkisLandparcel,
+  getKassenzeichen,
+  searchForKassenzeichenWithPoint,
+} from "../store/slices/search";
 
 import {
   alkisLandparcelExtractor,
@@ -18,6 +22,8 @@ import {
   getGeneralGeometryCollection,
 } from "../store/slices/mapping";
 import FeatureMapLayer from "../components/commons/FeatureMapLayer";
+import { convertLatLngToXY } from "../tools/mappingTools";
+import { useSearchParams } from "react-router-dom";
 
 const Page = ({
   width = "100%",
@@ -40,6 +46,9 @@ const Page = ({
   const flaechenArray = useSelector(getFlaechenCollection);
   const frontenArray = useSelector(getFrontenCollection);
   const generalGeomArray = useSelector(getGeneralGeometryCollection);
+
+  const dispatch = useDispatch();
+  const [urlParams, setUrlParams] = useSearchParams();
 
   const befreiungErlaubnisseArray = useSelector(
     getBefreiungErlaubnisCollection
@@ -80,6 +89,17 @@ const Page = ({
               generalGeomArray,
               befreiungErlaubnisseArray,
               shownFeatureTypes: ["general"],
+              ondblclick: (event) => {
+                const xy = convertLatLngToXY(event.latlng);
+                dispatch(
+                  searchForKassenzeichenWithPoint(
+                    xy[0],
+                    xy[1],
+                    urlParams,
+                    setUrlParams
+                  )
+                );
+              },
             }}
             extractor={mappingExtractor}
           >
