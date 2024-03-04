@@ -60,6 +60,7 @@ const navLinks = (urlParams) => {
   return [
     {
       title: "Versiegelte Flächen",
+      hrefWithoutQuery: "/versiegelteFlaechen",
       href: constructQueryString(
         showSurfaceDetails
           ? "/versiegelteFlaechen/details"
@@ -73,6 +74,7 @@ const navLinks = (urlParams) => {
     },
     {
       title: "Straßenreinigung",
+      hrefWithoutQuery: "/strassenreinigung",
       href: constructQueryString(
         showFrontDetails ? "/strassenreinigung/details" : "/strassenreinigung"
       ),
@@ -84,6 +86,7 @@ const navLinks = (urlParams) => {
     },
     {
       title: "Info",
+      hrefWithoutQuery: "/info",
       href: constructQueryString("/info"),
       icon: (
         <Tooltip title="Info" placement="bottom">
@@ -93,6 +96,7 @@ const navLinks = (urlParams) => {
     },
     {
       title: "Versickerungsgenehmigungen",
+      hrefWithoutQuery: "/versickerungsgenehmigungen",
       href: constructQueryString(
         showSeepageDetails
           ? "/versickerungsgenehmigungen/details"
@@ -161,7 +165,9 @@ const NavBar = ({ width = "100%", height = 73, style, inStory }) => {
             <Button
               type="text"
               className={`${
-                location.pathname.includes(link.href) ? "text-primary" : ""
+                location.pathname.includes(link.hrefWithoutQuery)
+                  ? "text-primary"
+                  : ""
               } font-semibold no-underline`}
             >
               <div
