@@ -6,6 +6,9 @@ import { reproject } from "reproject";
 import { projectionData } from "react-cismap/constants/gis";
 import proj4 from "proj4";
 import getArea from "@turf/area";
+import { useDispatch } from "react-redux";
+import { searchForKassenzeichen } from "../../store/slices/search";
+import { useSearchParams } from "react-router-dom";
 
 const getWGS84GeoJSON = (geoJSON) => {
   try {
@@ -27,6 +30,27 @@ const getArea25832 = (geoJSON) => {
   if (wGS84GeoJSON !== undefined) {
     return getArea(wGS84GeoJSON);
   }
+};
+
+const omniAwareFeatureClickHandler = ({
+  dispatch,
+  urlParams,
+  setUrlParams,
+}) => {
+  return (e) => {
+    if (e.originalEvent.detail === 2) {
+      const kassenzeichen = e.sourceTarget.feature.properties.kassenzeichen;
+      console.log(
+        "doubleclick",
+        kassenzeichen,
+
+        dispatch
+      );
+      dispatch(
+        searchForKassenzeichen(String(kassenzeichen), urlParams, setUrlParams)
+      );
+    }
+  };
 };
 const createKassenzeichenFlaechenFeatureArray = (data) => {
   const result = [];
@@ -64,7 +88,70 @@ const createKassenzeichenFlaechenFeatureArray = (data) => {
   });
   return result;
 };
-
+const createKassenzeichenInfoFlaechenFeatureArray = (data) => {
+  const result = [];
+  data.kassenzeichen.forEach((kassenzeichen) => {
+    kassenzeichen.kassenzeichen_geometrienArray.forEach((f) => {
+      const infoflaeche = f.kassenzeichen_geometrieObject;
+      try {
+        const feature = {
+          type: "Feature",
+          featureType: "infoflaeche",
+          id: kassenzeichen.kassenzeichennummer8,
+          hovered: false,
+          weight: 0.5,
+          geometry: infoflaeche.geom.geo_field,
+          properties: {
+            kassenzeichen: kassenzeichen.kassenzeichennummer8,
+            bezeichnung: infoflaeche.name,
+          },
+          crs: {
+            type: "name",
+            properties: {
+              name: "urn:ogc:def:crs:EPSG::25832",
+            },
+          },
+        };
+        result.push(feature);
+      } catch (e) {
+        console.log("xxx error", e);
+      }
+    });
+  });
+  return result;
+};
+const createKassenzeichenFrontenFeatureArray = (data) => {
+  const result = [];
+  data.kassenzeichen.forEach((kassenzeichen) => {
+    kassenzeichen.frontenArray.forEach((f) => {
+      const front = f.frontObject;
+      try {
+        const feature = {
+          type: "Feature",
+          featureType: "front",
+          id: kassenzeichen.kassenzeichennummer8 + "_" + front.nummer,
+          hovered: false,
+          weight: 0.5,
+          geometry: front.frontinfoObject.geom.geo_field,
+          properties: {
+            kassenzeichen: kassenzeichen.kassenzeichennummer8,
+            bezeichnung: front.nummer,
+          },
+          crs: {
+            type: "name",
+            properties: {
+              name: "urn:ogc:def:crs:EPSG::25832",
+            },
+          },
+        };
+        result.push(feature);
+      } catch (e) {
+        console.log("xxx error", e);
+      }
+    });
+  });
+  return result;
+};
 export const configuration = {
   bplan: {
     initialActive: false,
@@ -197,9 +284,9 @@ export const configuration = {
   //     format: "image/png",
   //   },
   // },
+
   versiegelteFlaechen: {
-    initialActive: false,
-    title: "VerdIS Flächen",
+    virtual: true,
     conf: {
       type: "graphql",
       pane: "additionalLayers2",
@@ -243,10 +330,7 @@ export const configuration = {
         fillColor: "#66666666",
         weight: 1,
       },
-      featureClickHandler: (e) => {
-        let underlyingLayer = findUnderlyingLayer(e.latlng);
-        console.log("click", underlyingLayer);
-      },
+      omniAwareFeatureClickHandler,
       useHover: true,
       createFeature: createKassenzeichenFlaechenFeatureArray,
       // ---- Events ----
@@ -261,9 +345,134 @@ export const configuration = {
       },
     },
   },
+  infoFlaechen: {
+    virtual: true,
+    conf: {
+      type: "graphql",
+      pane: "additionalLayers2",
+      referenceSystemDefinition: MappingConstants.proj4crs3857def,
+      query: `
+      query geoFields($bbPoly: geometry) {
+        kassenzeichen(where: {kassenzeichen_geometrienArray: {kassenzeichen_geometrieObject: {geom: {geo_field: {_st_intersects: $bbPoly}}}}}) {
+          kassenzeichennummer8
+          kassenzeichen_geometrienArray {
+            kassenzeichen_geometrieObject {
+              geom {
+                geo_field
+              }
+              name
+            }
+          }
+        }
+      }`,
+      endpoint: REST_SERVICE_WUNDA + "/graphql/VERDIS_GRUNDIS/execute",
+      fetchAllowed: (bbPoly) => {
+        const area = getArea25832(bbPoly);
+        const maxAreaForSearch = 150000;
+
+        return area < maxAreaForSearch && area !== 0;
+      },
+      style: {
+        pane: "additionalLayers2", //you can set a pane here
+        color: "#66666666",
+        fillColor: "#28282866",
+        weight: 0.5,
+      },
+      hoveredStyle: {
+        color: "#66666666",
+        fillColor: "#66666666",
+        weight: 1,
+      },
+      omniAwareFeatureClickHandler,
+      useHover: true,
+      createFeature: createKassenzeichenInfoFlaechenFeatureArray,
+      // ---- Events ----
+      onMouseOver: (feature) => {
+        // setHoveredProperties(feature.properties);
+      },
+      onMouseOut: () => {
+        // setHoveredProperties({});
+      },
+      onStatus: (status) => {
+        // console.log("statusxx", status);
+      },
+    },
+  },
+  strassenReinigung: {
+    virtual: true,
+    conf: {
+      type: "graphql",
+      pane: "additionalLayers2",
+      referenceSystemDefinition: MappingConstants.proj4crs3857def,
+      query: `
+      query geoFields($bbPoly: geometry) {
+        kassenzeichen(where: {frontenArray: {frontObject: {frontinfoObject: {geom: {geo_field: {_st_intersects: $bbPoly}}}}}}) {
+          kassenzeichennummer8
+          frontenArray {
+            frontObject {
+              nummer
+              frontinfoObject {
+                geom {
+                  geo_field
+                }
+              }
+            }
+          }
+        }
+      }`,
+      endpoint: REST_SERVICE_WUNDA + "/graphql/VERDIS_GRUNDIS/execute",
+      fetchAllowed: (bbPoly) => {
+        const area = getArea25832(bbPoly);
+        const maxAreaForSearch = 130000;
+
+        return area < maxAreaForSearch && area !== 0;
+      },
+      style: {
+        pane: "additionalLayers2", //you can set a pane here
+        color: "#66666666",
+        weight: 15,
+      },
+      hoveredStyle: {
+        color: "#66666688",
+
+        weight: 15,
+      },
+
+      omniAwareFeatureClickHandler,
+
+      useHover: true,
+      createFeature: createKassenzeichenFrontenFeatureArray,
+      // ---- Events ----
+      onMouseOver: (feature) => {
+        // setHoveredProperties(feature.properties);
+      },
+      onMouseOut: () => {
+        // setHoveredProperties({});
+      },
+      onStatus: (status) => {
+        // console.log("statusxx", status);
+      },
+    },
+  },
+  verdisLayer: {
+    initialActive: true,
+    title: "VerdIS Geometrien",
+    dependentConf: {
+      default: "versiegelteFlaechen",
+      overview: "versiegelteFlaechen",
+      sealedSurfaces: "versiegelteFlaechen",
+      "sealedSurfaces.details": "versiegelteFlaechen",
+      streetCleaning: "strassenReinigung",
+      "streetCleaning.details": "strassenReinigung",
+      info: "infoFlaechen",
+      seepagePermits: "versiegelteFlaechen",
+      "seepagePermits.details": "versiegelteFlaechen",
+    },
+  },
 };
 
 export default function AdditionalLayers({
+  shownIn = "default",
   activeLayers = [],
   opacities = {},
   mapRef,
@@ -271,14 +480,23 @@ export default function AdditionalLayers({
   onHoverUpdate,
   onGraphqlLayerStatus = (status) => {},
 }) {
+  const dispatch = useDispatch();
+  const [urlParams, setUrlParams] = useSearchParams();
+
   return (
     <>
       {activeLayers.map((layerKey, index) => {
         const layerConf = configuration[layerKey];
 
         if (layerConf) {
+          let conf = layerConf.conf;
+          if (layerConf.dependentConf !== undefined) {
+            const translate = layerConf.dependentConf[shownIn];
+            conf = configuration[translate].conf;
+          }
           let moreProps = {};
-          if (layerConf.conf.type === "graphql") {
+
+          if (conf.type === "graphql") {
             moreProps.jwt = jwt;
             moreProps.mapRef = mapRef;
             moreProps.onMouseOut = () => {
@@ -290,12 +508,21 @@ export default function AdditionalLayers({
             moreProps.onStatus = onGraphqlLayerStatus;
           }
 
+          if (conf.omniAwareFeatureClickHandler) {
+            const handler = conf.omniAwareFeatureClickHandler({
+              dispatch,
+              urlParams,
+              setUrlParams,
+            });
+            moreProps.featureClickHandler = handler;
+          }
+
           return (
             <CismapLayer
               key={"Cismapayer." + index}
               //   if a key is set in the config it will overwrite the simple key above
               {...{
-                ...layerConf.conf,
+                ...conf,
                 opacity: opacities[layerKey] || 1,
                 ...moreProps,
               }}

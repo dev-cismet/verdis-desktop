@@ -131,6 +131,7 @@ const Page = ({
           />
           <div className="flex gap-2 h-[50%]">
             <Map
+              shownIn="seepagePermits.details"
               key={"seepagePermitsDetails.map"}
               width={"100%"}
               height={"100%"}

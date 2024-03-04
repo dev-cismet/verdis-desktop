@@ -89,6 +89,7 @@ const mockExtractor = (input) => {
 };
 
 const Map = ({
+  shownIn,
   dataIn,
   extractor = mockExtractor,
   width = 400,
@@ -431,9 +432,10 @@ const Map = ({
         }}
         ondblclick={(event) => {
           //if data contains a ondblclick handler, call it
-          if (data.ondblclick) {
-            data.ondblclick(event);
-          }
+          //Temporarily dsiable double click search
+          // if (data.ondblclick) {
+          //   data.ondblclick(event);
+          // }
         }}
         // ondblclick={(event) => {
         //   //if data contains a ondblclick handler, call it
@@ -499,6 +501,7 @@ const Map = ({
               opacities={backgroundLayerOpacities}
             />
             <AdditionalLayers
+              shownIn={shownIn}
               jwt={jwt}
               mapRef={refRoutedMap}
               activeLayers={activeAdditionalLayers}
@@ -508,6 +511,9 @@ const Map = ({
               }}
               onGraphqlLayerStatus={(status) => {
                 dispatch(setGraphqlStatus(status));
+              }}
+              openKassenzeichen={(kassenzeichen) => {
+                console.log("open kassenzeichen", kassenzeichen);
               }}
             />
           </>

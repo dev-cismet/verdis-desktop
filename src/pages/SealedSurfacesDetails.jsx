@@ -129,6 +129,7 @@ const Page = ({
               extractor={areasDetailsExtractor}
             />
             <Map
+              shownIn="sealedSurfaces.details"
               key="sealedSurfacesDetails.map"
               width={"100%"}
               height={"50%"}

@@ -130,6 +130,7 @@ const Page = ({
           </div>
 
           <Map
+            shownIn="sealedSurfaces"
             key="sealedSurfaces.map"
             width={"80%"}
             height={"100%"}

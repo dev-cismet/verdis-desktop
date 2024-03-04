@@ -80,6 +80,7 @@ const Page = ({
           </div>
 
           <Map
+            shownIn="info"
             width="100%"
             height="50%"
             dataIn={{

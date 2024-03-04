@@ -118,6 +118,7 @@ const Settings = () => {
         {Object.keys(additionalLayerConfigurations).map(
           (layerConfKey, index) => {
             const layerConf = additionalLayerConfigurations[layerConfKey];
+            if (layerConf.virtual === true) return null;
             return (
               <AdditionalLayerRow
                 layerkey={layerConfKey}

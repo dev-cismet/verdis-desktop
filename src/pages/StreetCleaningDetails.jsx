@@ -110,6 +110,7 @@ const Page = ({
             />
 
             <Map
+              shownIn="streetCleaning.details"
               key="streetCleaningDetails.map"
               width={"100%"}
               height={"50%"}

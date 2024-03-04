@@ -78,6 +78,7 @@ const Page = ({
             />
           </div>
           <Map
+            shownIn="seepagePermits"
             key={"seepagePermits.map"}
             width={"80%"}
             height={"100%"}

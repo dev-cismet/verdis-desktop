@@ -97,6 +97,7 @@ const Page = ({ width = "100%", height = "100%", inStory = false }) => {
           />
           <div className="col-span-2 row-span-2">
             <Map
+              shownIn="overview"
               key={"overview.map"}
               width={"calc(100%-40px)"}
               height={"100%"}

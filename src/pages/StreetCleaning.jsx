@@ -123,6 +123,7 @@ const Page = ({
           </div>
 
           <Map
+            shownIn="streetCleaning"
             key="streetCleaning.map"
             width={"80%"}
             height={"100%"}

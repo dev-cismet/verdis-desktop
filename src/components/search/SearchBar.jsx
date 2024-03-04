@@ -29,9 +29,9 @@ const SearchBar = () => {
   const errorMessage = useSelector(getErrorMessage);
   const kassenzeichenNummer = kassenzeichen?.kassenzeichennummer8;
   useEffect(() => {
-    if (isLoading) {
-      return;
-    }
+    // if (isLoading) {
+    //   return;
+    // }
     const urlKassenzeichen = urlParams.get("kassenzeichen");
     if (
       urlKassenzeichen &&
